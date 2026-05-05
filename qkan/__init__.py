@@ -5,10 +5,10 @@ from pathlib import Path
 from typing import Callable, List, Optional, cast, Dict
 
 import qgis
-from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator
+from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator, QTimer
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QMenu, QMenuBar, QWidget
-from qgis.core import QgsProject, QgsSettings
+from qgis.core import QgsProject, QgsSettings, QgsMapLayerType, QgsDataSourceUri
 from qgis.gui import QgisInterface
 from qgis.utils import pluginDirectory
 
@@ -46,6 +46,10 @@ PLUGIN_LIST = [
     "uploadPostgis.application.UploadPostgis",
     "sync.application.Synchronisation",
     "info.application.Infos",
+    "createelements.application.CreateElements",
+    "netzuebersicht.application.NetzuebersichtPlugin",
+    "datenbankviewer.application.DatenbankviewerPlugin",
+    "untersuchungsverwaltung.application.UntersuchungsverwaltungApplication",
 ]
 
 TABLES_GEOM = [
@@ -176,6 +180,23 @@ class QKan:
         self.iface = iface
         self.actions: List[QAction] = []
 
+        # Projektsignale
+        try:
+            QgsProject.instance().readProject.connect(self.init_project_connection)
+        except Exception:
+            pass
+
+        try:
+            self.iface.projectRead.connect(self.init_project_connection)
+        except Exception:
+            pass
+
+        # Verzögerter Versuch, falls Projekt bereits offen
+        QTimer.singleShot(1000, self.init_project_connection)
+
+        # Beim Plugin-Start einmal versuchen, falls Projekt schon offen ist
+        self.init_project_connection()
+
         # Init logging
         self.logger, self.log_path = setup_logging(LOG_TO_CONSOLE, iface)
 
@@ -264,6 +285,10 @@ class QKan:
 
         self.toolbar_4 = self.iface.addToolBar("QKan-Befahrungsdaten")
         self.toolbar_4.setObjectName("QKan-Befahrungsdaten")
+        
+        self.toolbar_5 = self.iface.addToolBar("QKan-Elementerzeugung")
+        self.toolbar_5.setObjectName("QKan-Elementerzeugung")
+
 
         # Add QKan SVG path
         qkanSvgPath = os.path.join(pluginDirectory("qkan"), "templates/svg")
@@ -342,14 +367,15 @@ class QKan:
             safe_add_action(allgemein, "QKan-Datenbank aktualisieren")
             safe_add_action(allgemein, "Neue QKan-Datenbank erstellen")
             safe_add_action(allgemein, "Dateipfade suchen")
-            safe_add_action(allgemein, "Inspektionsdaten anpassen")
-            safe_add_action(allgemein, "Haltungsbericht")
 
             safe_add_action(daten, "Plausibilitätsprüfungen")
             safe_add_action(daten, "Tabellendaten aus Clipboard einfügen")
             safe_add_action(daten, "Tabellendaten aus Clipboard: Zuordnung anzeigen")
             safe_add_action(daten, "Längsschnitt")
             safe_add_action(daten, "Auswahl erweitern / Netzverfolgung")
+            safe_add_action(daten, "Netzübersicht")  # neuer Eintrag
+            safe_add_action(daten, "Datenbankviewer")
+            safe_add_action(daten, "Untersuchungsverwaltung")
 
             safe_add_action(flaechen, "Erzeuge unbefestigte Flächen...")
             safe_add_action(flaechen, "Erzeuge Voronoiflächen zu Haltungen")
@@ -520,6 +546,9 @@ class QKan:
 
             elif toolbar == 'QKan-Befahrungsdaten':
                 self.toolbar_4.addAction(action)
+                
+            elif toolbar == 'QKan-Elementerzeugung':
+                self.toolbar_5.addAction(action)
 
         if add_to_menu and self.menu:
             self.menu.addAction(action)
@@ -527,3 +556,85 @@ class QKan:
         self.actions.append(action)
 
         return action
+
+    # --- Neue Methoden: Projekt-DB-Autoerkennung ---------------------
+
+    def init_project_connection(self, *args):
+        """
+        Ermittelt die aktive QKan-Datenbank aus bereits im Projekt
+        vorhandenen QKan-Layern und setzt dbsource / dbtype.
+        Wird beim Plugin-Start und nach dem Laden eines Projekts aufgerufen.
+        """
+        print("[QKan] init_project_connection()")
+
+        candidate_tables = {
+            "haltungen",
+            "schaechte",
+            "anschlussleitungen",
+            "entwaesserungsrinnen",
+            "sonderbauwerke_view",
+            "Sinkkästen",
+            "Sinkkaesten",
+        }
+
+        project = QgsProject.instance()
+        layers = list(project.mapLayers().values())
+
+        for layer in layers:
+            try:
+                if layer.type() != QgsMapLayerType.VectorLayer:
+                    continue
+
+                provider = layer.providerType()
+                if provider != "spatialite":
+                    continue
+
+                source = layer.source()
+                uri = QgsDataSourceUri(source)
+                db_path = uri.database()
+
+                table_name = None
+                try:
+                    table_name = uri.table()
+                except Exception:
+                    pass
+
+                if not db_path:
+                    continue
+
+                clean_table = (table_name or "").replace('"', "")
+
+                # Wenn Tabellennamen bekannt sind, nur QKan-Schichten verwenden
+                if clean_table and clean_table not in candidate_tables:
+                    continue
+
+                # Aktive DB im QKan-Status setzen
+                QKan.dbsource = source
+                QKan.dbtype = enums.QKanDBChoice.SPATIALITE if hasattr(
+                    enums.QKanDBChoice, "SPATIALITE"
+                ) else "spatialite"
+
+                print(f"[QKan] Aktive QKan-DB erkannt: {db_path}")
+                print(f"[QKan] dbsource = {QKan.dbsource}")
+                print(f"[QKan] dbtype = {QKan.dbtype}")
+                return True
+
+            except Exception as e:
+                print(f"[QKan] Layer-Auswertung fehlgeschlagen: {e}")
+
+        print("[QKan] Keine aktive QKan-Datenbank aus Projektlayern erkannt")
+        QKan.dbsource = None
+        QKan.dbtype = None
+        return False
+
+    def has_active_database(self) -> bool:
+        """
+        True, wenn QKan aktuell eine aktive DB-Verbindung kennt.
+        """
+        return bool(QKan.dbsource)
+
+    def get_active_dbsource(self) -> str:
+        """
+        Liefert die aktuelle dbsource (Datenquellen-String) oder None.
+        """
+        return QKan.dbsource
