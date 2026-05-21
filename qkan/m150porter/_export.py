@@ -2,7 +2,8 @@ from pathlib import Path
 
 # noinspection PyUnresolvedReferences
 from typing import Dict, List, Optional, Union
-from lxml.etree import Element, SubElement
+from xml.dom import minidom
+from lxml.etree import Element, SubElement, tostring
 from lxml import etree
 
 from qgis.PyQt.QtWidgets import QProgressBar
@@ -1190,7 +1191,9 @@ class ExportTask:
         fortschritt("Export startet...", 0.05)
 
         # region Create XML structure
-        self.root = Element("DATA", {"xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance", }
+        self.root = Element(
+            "DATA",
+            nsmap={"xsi": "http://www.w3.org/2001/XMLSchema-instance"}
         )
 
         # Export
