@@ -6,9 +6,8 @@ import os
 from typing import Optional, cast
 
 from qgis.PyQt.QtWidgets import QListWidgetItem
-from qgis.PyQt.QtWidgets import (
-    QApplication,
-)
+from qgis.PyQt.QtWidgets import QApplication
+
 from qgis.core import Qgis, QgsCoordinateReferenceSystem, QgsProject
 from qgis.gui import QgisInterface
 from qgis.utils import iface
@@ -68,6 +67,8 @@ class QKanTools(QKanPlugin):
         self.dlgzc = QgsZoomDialog(self)
         self.dlgb = QgsBerichtDialog(self)
         self.iface = iface
+
+        self.clip = QApplication.clipboard()
 
     # noinspection PyPep8Naming
     def initGui(self) -> None:
@@ -1116,58 +1117,56 @@ class QKanTools(QKanPlugin):
                     auswahl, art
                 )
 
-    def run_zoom_clipboard(self):
-        self.clip = QApplication.clipboard()
+    def on_change(self):
         text = self.clip.text()
         self.text = text
 
-        def on_change():
-            text = self.clip.text()
-            self.text = text
+    def zoom_clip2(self):
+        get_database_QKan()
+        with DBConnection(dbname=QKan.config.database.qkan) as db_qkan:
+            if not db_qkan.connected:
+                self.log.error(
+                    "Fehler im XML-Export\n"
+                    f"QKan-Datenbank {QKan.config.database.qkan} wurde nicht gefunden!\nAbbruch!",
+                )
+                raise Exception(f"{self.__class__.__name__}: {QKan.config.database.qkan} wurde nicht gefunden!")
 
-        def zoom_clip2():
-            get_database_QKan()
-            with DBConnection(dbname=QKan.config.database.qkan) as db_qkan:
-                if not db_qkan.connected:
-                    self.log.error(
-                        "Fehler im XML-Export\n"
-                        f"QKan-Datenbank {QKan.config.database.qkan} wurde nicht gefunden!\nAbbruch!",
-                    )
-                    raise Exception(f"{self.__class__.__name__}: {QKan.config.database.qkan} wurde nicht gefunden!")
+            clip = self.text
 
-                clip = self.text
+            layer = QgsProject.instance().mapLayersByName('Haltungen')[0]
+            if layer is not None and clip is not None:
+                value = str(clip)
+                field = "Bezeichnung"
+                layer.removeSelection()
 
-                layer = QgsProject.instance().mapLayersByName('Haltungen')[0]
-                if layer is not None and clip is not None:
-                    value = str(clip)
-                    field = "Bezeichnung"
-                    layer.removeSelection()
+                if value != '':
 
-                    if value != '':
+                    expr = f'"{field}" = \'{value}\''
+                    layer.selectByExpression(expr)
+                    iface.mapCanvas().zoomToSelected(layer)
+
+                    sel = layer.selectedFeatureIds()
+
+                    if not sel:
+                        layer = QgsProject.instance().mapLayersByName('Schächte')[0]
+                        layer.removeSelection()
+                        value = str(clip)
+                        field = "Schachtname"
 
                         expr = f'"{field}" = \'{value}\''
                         layer.selectByExpression(expr)
                         iface.mapCanvas().zoomToSelected(layer)
+                        # 42780133
 
-                        sel = layer.selectedFeatureIds()
-
-                        if not sel:
-                            layer = QgsProject.instance().mapLayersByName('Schächte')[0]
-                            layer.removeSelection()
-                            value = str(clip)
-                            field = "Schachtname"
-
-                            expr = f'"{field}" = \'{value}\''
-                            layer.selectByExpression(expr)
-                            iface.mapCanvas().zoomToSelected(layer)
-                            # 42780133
+    def run_zoom_clipboard(self):
+        text = self.clip.text()
+        self.text = text
 
         if self.action.isChecked():
-            self.clip.dataChanged.connect(on_change)
-            self.dlgzc.clip.dataChanged.connect(zoom_clip2)
+            self.clip.dataChanged.connect(self.on_change)
+            self.dlgzc.clip.dataChanged.connect(self.zoom_clip2)
         else:
-            self.clip.dataChanged.disconnect()
-
+            self.clip.dataChanged.disconnect(self.on_change)
 
     def run_befahrung(self) -> None:
 
