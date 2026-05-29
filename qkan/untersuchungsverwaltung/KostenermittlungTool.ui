@@ -1,0 +1,1312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>KostenermittlungTool</class>
+ <widget class="QDialog" name="KostenermittlungTool">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>850</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Kanaluntersuchungs- und Kostenermittlungstool</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_main">
+   <item>
+    <widget class="QTabWidget" name="tab_widget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab_auftraege">
+      <attribute name="title">
+       <string>Aufträge</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_auftraege">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_auftraege_top">
+         <item>
+          <widget class="QPushButton" name="btn_neu_auftrag">
+           <property name="minimumSize">
+            <size>
+             <width>140</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>140</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>🆕 Neuer Auftrag</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_auftraege_1">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_suche_auftraege">
+           <property name="text">
+            <string>🔍 Suche:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="suche_auftraege">
+           <property name="maximumSize">
+            <size>
+             <width>300</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="placeholderText">
+            <string>Tippen zum Filtern (Projekt, Straße, Bearbeiter...)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_auftraege_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="group_auftraege_table">
+         <property name="title">
+          <string>Aufträge</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_auftraege_table">
+          <item>
+           <widget class="QTableWidget" name="auftraege_table">
+            <column>
+             <property name="text">
+              <string>Projektname</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Beauftragt am</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Straße</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Sachbearbeiter</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Status</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Ist-Kosten (€)</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Aktionen</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_budget">
+      <attribute name="title">
+       <string>Haushaltsmittel</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_budget">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_budget_filter">
+         <item>
+          <widget class="QLabel" name="label_budget_filter">
+           <property name="text">
+            <string>Haushaltsjahr:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="budget_jahr_filter"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_refresh_budget">
+           <property name="text">
+            <string>🔄 Aktualisieren</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_budget">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="group_budget_input">
+         <property name="title">
+          <string>Budget anlegen / bearbeiten</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_budget_input">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_budget_jahr">
+            <property name="text">
+             <string>Jahr:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="budget_jahr"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_budget_kst">
+            <property name="text">
+             <string>Kostenstelle:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="budget_kst"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_budget_sk">
+            <property name="text">
+             <string>Sachkonto:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="budget_sk"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_budget_betrag">
+            <property name="text">
+             <string>Budget Gesamt (€):</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="budget_betrag"/>
+          </item>
+          <item row="4" column="1">
+           <widget class="QPushButton" name="btn_budget_save">
+            <property name="text">
+             <string>Hinzufügen</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="group_budget_table">
+         <property name="title">
+          <string>Budget-Übersicht</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_budget_table">
+          <item>
+           <widget class="QTableWidget" name="budget_table">
+            <column>
+             <property name="text">
+              <string>Kostenstelle</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Sachkonto</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Budget Gesamt</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Ist-Kosten</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Verfügbar</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Aktionen</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_kostenermittlung">
+      <attribute name="title">
+       <string>Kostenermittlung</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_kosten_outer">
+       <item>
+        <widget class="QScrollArea" name="scrollArea_kosten">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_kosten">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>404</width>
+            <height>592</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_kosten">
+           <item>
+            <widget class="QGroupBox" name="group_haltungsauswahl">
+             <property name="title">
+              <string>Haltungsauswahl</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_haltungsauswahl">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_haltungsauswahl_buttons">
+                <item>
+                 <widget class="QPushButton" name="btn_auslesung_1">
+                  <property name="text">
+                   <string>Haltungen aus Layer laden</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_auslesung_2">
+                  <property name="text">
+                   <string>Auswahl aktualisieren</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_haltungsauswahl">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="group_haltungsdaten">
+             <property name="title">
+              <string>Haltungsdaten</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_haltungsdaten">
+              <item>
+               <widget class="QTableWidget" name="Liste_Haltungen">
+                <column>
+                 <property name="text">
+                  <string>Haltungsname</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Länge</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Entwässerungssystem</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Dimension</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Anzahl GALs</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Kosten Reinigung</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Kosten Reinigung TV</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Kosten TV</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Kosten GAL</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Kosten Panoramo</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="group_kostenberechnung">
+             <property name="title">
+              <string>Kostenberechnung</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_kostenberechnung">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_calc_row1">
+                <item>
+                 <widget class="QCheckBox" name="checkBox_Panoramo">
+                  <property name="text">
+                   <string>Panoramo-Untersuchung</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="checkBox_GAL">
+                  <property name="text">
+                   <string>GAL-Untersuchung</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_calc_row1">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_calc_row2">
+                <item>
+                 <widget class="QPushButton" name="btn_berechnung_reinigung">
+                  <property name="text">
+                   <string>Reinigungskosten berechnen</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_berechnung_tv">
+                  <property name="text">
+                   <string>TV-Kosten berechnen</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_calc_row2">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="group_kostenzusammenfassung">
+             <property name="title">
+              <string>Kostenzusammenfassung</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_kostenzusammenfassung">
+              <item row="0" column="0" colspan="6">
+               <widget class="QLabel" name="label_reinigung">
+                <property name="text">
+                 <string>&lt;b&gt;Reinigung&lt;/b&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_reinigung_mw_netto">
+                <property name="text">
+                 <string>MW netto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="Reinigung_netto_MW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLabel" name="label_reinigung_rw_netto">
+                <property name="text">
+                 <string>RW netto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3">
+               <widget class="QLineEdit" name="Reinigung_netto_RW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="4">
+               <widget class="QLabel" name="label_reinigung_sw_netto">
+                <property name="text">
+                 <string>SW netto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="5">
+               <widget class="QLineEdit" name="Reinigung_netto_SW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_reinigung_mw_brutto">
+                <property name="text">
+                 <string>MW brutto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="Reinigung_brutto_MW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="QLabel" name="label_reinigung_rw_brutto">
+                <property name="text">
+                 <string>RW brutto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="3">
+               <widget class="QLineEdit" name="Reinigung_brutto_RW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="4">
+               <widget class="QLabel" name="label_reinigung_sw_brutto">
+                <property name="text">
+                 <string>SW brutto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="5">
+               <widget class="QLineEdit" name="Reinigung_brutto_SW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0" colspan="6">
+               <widget class="QLabel" name="label_reinigung_befahrung">
+                <property name="text">
+                 <string>&lt;b&gt;Reinigung für Befahrung&lt;/b&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_reinigung_befahrung_mw_netto">
+                <property name="text">
+                 <string>MW netto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QLineEdit" name="Reinigung_befahrung_netto_MW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="2">
+               <widget class="QLabel" name="label_reinigung_befahrung_rw_netto">
+                <property name="text">
+                 <string>RW netto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="3">
+               <widget class="QLineEdit" name="Reinigung_befahrung_netto_RW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="4">
+               <widget class="QLabel" name="label_reinigung_befahrung_sw_netto">
+                <property name="text">
+                 <string>SW netto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="5">
+               <widget class="QLineEdit" name="Reinigung_befahrung_netto_SW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0">
+               <widget class="QLabel" name="label_reinigung_befahrung_mw_brutto">
+                <property name="text">
+                 <string>MW brutto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="1">
+               <widget class="QLineEdit" name="Reinigung_befahrung_brutto_MW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="2">
+               <widget class="QLabel" name="label_reinigung_befahrung_rw_brutto">
+                <property name="text">
+                 <string>RW brutto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="3">
+               <widget class="QLineEdit" name="Reinigung_befahrung_brutto_RW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="4">
+               <widget class="QLabel" name="label_reinigung_befahrung_sw_brutto">
+                <property name="text">
+                 <string>SW brutto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="5">
+               <widget class="QLineEdit" name="Reinigung_befahrung_brutto_SW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="0" colspan="6">
+               <widget class="QLabel" name="label_befahrung_tv">
+                <property name="text">
+                 <string>&lt;b&gt;Befahrung/TV&lt;/b&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="0">
+               <widget class="QLabel" name="label_befahrung_mw_netto">
+                <property name="text">
+                 <string>MW netto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="1">
+               <widget class="QLineEdit" name="Befahrung_netto_MW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="2">
+               <widget class="QLabel" name="label_befahrung_rw_netto">
+                <property name="text">
+                 <string>RW netto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="3">
+               <widget class="QLineEdit" name="Befahrung_netto_RW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="4">
+               <widget class="QLabel" name="label_befahrung_sw_netto">
+                <property name="text">
+                 <string>SW netto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="5">
+               <widget class="QLineEdit" name="Befahrung_netto_SW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="0">
+               <widget class="QLabel" name="label_befahrung_mw_brutto">
+                <property name="text">
+                 <string>MW brutto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="1">
+               <widget class="QLineEdit" name="Befahrung_brutto_MW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="2">
+               <widget class="QLabel" name="label_befahrung_rw_brutto">
+                <property name="text">
+                 <string>RW brutto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="3">
+               <widget class="QLineEdit" name="Befahrung_brutto_RW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="4">
+               <widget class="QLabel" name="label_befahrung_sw_brutto">
+                <property name="text">
+                 <string>SW brutto:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="5">
+               <widget class="QLineEdit" name="Befahrung_brutto_SW">
+                <property name="text">
+                 <string>0.00 €</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="group_export">
+             <property name="title">
+              <string>Export</string>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_export">
+              <item>
+               <widget class="QPushButton" name="btn_excel_export">
+                <property name="text">
+                 <string>In Excel exportieren</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_export">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_kosten">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_preisverwaltung">
+      <attribute name="title">
+       <string>Preisverwaltung</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_preisverwaltung">
+       <item>
+        <widget class="QGroupBox" name="group_preise_info">
+         <property name="title">
+          <string>Preisstruktur</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_preise_info">
+          <item>
+           <widget class="QLabel" name="label_preise_info">
+            <property name="text">
+             <string>Die Preise werden dimensionsbezogen und systemunabhängig verwaltet. Pro Dimension gibt es genau einen Preis je Vorgang.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_preise_toolbar">
+         <item>
+          <widget class="QLabel" name="label_preis_kategorie">
+           <property name="text">
+            <string>Preiskategorie:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="preis_kategorie_combo"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_preis_neu">
+           <property name="text">
+            <string>Neue Zeile</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_preis_loeschen">
+           <property name="text">
+            <string>Markierte Zeile löschen</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_preise_aus_json">
+           <property name="text">
+            <string>Aus JSON laden</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_preise_speichern">
+           <property name="text">
+            <string>Preise speichern</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_preise">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="preise_table">
+         <column>
+          <property name="text">
+           <string>Dimension</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Preis netto</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_preise_hinweis">
+         <property name="text">
+          <string>Hinweis: Zulässige Kategorien sind Reinigung, Reinigung TV, TV, GAL und Panoramo. Die JSON-Datei liegt im untersuchungsverwaltung-Ordner.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_einstellungen">
+      <attribute name="title">
+       <string>Einstellungen</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_einstellungen">
+       <item>
+        <widget class="QGroupBox" name="group_listen_verwalten">
+         <property name="title">
+          <string>Listen verwalten</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_einstellungen">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_einst_kategorie">
+            <property name="text">
+             <string>Kategorie:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_einstellungen_header">
+            <item>
+             <widget class="QComboBox" name="einst_kategorie"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_excel_import">
+              <property name="text">
+               <string>Aus Excel importieren</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QListWidget" name="einst_liste"/>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <layout class="QVBoxLayout" name="verticalLayout_einst_dyn">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QStackedWidget" name="einst_stack">
+              <widget class="QWidget" name="page_text">
+               <layout class="QFormLayout" name="formLayout_page_text">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_einst_text_wert">
+                  <property name="text">
+                   <string>Neuer Eintrag:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLineEdit" name="einst_text_wert"/>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_sachbearbeiter">
+               <layout class="QFormLayout" name="formLayout_page_sachbearbeiter">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_einst_sb_vorname">
+                  <property name="text">
+                   <string>Vorname:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLineEdit" name="einst_sb_vorname"/>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_einst_sb_nachname">
+                  <property name="text">
+                   <string>Nachname (*):</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="einst_sb_nachname"/>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_einst_sb_tel">
+                  <property name="text">
+                   <string>Telefon:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLineEdit" name="einst_sb_tel"/>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_einst_sb_mail">
+                  <property name="text">
+                   <string>E-Mail:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QLineEdit" name="einst_sb_mail"/>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_firmen">
+               <layout class="QFormLayout" name="formLayout_page_firmen">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_einst_firma_name">
+                  <property name="text">
+                   <string>Firmenname (*):</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLineEdit" name="einst_firma_name"/>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_einst_firma_plz">
+                  <property name="text">
+                   <string>PLZ:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="einst_firma_plz"/>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_einst_firma_ort">
+                  <property name="text">
+                   <string>Ort:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLineEdit" name="einst_firma_ort"/>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_einst_firma_str">
+                  <property name="text">
+                   <string>Straße:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QLineEdit" name="einst_firma_str"/>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_einst_firma_hnr">
+                  <property name="text">
+                   <string>Hausnummer:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QLineEdit" name="einst_firma_hnr"/>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_einst_firma_tel">
+                  <property name="text">
+                   <string>Telefon:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QLineEdit" name="einst_firma_tel"/>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="label_einst_firma_mail">
+                  <property name="text">
+                   <string>E-Mail:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="QLineEdit" name="einst_firma_mail"/>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="1">
+           <widget class="QPushButton" name="btn_add">
+            <property name="text">
+             <string>Speichern / Hinzufügen</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QPushButton" name="btn_del">
+            <property name="text">
+             <string>Markierten Eintrag löschen</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="group_plan_ablagepfad">
+         <property name="title">
+          <string>Plan-Ablagepfad</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_planpfad">
+          <item>
+           <widget class="QLineEdit" name="plan_path_line">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_plan_browse">
+            <property name="text">
+             <string>Pfad wählen…</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_plan_clear">
+            <property name="text">
+             <string>Pfad löschen</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_pdf_templates">
+      <attribute name="title">
+       <string>PDF-Vorlagen</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_pdf_templates">
+       <item>
+        <widget class="QGroupBox" name="group_pdf_info">
+         <property name="title">
+          <string>Vorlage interne Info-PDF</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_pdf_info">
+          <item>
+           <widget class="QLabel" name="label_pdf_info_placeholders">
+            <property name="text">
+             <string>Platzhalter z.B. {projektname}, {strasse}, {abschnitt}, {sachbearbeiter}, {zieldatum}, {firma}, {bemerkung}, {tabelle_haltungen}</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="pdf_info_editor" native="true"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="group_pdf_beauf">
+         <property name="title">
+          <string>Vorlage Beauftragungs-PDF</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_pdf_beauf">
+          <item>
+           <widget class="QLabel" name="label_pdf_beauf_placeholders">
+            <property name="text">
+             <string>Platzhalter z.B. {projektname}, {strasse}, {zieldatum}, {firma}, {bemerkung}, {tabelle_haltungen}</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="pdf_beauf_editor" native="true"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_save_pdf_templates">
+         <property name="text">
+          <string>PDF-Vorlagen speichern</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_weitere_funktionen">
+      <attribute name="title">
+       <string>Weitere Funktionen</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_weitere">
+       <item>
+        <spacer name="verticalSpacer_weitere_top">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_weitere">
+         <property name="text">
+          <string>Weitere Funktionen werden hier hinzugefügt...</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_weitere_bottom">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
