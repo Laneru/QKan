@@ -21,7 +21,6 @@ def run(dbcon: DBConnection) -> bool:
     #             Tabelle löschen und wieder neu anlegen und Daten zurück kopieren
 
     sqllis = [
-        "BEGIN TRANSACTION;",
         """
         CREATE TABLE IF NOT EXISTS linkfl_t (
             pk INTEGER PRIMARY KEY,
@@ -119,7 +118,6 @@ def run(dbcon: DBConnection) -> bool:
     #             Tabelle löschen und wieder neu anlegen und Daten zurück kopieren
 
     sqllis = [
-        "BEGIN TRANSACTION;",
         """
         CREATE TABLE IF NOT EXISTS flaechen_t (
             pk INTEGER PRIMARY KEY,

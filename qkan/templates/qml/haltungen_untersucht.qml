@@ -692,11 +692,11 @@
   <expressionfields/>
   <attributeactions>
     <defaultAction key="Canvas" value="{7f802d16-fd1e-45ac-9683-a33a61fc674b}"/>
-    <actionsetting action="from qkan.tools.zeige_untersuchungsdaten import ShowHaltungsschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHaltungsschaeden('', '', '')&#xd;&#xa;form.show_selected()&#xd;&#xa;del form&#xd;&#xa;" notificationMessage="" icon="" id="{7f802d16-fd1e-45ac-9683-a33a61fc674b}" type="1" shortTitle="Alle Zustandsdaten" capture="1" isEnabledOnlyWhenEditable="0" name="Zustandsdaten für alle Haltungen anzeigen">
+    <actionsetting action="from qkan.tools.zeige_untersuchungsdaten import ShowHaltungsschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHaltungsschaeden('', '', '')&#xd;&#xa;del form&#xd;&#xa;" notificationMessage="" icon="" id="{7f802d16-fd1e-45ac-9683-a33a61fc674b}" type="1" shortTitle="Alle Zustandsdaten" capture="1" isEnabledOnlyWhenEditable="0" name="Zustandsdaten für alle Haltungen anzeigen">
       <actionScope id="Feature"/>
       <actionScope id="Canvas"/>
     </actionsetting>
-    <actionsetting action="from qkan.tools.zeige_untersuchungsdaten import ShowHaltungsschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHaltungsschaeden('[%haltnam%]', '', '', '[%untersuchtag%]')&#xd;&#xa;form.show_selected()&#xd;&#xa;del form&#xd;&#xa;&#xd;&#xa;" notificationMessage="" icon="" id="{df45edbe-ca08-43ef-85cf-7e9ae15140b0}" type="1" shortTitle="" capture="1" isEnabledOnlyWhenEditable="0" name="Zustandsdaten für eine Haltung anzeigen">
+    <actionsetting action="from qkan.tools.zeige_untersuchungsdaten import ShowHaltungsschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHaltungsschaeden('[%haltnam%]', '', '', '[%untersuchtag%]')&#xd;&#xa;del form&#xd;&#xa;&#xd;&#xa;" notificationMessage="" icon="" id="{df45edbe-ca08-43ef-85cf-7e9ae15140b0}" type="1" shortTitle="" capture="1" isEnabledOnlyWhenEditable="0" name="Zustandsdaten für eine Haltung anzeigen">
       <actionScope id="Feature"/>
       <actionScope id="Canvas"/>
     </actionsetting>

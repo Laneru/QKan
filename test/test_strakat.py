@@ -10,18 +10,36 @@ from qkan.strakatporter.application import StrakatPorter
 
 # Fuer einen Test mit PyCharm Workingdir auf C:\Users\...\default\python\plugins einstellen (d. h. "\test" löschen)
 class TestSTRAKATQKan(QgisTest):
+    case = 1
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
 
         # Extract files
-        with ZipFile(BASE_DATA / "test_strakatImport.zip") as z:
+        dataset = [
+            "test_strakatImport.zip",
+            "test_strakat_Wegberg_Server.zip",
+        ][cls.case]
+        with ZipFile(BASE_DATA / dataset) as z:
             z.extractall(BASE_WORK)
 
     def test_import(self) -> None:
-        QKan.config.database.qkan = str(BASE_WORK / "test.sqlite")
-        QKan.config.project.file = str(BASE_WORK / "plan.qgs")
-        QKan.config.strakat.import_dir = str(BASE_WORK / "strakat")
+        database, project, importdir = [
+            [
+                "test.sqlite",
+                "plan.qgs",
+                "strakat",
+            ],
+            [
+                "wegberg.sqlite",
+                "wegberg.qgs",
+                "Wegberg_OpenStrakat_Server"
+            ]
+        ][TestSTRAKATQKan.case]
+        QKan.config.database.qkan = str(BASE_WORK / database)
+        QKan.config.project.file = str(BASE_WORK / project)
+        QKan.config.strakat.import_dir = str(BASE_WORK / importdir)
+
 
         QKan.config.check_import.haltungen = True
         QKan.config.check_import.schaechte = True
@@ -36,6 +54,10 @@ class TestSTRAKATQKan(QgisTest):
         QKan.config.check_import.bodenklassen = False
 
         QKan.config.check_import.allrefs = False
+
+        QKan.config.strakat.coords_from_rohr = True
+
+        QKan.config.epsg = 25832
 
         imp = StrakatPorter(iface())
         erg = imp._doimport()

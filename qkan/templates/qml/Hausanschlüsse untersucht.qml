@@ -692,11 +692,11 @@
   <expressionfields/>
   <attributeactions>
     <defaultAction key="Canvas" value="{7f802d16-fd1e-45ac-9683-a33a61fc674b}"/>
-    <actionsetting action="from qkan.tools.zeige_untersuchungsdaten import ShowHausanschlussschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHausanschlussschaeden('[%leitnam%]')&#xd;&#xa;form.show_selected()&#xd;&#xa;del form&#xd;&#xa;" notificationMessage="" icon="" id="{7f802d16-fd1e-45ac-9683-a33a61fc674b}" type="1" shortTitle="Alle Zustandsdaten" capture="1" isEnabledOnlyWhenEditable="0" name="Zustandsdaten für alle Hausanschlussleitungen anzeigen">
+    <actionsetting action="from qkan.tools.zeige_untersuchungsdaten import ShowHausanschlussschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHausanschlussschaeden('[%leitnam%]')&#xd;&#xa;del form&#xd;&#xa;" notificationMessage="" icon="" id="{7f802d16-fd1e-45ac-9683-a33a61fc674b}" type="1" shortTitle="Alle Zustandsdaten" capture="1" isEnabledOnlyWhenEditable="0" name="Zustandsdaten für alle Hausanschlussleitungen anzeigen">
       <actionScope id="Feature"/>
       <actionScope id="Canvas"/>
     </actionsetting>
-    <actionsetting action="from qkan.tools.zeige_untersuchungsdaten import ShowHausanschlussschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHausanschlussschaeden('[%leitnam%]', '[%untersuchtag%]')&#xd;&#xa;form.show_selected()&#xd;&#xa;del form&#xd;&#xa;&#xd;&#xa;" notificationMessage="" icon="" id="{df45edbe-ca08-43ef-85cf-7e9ae15140b0}" type="1" shortTitle="" capture="1" isEnabledOnlyWhenEditable="0" name="Zustandsdaten für eine Hausanschlussleitung anzeigen">
+    <actionsetting action="from qkan.tools.zeige_untersuchungsdaten import ShowHausanschlussschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHausanschlussschaeden('[%leitnam%]', '[%untersuchtag%]')&#xd;&#xa;del form&#xd;&#xa;&#xd;&#xa;" notificationMessage="" icon="" id="{df45edbe-ca08-43ef-85cf-7e9ae15140b0}" type="1" shortTitle="" capture="1" isEnabledOnlyWhenEditable="0" name="Zustandsdaten für eine Hausanschlussleitung anzeigen">
       <actionScope id="Feature"/>
       <actionScope id="Canvas"/>
     </actionsetting>

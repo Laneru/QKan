@@ -1,6 +1,7 @@
 import importlib
 import json
 import os
+import re
 from pathlib import Path
 from typing import Callable, List, Optional, cast, Dict
 
@@ -13,7 +14,7 @@ from qgis.gui import QgisInterface
 from qgis.utils import pluginDirectory
 
 from .config import Config
-from .utils import setup_logging
+from .utils import setup_logging, QkanAbortError
 
 from qkan import enums
 
@@ -164,14 +165,14 @@ class QKan:
     template_dir: str
     forms: list[str]
 
-    dbVersion = "3.4.8"  # Version der QKan-Datenbank
-    qgsVersion = "3.4.8"  # Version des Projektes und der Projektdatei. Kann höher als die der QKan-Datenbank sein
-    build = "0002"
+    dbVersion = "3.4.10"  # Version der QKan-Datenbank
+    qgsVersion = "3.4.12"  # Version des Projektes und der Projektdatei. Kann höher als die der QKan-Datenbank sein
+    build = "0000"
 
     # SQL-Statements werden abhängig vom Datenbanktyp und Modul geladen.
-    sqls: dict = {}                     # SQL-Statements for all loaded modules
-    dbtype: enums.QKanDBChoice = None   # Datenbanktyp des Projekts, wird durch get_database_QKan() aktualisiert
-    dbsource: str = None                # Datenbankverbindung des Projekts, wird durch get_database_QKan() aktualisiert
+    sqls: dict = {}  # SQL-Statements for all loaded modules
+    dbtype: enums.QKanDBChoice = None  # Datenbanktyp des Projekts, wird durch get_database_QKan() aktualisiert
+    dbsource: str = None  # Datenbankverbindung des Projekts, wird durch get_database_QKan() aktualisiert
 
     def __init__(self, iface: qgis.gui.QgisInterface):
         QKan.instance = self
@@ -271,8 +272,8 @@ class QKan:
 
         # mnuSub1 = self.menu.addMenu('Sub-menu')
 
-        #self.toolbar = self.iface.addToolBar("QKan")
-        #self.toolbar.setObjectName("QKan")
+        # self.toolbar = self.iface.addToolBar("QKan")
+        # self.toolbar.setObjectName("QKan")
 
         self.toolbar = self.iface.addToolBar("QKan-Allgemein")
         self.toolbar.setObjectName("QKan-Allgemein")
@@ -293,10 +294,19 @@ class QKan:
         # Add QKan SVG path
         qkanSvgPath = os.path.join(pluginDirectory("qkan"), "templates/svg")
         svgPaths = QgsSettings().value('svg/searchPathsForSVG')
-        if svgPaths:                        # Ist bei automatisierten Text Null...
+        if svgPaths:  # Ist bei automatisierten Text Null...
             if qkanSvgPath not in svgPaths:
-                svgPaths.append(qkanSvgPath)
-                QgsSettings().setValue('svg/searchPathsForSVG', svgPaths)
+                try:
+                    svgPaths.append(qkanSvgPath)
+                except AttributeError:
+                    if isinstance(qkanSvgPath, str):
+                        svgPaths = [svgPaths, qkanSvgPath]
+                    else:
+                        self.logger.error_code("Fehler in QGIS-Optionen 'svg/searchPathsForSVG': qkanSvgPath")
+                        raise QkanAbortError()
+        else:
+            svgPaths = [qkanSvgPath]
+        QgsSettings().setValue('svg/searchPathsForSVG', svgPaths)
 
         # Set Identify Forms Option
         QgsSettings().setValue('Map/identifyAutoFeatureForm', 'true')
@@ -361,12 +371,12 @@ class QKan:
             flood2D = self.menu.addMenu("Überflutung")
             info = self.menu.addMenu("Info")
 
-            safe_add_action(allgemein, "Optionen")
-            safe_add_action(allgemein, "QKan-Projekt aktualisieren")
-            safe_add_action(allgemein, "QKan-Projektdatei übertragen")
             safe_add_action(allgemein, "QKan-Datenbank aktualisieren")
+            safe_add_action(allgemein, "QKan-Projektdatei übernehmen")
+            safe_add_action(allgemein, "QKan-Projekt anpassen")
             safe_add_action(allgemein, "Neue QKan-Datenbank erstellen")
             safe_add_action(allgemein, "Dateipfade suchen")
+            safe_add_action(allgemein, "Optionen")
 
             safe_add_action(daten, "Plausibilitätsprüfungen")
             safe_add_action(daten, "Tabellendaten aus Clipboard einfügen")
@@ -414,6 +424,9 @@ class QKan:
             safe_add_action(zustand, "Zustandsklassen ermitteln")
             safe_add_action(zustand, "Sanierungsbedarfszahl ermitteln")
             safe_add_action(substanz, "Substanzklassen ermitteln")
+            safe_add_action(zustand, "Dateipfade suchen")
+            safe_add_action(zustand, "Inspektionsdaten anpassen")
+            safe_add_action(zustand, "Haltungsbericht")
 
             safe_add_action(sync, "Vergleich mit einem anderen QKan-Projekt")
             safe_add_action(sync, "Synchronisation mit einem anderen QKan-Projekt")
@@ -483,18 +496,18 @@ class QKan:
             self.plugins.remove(plugin)
 
     def add_action(
-        self,
-        icon_path: str,
-        text: str,
-        toolbar: str,
-        callback: Callable,
-        enabled_flag: bool = True,
-        checkable: bool = False,
-        add_to_menu: bool = True,
-        add_to_toolbar: bool = True,
-        status_tip: str = None,
-        whats_this: str = None,
-        parent: QWidget = None,
+            self,
+            icon_path: str,
+            text: str,
+            toolbar: str,
+            callback: Callable,
+            enabled_flag: bool = True,
+            checkable: bool = False,
+            add_to_menu: bool = True,
+            add_to_toolbar: bool = True,
+            status_tip: str = None,
+            whats_this: str = None,
+            parent: QWidget = None,
     ) -> QAction:
         """Add a toolbar icon to the toolbar/menu.
 

@@ -12,7 +12,7 @@ Simulationsprogramms HYSTEM-EXTRAN 7.x wird ein zweites Plugin benötigt, das ab
 notwendig macht. Dies hängt damit zusammen, dass HYSTEM-EXTRAN 7.x eine Firebird-Datenbank verwendet. 
 
 
-QGIS Installieren
+QGIS Installation
 -----------------
 
 QKan basiert auf dem Open-Source-Programm QGIS 3. Deshalb wird dieses als erstes benötigt.
@@ -29,11 +29,14 @@ Die nachstehende Abbildung zeigt die "Eigenständige QGIS-Installation Version 3
 
 .. image:: ./QKan_Bilder/QGIS_herunterladen.png
 
-Starten Sie die Installation, akzeptieren das Lizenzabkommen und bestätigen die Installation im Standardverzeichnis "C:\\Programme\\QGIS 3.xx". Als letztes werden Sie nach zusätzlichen Komponenten, wie zum Beispiel dem North Carolina Data Set gefragt:
+Starten Sie die Installation, akzeptieren das Lizenzabkommen und bestätigen die Installation im Standardverzeichnis 
+"C:\\Programme\\QGIS 3.xx". Als letztes werden Sie nach zusätzlichen Komponenten, wie zum Beispiel dem North Carolina Data 
+Set gefragt:
 
 .. image:: ./QKan_Bilder/QGIS_komponenten.png
 
-Es handelt sich um Beispieldaten, die für die Nutzung von QKan nicht benötigt werden. Klicken Sie anschließend auf "Installieren", um die Installation zu starten. Diese Installation kann einige Minuten in Anspruch nehmen.
+Es handelt sich um Beispieldaten, die für die Nutzung von QKan nicht benötigt werden. Klicken Sie anschließend auf 
+"Installieren", um die Installation zu starten. Diese Installation kann einige Minuten in Anspruch nehmen.
 
 
 .. _QKan_plugins_fuer_QGIS:
@@ -42,15 +45,27 @@ QKan-Plugin Installation
 ------------------------
 
 Nachdem QGIS erfolgreich auf Ihrem System installiert wurde, kann nun das QKan-Plugin installiert werden. 
-Dieses kann unter Erweiterungen -> Erweiterungen verwalten und installieren... auf dem Reiter "Alle" in der Liste der Plug-Ins gefunden werden. 
-Wenn es ausgewählt ist, kann es über den Button "Erweiterung installieren" auf dem Rechner installiert werden. 
+
+.. note:: Aktuell muss QKan hier |qkan_download| (Passwort: qkan-2026) heruntergeladen werden.
+
+Seit kurzem werden QGIS-Plugins, die über das Menü :guilabel:`Erweiterungen verwalten und installieren...` installiert 
+werden können, einem Sicherheitscheck unterzogen, die sicherstellen sollen, dass keine 
+Hacker-Angriffe über manipulierte Daten ausgeführt werden können. QKan muss, um diese neuen Anforderungen zu erfüllen, an 
+einigen Stellen angepasst werden, was einige Wochen (Stand Mitte Mai 2026) erfordern wird. Bis dahin stehen die neueste und 
+die letzten Versionen zum Download hier |qkan_download| (Passwort: qkan-2026) zur Verfügung.
+
+.. |qkan_download| raw:: html
+
+   <a href="https://fh-aachen.sciebo.de/s/QfaTY49TBpLsGgy" target="_blank">hier</a>
+
+Das heruntergeladene ZIP-Archiv kann unter Erweiterungen -> Erweiterungen verwalten und installieren... auf dem 
+Reiter "Aus ZIP installieren" auf dem Rechner installiert werden. 
 Es sollte darauf geachtet werden, dass immer mit der aktuellsten Version gearbeitet wird. 
-Installationen von weiteren Plugins für den Export nach HYSTEM-EXTRAN sind nun nicht mehr nötig. 
 
-.. image:: ./QKan_Bilder/QKan_Plugin.png
+.. image:: ./QKan_Bilder/QKan_Plugin_ZIP.png
 
 
-Grundlegende Einstellungen für QKan
+Wichtige Grundeinstellungen
 ------------------------------------
 
 Makros

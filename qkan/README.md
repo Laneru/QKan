@@ -1,25 +1,63 @@
-<h1>QKan</h1>
-Datenauf- und Nachbereitung sowie Ergebnisvisualisierung im Zusammenhang mit der 
-hydrodynamischen Kanalnetzberechnung zu mehreren, in Deutschland gängigen Simulationspaketen.
+# QKan
 
- - Datenim- und Export von und nach zahlreichen 
-   Datenformaten, von einfachen ASCII-Tabellen bis zu ISYBAU-Dateien
+Das Kanalkataster QKan dient dazu, Daten von städtischen 
+Entwässerungssystemen für Berechnungen aufzubereiten und die Ergebnisse 
+auszuwerten sowie in Plänen flexibel darstellen zu können. 
 
- - Datenaufbereitung der befestigten und unbefestigten Flächen
- 
- - automatische Flächenaufteilung großer Flächen
+QKan besteht aus zahlreichen Plugins für das Open-Source-GIS QGIS und 
+speichert die Daten in der Datenbank SpatiaLite, die eine GIS-Erweiterung 
+der weltweit am meisten verwendeten Datenbank SQLite darstellt. 
 
- - Überprüfung und Bereinigung überlappender Flächen
+Mit QKan können Kanaldaten aus den Berechnungsprogrammen "HYSTEM-EXTRAN", 
+Mike+ und "Kanal++" (noch in Bearbeitung) sowie aus dem Kanalkataster 
+STRAKAT gelesen sowie für "HYSTEM-EXTRAN" geschrieben werden. Damit besteht zum Einen 
+die Möglichkeit, Kanaldaten aus anderen Quellen zu importieren und für die 
+Berechnung aufzubereiten, aber auch die Kanaldaten aus dem 
+Berechnungsprogramm zu exportieren, um im GIS weitere Datenaufbereitungen 
+vorzunehmen, die nicht im Berechungsprogramm integriert sind, wie z. B. die 
+Zuordnung von GIS-basierten Flächendaten. 
 
- - automatische Zuordnung der Flächen zu den Haltungen. 
+Als Anwender wird vor allem der planende Ingenieur gesehen, der vor allem 
+Wert auf Flexibilität und Offenheit der Datenstrukturen legt, wobei 
+grundlegende Kenntnisse im Umgang mit Datenbanken erforderlich sind. 
+Hierdurch unterscheidet sich die QKan wesentlich von klassischen 
+Kanalkatasterprogrammen, deren Aufgabe die langsfristige Bestandsverwaltung 
+ist. 
 
- - SQLite-Datenbank zur Datenverwaltung
+Mit QKan wird ein Programmieransatz verfolgt, bei dem für die Datenverarbeitung 
+insbesondere der geographischen Objekte (z. B. befestigte Flächen) 
+ausschließlich die Geo-Funktionen der eingesetzten Datenbank genutzt werden. 
+Dies hat den Vorteil, dass bei verknüpften Tabellen durch die sehr 
+leistungsfähige Indizierung der Datenbanken erhebliche Effizienzgewinne 
+erzielt werden können und zum anderen die Programmierung stark vereinfacht 
+wird. 
 
- - Weitergabe ganzer Projektergebnisse, da neben der 
-   Plandarstellung auch die Anzeige von Längsschnitten inklusive Wasserständen und 
-   Ganglinien möglich ist. 
+Das Projekt wird mit Förderung durch das Programm "Mittelstand.innovativ!" 
+des Landes NRW von folgenden Ingenieurbüros finanziert:
+- Ingenieurbüro Achten und Jansen GmbH, Aachen (1): https://www.achten-jansen.de/
+- ATD Ingenieurgesellschaft mbH, Aachen (1): https://www.atdgmbh.de/
+- TUTTAHS & MEYER Ingenieurgesellschaft mbH, Aachen (1): https://tuttahs-meyer.de/
+- Ingenieurgesellschaft Dr. Ing. Nacken mbH, Aachen (2): https://www.nacken-ingenieure.de/
+- Fischer Teamplan Ingenieurbüro GmbH (2): https://www.fischer-teamplan.de/
+- blue-ing, Düsseldorf (3): www.blue-ing.de
+- Ingenieurbüro Reinhard Beck, Wuppertal (3)
 
- - Verwaltung von Kanalzustandsdaten: Die Daten können aus M150- und ISYBAU-Dateien
-   importiert und der Kanalzustand ausgewertet werden. 
-   Dabei werden optional auch Hausanschlüsse dargestellt. 
+Projektförderung durch das Ministerium für Innovation, Wissenschaft und Forschung des Landes Nordrhein-Westfalen während des Zeitraums
+1) Nov. 2020 - Dez. 2021
+2) Dez. 2019 - Nov. 2020
+3) Aug. 2016 - Aug. 2017
 
+Projektförderung durch die Deutsche Bundesstiftung Umwelt (DBU) März 2024 - Feb. 2026 ![DBU](https://www.dbu.de/app/uploads/png-DBU-Logo-gefoerdert-durch-RGB.png)
+
+Details zum Projekt "QKan" sind in mehreren Vorträgen erläutert:
+
+- Höttges, J. (2024): "QKan - Kanalkataster und Planungssystem für QGIS". FOSSGIS 2024, Hamburg:
+  https://app.media.ccc.de/v/fossgis2024-38564-qkan-kanalkataster-und-planungssystem-fr-qgis
+- Höttges, J. (2017): "QKan - Kanalkataster mit QGIS". FOSSGIS 2017, Passau: 
+  https://doi.org/10.5446/30533
+- Höttges, J. (2017): "QKan - Management of drainage system data with QGIS".
+  FOSS4G 2017, Boston. http://scholarworks.umass.edu/foss4g/vol17/iss1/13/
+
+## Installation
+Eine ausführliche Installationsanleitung finden Sie unter:
+https://qkan.eu/index.html

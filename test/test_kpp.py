@@ -63,6 +63,8 @@ class TestQKan2Kpp(QgisTest):
         # if not db.connected:
         #     raise Exception("Datenbank nicht gefunden oder nicht aktuell.")
 
+        QKan.config.selections.selectedObjects = False
+
         with DBConnection(
                 dbname=QKan.config.database.qkan,
                 qkan_db_update=True,

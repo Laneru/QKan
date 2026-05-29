@@ -210,16 +210,16 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Haltungskoordinaten aus Rohranfängen statt aus Gerinneanfängen übernehmen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Haltungskoordinaten aus Rohranschlusspunkten statt aus Schachtmittelpunkten übernehmen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="statusTip">
-           <string>Haltungskoordinaten aus Rohranfängen statt aus Gerinneanfängen übernehmen</string>
+           <string>Haltungskoordinaten aus Rohranschlusspunkten statt aus Schachtmittelpunkten übernehmen</string>
           </property>
           <property name="whatsThis">
-           <string>Haltungskoordinaten aus Rohranfängen statt aus Gerinneanfängen übernehmen</string>
+           <string>Haltungskoordinaten aus Rohranschlusspunkten statt aus Schachtmittelpunkten übernehmen</string>
           </property>
           <property name="accessibleDescription">
-           <string>Haltungskoordinaten aus Rohranfängen statt aus Gerinneanfängen übernehmen</string>
+           <string>Haltungskoordinaten aus Rohranschlusspunkten statt aus Schachtmittelpunkten übernehmen</string>
           </property>
           <property name="text">
            <string>Rohranfänge verwenden</string>

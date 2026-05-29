@@ -17,22 +17,6 @@ Berechnungsprogramm zu exportieren, um im GIS weitere Datenaufbereitungen
 vorzunehmen, die nicht im Berechungsprogramm integriert sind, wie z. B. die 
 Zuordnung von GIS-basierten Flächendaten. 
 
-Das Kanalkataster QKan dient dazu, Daten von städtischen 
-Entwässerungssystemen für Berechnungen aufzubereiten und die Ergebnisse 
-auszuwerten sowie in Plänen flexibel darstellen zu können. 
-
-QKan besteht aus zahlreichen Plugins für das Open-Source-GIS QGIS und 
-speichert die Daten in der Datenbank SpatiaLite, die eine GIS-Erweiterung 
-der weltweit am meisten verwendeten Datenbank SQLite darstellt. 
-
-Mit QKan können Kanaldaten mit den Berechnungsprogrammen "HYSTEM-EXTRAN" und 
-"Kanal++" (noch in Bearbeitung) ausgetauscht werden. Damit besteht zum Einen 
-die Möglichkeit, Kanaldaten aus anderen Quellen zu importieren und für die 
-Berechnung aufzubereiten, aber auch die Kanaldaten aus dem 
-Berechnungsprogramm zu exportieren, um im GIS weitere Datenaufbereitungen 
-vorzunehmen, die nicht im Berechungsprogramm integriert sind, wie z. B. die 
-Zuordnung von GIS-basierten Flächendaten. 
-
 Als Anwender wird vor allem der planende Ingenieur gesehen, der vor allem 
 Wert auf Flexibilität und Offenheit der Datenstrukturen legt, wobei 
 grundlegende Kenntnisse im Umgang mit Datenbanken erforderlich sind. 

@@ -2,7 +2,7 @@ Was ist QKan?
 =============
 
 QKan ist ein Werkzeug zur Datenvor- und Nachbereitung im Zusammenhang mit der Abflusssimulation von Kanalnetzen. 
-Es speichert die Kanalnetzdaten dazu in Tabellen-Struktur in einer SQLite-Datenbank. Ein Übersichtsvideo über die Funktionen von QKan ist 
+Es speichert die Kanalnetzdaten dazu in Tabellenstruktur in einer SQLite-Datenbank. Ein Übersichtsvideo über die Funktionen von QKan ist 
 |video_einfuehrung| zu finden.
 
 .. |video_einfuehrung| raw:: html
@@ -51,8 +51,8 @@ Simulationsprogramms verwaltet werden müssen.
 Die Daten können sowohl mit den QKan-Funktionen verarbeitet werden, gleichzeitig stehen aber auch die vielfältigen und umfassenden 
 Funktionen von QGIS zur Verfügung. Insbesondere kann mit Hilfe der Datenbanksprache SQL beinahe jede denkbare Aufgabe realisiert werden. 
 
-Grundlagen
-----------
+Entwicklung
+-----------
 
 QKan ist ein Open-Source-Projekt von `Jörg Höttges`_ . Es wird seit Aug 2016 an der FH Aachen entwickelt. 
 
@@ -82,13 +82,12 @@ Team
  - Jörg Höttges
  - Yannick Linke
  - Nora Blase
- - Maja Lange
 
 Ehemalige
----------
 
  - Leon Ochsenfeld
  - Friederike Kimmich
+ - Maja Lange
 
 Weitere Quellen
 ---------------

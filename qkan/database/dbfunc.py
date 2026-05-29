@@ -17,7 +17,7 @@ from qgis.PyQt.QtWidgets import QProgressBar
 from qgis.utils import spatialite_connect, pluginDirectory
 
 from qkan import QKan, enums
-from qkan.tools.qkan_utils import get_database_QKan
+from qkan.tools.qkan_utils import get_database_QKan, cleanname
 import yaml
 
 __author__ = "Joerg Hoettges"
@@ -150,7 +150,7 @@ class DBConnection:
 
             try:
                 with open(sqlfilename) as fr:
-                    sql_yml = yaml.load(fr.read(), Loader=yaml.BaseLoader)
+                    sql_yml = yaml.safe_load(fr.read())
                     logger.debug(f"{module=}: {QKan.sqls.get(module)=}")
                     if QKan.sqls.get(module) is None:
                         QKan.sqls[module] = sql_yml
@@ -530,6 +530,7 @@ class DBConnection:
     def attrlist(self, tabnam: str) -> Union[List[str]]:
         """Gibt Spaltenliste zurück."""
 
+        tabnam = cleanname(tabnam)
         if not self.sqlyml(
             'database_tableinfo',
             f"dbqkan.DBConnection.attrlist fuer {tabnam}",
@@ -567,7 +568,7 @@ class DBConnection:
             many: bool = False,
             mute_logger: bool = False,
             ignore: bool = False,
-            replacefun: callable = None
+            replacefun: Union[callable, None] = None
     ) -> bool:
         """Wrapper for sql(). Reads sql from dict and optionaly replaces
            parameters using the format function replacefun.
@@ -589,7 +590,7 @@ class DBConnection:
         :type many:             Boolean
 
         :mute_logger:           suppress logging message for the same stmt_category for 2 seconds
-        :type mute_logger:      String
+        :type mute_logger:      Boolean
 
         :ignore:                ignore error and continue
         :type ignore:           Boolean
@@ -1274,7 +1275,7 @@ class DBConnection:
 
         return result
 
-    def executefile(self, filenam, replacefun: callable = None) -> bool:
+    def executefile(self, filenam, replacefun: Union[callable, None] = None) -> bool:
         """Liest eine Datei aus dem template-Verzeichnis und führt sie als SQL-Befehle aus.
         Dabei wird optional die Funktion replacefun zum Ersetzen von Variablen ausgeführt
 
@@ -1454,6 +1455,9 @@ class DBConnection:
         # - attrPk:string enthält den Namen des Primärschlüssels
 
         geo_types = QKan.geotypes
+
+        # No SQL injection:
+        tabnam = cleanname(tabnam)
 
         # 1. bestehende Tabelle
         # Benutzerdefinierte Felder müssen übernommen werden
@@ -1861,7 +1865,7 @@ class DBConnection:
 
         filename = os.path.join(pluginDirectory("qkan"), module, 'patterns.yml')
         with open(filename) as fr:
-            patternDict = yaml.load(fr.read(), Loader=yaml.BaseLoader)
+            patternDict = yaml.safe_load(fr.read())
         patterns = patternDict[subject]
 
         if patterns is None:

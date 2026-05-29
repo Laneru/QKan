@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis styleCategories="AllStyleCategories" maxScale="0" minScale="0" readOnly="0" version="3.28.13-Firenze" hasScaleBasedVisibilityFlag="0">
+<qgis styleCategories="AllStyleCategories" maxScale="0" minScale="1e+08" readOnly="0" version="3.28.13-Firenze" hasScaleBasedVisibilityFlag="0">
   <flags>
     <Identifiable>1</Identifiable>
     <Removable>1</Removable>
@@ -41,7 +41,7 @@
             <Option value="MM" name="dash_pattern_offset_unit" type="QString"/>
             <Option value="0" name="draw_inside_polygon" type="QString"/>
             <Option value="bevel" name="joinstyle" type="QString"/>
-            <Option value="196,60,57,255" name="line_color" type="QString"/>
+            <Option value="133,182,111,255" name="line_color" type="QString"/>
             <Option value="solid" name="line_style" type="QString"/>
             <Option value="0.6" name="line_width" type="QString"/>
             <Option value="MM" name="line_width_unit" type="QString"/>
@@ -81,12 +81,12 @@
         <layer locked="0" enabled="1" class="SimpleFill" pass="0">
           <Option type="Map">
             <Option value="3x:0,0,0,0,0,0" name="border_width_map_unit_scale" type="QString"/>
-            <Option value="196,60,57,255" name="color" type="QString"/>
+            <Option value="133,182,111,255" name="color" type="QString"/>
             <Option value="bevel" name="joinstyle" type="QString"/>
             <Option value="0,0" name="offset" type="QString"/>
             <Option value="3x:0,0,0,0,0,0" name="offset_map_unit_scale" type="QString"/>
             <Option value="MM" name="offset_unit" type="QString"/>
-            <Option value="140,43,41,255" name="outline_color" type="QString"/>
+            <Option value="95,130,79,255" name="outline_color" type="QString"/>
             <Option value="solid" name="outline_style" type="QString"/>
             <Option value="0.2" name="outline_width" type="QString"/>
             <Option value="MM" name="outline_width_unit" type="QString"/>
@@ -115,14 +115,14 @@
           <Option type="Map">
             <Option value="0" name="angle" type="QString"/>
             <Option value="square" name="cap_style" type="QString"/>
-            <Option value="196,60,57,255" name="color" type="QString"/>
+            <Option value="133,182,111,255" name="color" type="QString"/>
             <Option value="1" name="horizontal_anchor_point" type="QString"/>
             <Option value="bevel" name="joinstyle" type="QString"/>
             <Option value="diamond" name="name" type="QString"/>
             <Option value="0,0" name="offset" type="QString"/>
             <Option value="3x:0,0,0,0,0,0" name="offset_map_unit_scale" type="QString"/>
             <Option value="MM" name="offset_unit" type="QString"/>
-            <Option value="140,43,41,255" name="outline_color" type="QString"/>
+            <Option value="95,130,79,255" name="outline_color" type="QString"/>
             <Option value="solid" name="outline_style" type="QString"/>
             <Option value="0.2" name="outline_width" type="QString"/>
             <Option value="3x:0,0,0,0,0,0" name="outline_width_map_unit_scale" type="QString"/>
@@ -161,7 +161,7 @@
       <Option value="30" name="QFieldSync/tracking_time_requirement_interval_seconds" type="int"/>
       <Option value="0" name="QFieldSync/value_map_button_interface_threshold" type="int"/>
       <Option name="dualview/previewExpressions" type="List">
-        <Option value="&quot;bezeichnung&quot;" type="QString"/>
+        <Option value="&quot;bezext&quot;" type="QString"/>
       </Option>
       <Option value="0" name="embeddedWidgets/count" type="int"/>
       <Option name="variableNames"/>
@@ -178,14 +178,11 @@
     <field name="pk" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
-          <Option type="Map">
-            <Option value="false" name="IsMultiline" type="bool"/>
-            <Option value="false" name="UseHtml" type="bool"/>
-          </Option>
+          <Option/>
         </config>
       </editWidget>
     </field>
-    <field name="bezeichnung" configurationFlags="None">
+    <field name="bezext" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
@@ -195,7 +192,35 @@
         </config>
       </editWidget>
     </field>
-    <field name="he_nr" configurationFlags="None">
+    <field name="bezqkan" configurationFlags="None">
+      <editWidget type="ValueMap">
+        <config>
+          <Option type="Map">
+            <Option name="map" type="List">
+              <Option type="Map">
+                <Option value="Schacht" name="Schacht" type="QString"/>
+              </Option>
+              <Option type="Map">
+                <Option value="Auslass" name="Auslass" type="QString"/>
+              </Option>
+              <Option type="Map">
+                <Option value="Speicher" name="Speicher" type="QString"/>
+              </Option>
+              <Option type="Map">
+                <Option value="Anschlussschacht" name="Anschlussschacht" type="QString"/>
+              </Option>
+              <Option type="Map">
+                <Option value="{2839923C-8B7D-419E-B84B-CA2FE9B80EC7}" name="&lt;NULL>" type="QString"/>
+              </Option>
+              <Option type="Map">
+                <Option value="Symbol" name="Symbol" type="QString"/>
+              </Option>
+            </Option>
+          </Option>
+        </config>
+      </editWidget>
+    </field>
+    <field name="kuerzel" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
@@ -205,7 +230,21 @@
         </config>
       </editWidget>
     </field>
-    <field name="mu_nr" configurationFlags="None">
+    <field name="subject" configurationFlags="None">
+      <editWidget type="Hidden">
+        <config>
+          <Option/>
+        </config>
+      </editWidget>
+    </field>
+    <field name="modul" configurationFlags="None">
+      <editWidget type="Hidden">
+        <config>
+          <Option/>
+        </config>
+      </editWidget>
+    </field>
+    <field name="kommentar" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
@@ -215,12 +254,15 @@
         </config>
       </editWidget>
     </field>
-    <field name="kp_nr" configurationFlags="None">
-      <editWidget type="TextEdit">
+    <field name="createdat" configurationFlags="None">
+      <editWidget type="DateTime">
         <config>
           <Option type="Map">
-            <Option value="false" name="IsMultiline" type="bool"/>
-            <Option value="false" name="UseHtml" type="bool"/>
+            <Option value="true" name="allow_null" type="bool"/>
+            <Option value="true" name="calendar_popup" type="bool"/>
+            <Option value="dd.MMM.yyyy HH:mm:ss" name="display_format" type="QString"/>
+            <Option value="yyyy-MM-dd HH:mm:ss" name="field_format" type="QString"/>
+            <Option value="false" name="field_iso_format" type="bool"/>
           </Option>
         </config>
       </editWidget>
@@ -228,31 +270,43 @@
   </fieldConfiguration>
   <aliases>
     <alias field="pk" index="0" name=""/>
-    <alias field="bezeichnung" index="1" name="Bezeichnung"/>
-    <alias field="he_nr" index="2" name="Nr (HYSTEM-EXTRAN)"/>
-    <alias field="mu_nr" index="3" name="Nr (Mike Urban)"/>
-    <alias field="kp_nr" index="4" name="Nr (Kanal++)"/>
+    <alias field="bezext" index="1" name="Externe Bezeichnung"/>
+    <alias field="bezqkan" index="2" name="Bezeichung"/>
+    <alias field="kuerzel" index="3" name="Kürzel"/>
+    <alias field="subject" index="4" name=""/>
+    <alias field="modul" index="5" name=""/>
+    <alias field="kommentar" index="6" name="Kommentar"/>
+    <alias field="createdat" index="7" name="erstellt"/>
   </aliases>
   <defaults>
     <default field="pk" applyOnUpdate="0" expression=""/>
-    <default field="bezeichnung" applyOnUpdate="0" expression=""/>
-    <default field="he_nr" applyOnUpdate="0" expression=""/>
-    <default field="mu_nr" applyOnUpdate="0" expression=""/>
-    <default field="kp_nr" applyOnUpdate="0" expression=""/>
+    <default field="bezext" applyOnUpdate="0" expression=""/>
+    <default field="bezqkan" applyOnUpdate="0" expression=""/>
+    <default field="kuerzel" applyOnUpdate="0" expression=""/>
+    <default field="subject" applyOnUpdate="0" expression="'import_knotentypen'"/>
+    <default field="modul" applyOnUpdate="0" expression="'m150'"/>
+    <default field="kommentar" applyOnUpdate="0" expression=""/>
+    <default field="createdat" applyOnUpdate="0" expression=""/>
   </defaults>
   <constraints>
-    <constraint field="pk" exp_strength="0" unique_strength="2" notnull_strength="2" constraints="3"/>
-    <constraint field="bezeichnung" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
-    <constraint field="he_nr" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
-    <constraint field="mu_nr" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
-    <constraint field="kp_nr" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="pk" exp_strength="0" unique_strength="1" notnull_strength="1" constraints="3"/>
+    <constraint field="bezext" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="bezqkan" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="kuerzel" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="subject" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="modul" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="kommentar" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="createdat" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
   </constraints>
   <constraintExpressions>
     <constraint field="pk" exp="" desc=""/>
-    <constraint field="bezeichnung" exp="" desc=""/>
-    <constraint field="he_nr" exp="" desc=""/>
-    <constraint field="mu_nr" exp="" desc=""/>
-    <constraint field="kp_nr" exp="" desc=""/>
+    <constraint field="bezext" exp="" desc=""/>
+    <constraint field="bezqkan" exp="" desc=""/>
+    <constraint field="kuerzel" exp="" desc=""/>
+    <constraint field="subject" exp="" desc=""/>
+    <constraint field="modul" exp="" desc=""/>
+    <constraint field="kommentar" exp="" desc=""/>
+    <constraint field="createdat" exp="" desc=""/>
   </constraintExpressions>
   <expressionfields/>
   <attributeactions>
@@ -261,16 +315,25 @@
   <attributetableconfig sortOrder="0" actionWidgetStyle="dropDown" sortExpression="">
     <columns>
       <column name="pk" hidden="0" width="-1" type="field"/>
-      <column name="bezeichnung" hidden="0" width="-1" type="field"/>
-      <column name="he_nr" hidden="0" width="-1" type="field"/>
-      <column name="mu_nr" hidden="0" width="-1" type="field"/>
-      <column name="kp_nr" hidden="0" width="-1" type="field"/>
+      <column name="bezext" hidden="0" width="-1" type="field"/>
+      <column name="bezqkan" hidden="0" width="-1" type="field"/>
+      <column name="kuerzel" hidden="0" width="-1" type="field"/>
+      <column name="subject" hidden="1" width="-1" type="field"/>
+      <column name="modul" hidden="1" width="-1" type="field"/>
+      <column name="kommentar" hidden="0" width="-1" type="field"/>
+      <column name="createdat" hidden="0" width="-1" type="field"/>
       <column hidden="1" width="-1" type="actions"/>
     </columns>
   </attributetableconfig>
   <conditionalstyles>
     <rowstyles/>
-    <fieldstyles/>
+    <fieldstyles>
+      <fieldstyle fieldname="bezqkan">
+        <style background_color_alpha="255" rule="@value is NULL" name="Bezeichnung_unbekannt" background_color="#fb9a99">
+          <font strikethrough="0" italic="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" style="" bold="0" underline="0"/>
+        </style>
+      </fieldstyle>
+    </fieldstyles>
   </conditionalstyles>
   <storedexpressions/>
   <editforminit/>
@@ -278,14 +341,12 @@
   <editforminitfilepath></editforminitfilepath>
   <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
-QGIS forms can have a Python function that is called when the form is
-opened.
+QGIS-Formulare können eine Python-Funktion haben,, die aufgerufen wird, wenn sich das Formular öffnet
 
-Use this function to add extra logic to your forms.
+Diese Funktion kann verwendet werden um dem Formular Extralogik hinzuzufügen.
 
-Enter the name of the function in the "Python Init function"
-field.
-An example follows:
+Der Name der Funktion wird im Feld "Python Init-Function" angegeben
+Ein Beispiel folgt:
 """
 from qgis.PyQt.QtWidgets import QWidget
 
@@ -296,29 +357,38 @@ def my_form_open(dialog, layer, feature):
   <featformsuppress>0</featformsuppress>
   <editorlayout>uifilelayout</editorlayout>
   <editable>
-    <field name="bezeichnung" editable="1"/>
-    <field name="he_nr" editable="1"/>
-    <field name="kp_nr" editable="1"/>
-    <field name="mu_nr" editable="1"/>
+    <field name="bezext" editable="1"/>
+    <field name="bezqkan" editable="1"/>
+    <field name="createdat" editable="1"/>
+    <field name="kommentar" editable="1"/>
+    <field name="kuerzel" editable="1"/>
+    <field name="modul" editable="1"/>
     <field name="pk" editable="1"/>
+    <field name="subject" editable="1"/>
   </editable>
   <labelOnTop>
-    <field name="bezeichnung" labelOnTop="0"/>
-    <field name="he_nr" labelOnTop="0"/>
-    <field name="kp_nr" labelOnTop="0"/>
-    <field name="mu_nr" labelOnTop="0"/>
+    <field name="bezext" labelOnTop="0"/>
+    <field name="bezqkan" labelOnTop="0"/>
+    <field name="createdat" labelOnTop="0"/>
+    <field name="kommentar" labelOnTop="0"/>
+    <field name="kuerzel" labelOnTop="0"/>
+    <field name="modul" labelOnTop="0"/>
     <field name="pk" labelOnTop="0"/>
+    <field name="subject" labelOnTop="0"/>
   </labelOnTop>
   <reuseLastValue>
-    <field name="bezeichnung" reuseLastValue="0"/>
-    <field name="he_nr" reuseLastValue="0"/>
-    <field name="kp_nr" reuseLastValue="0"/>
-    <field name="mu_nr" reuseLastValue="0"/>
+    <field name="bezext" reuseLastValue="0"/>
+    <field name="bezqkan" reuseLastValue="0"/>
+    <field name="createdat" reuseLastValue="0"/>
+    <field name="kommentar" reuseLastValue="0"/>
+    <field name="kuerzel" reuseLastValue="0"/>
+    <field name="modul" reuseLastValue="0"/>
     <field name="pk" reuseLastValue="0"/>
+    <field name="subject" reuseLastValue="0"/>
   </reuseLastValue>
   <dataDefinedFieldProperties/>
   <widgets/>
-  <previewExpression>"bezeichnung"</previewExpression>
+  <previewExpression>"bezext"</previewExpression>
   <mapTip></mapTip>
   <layerGeometryType>4</layerGeometryType>
 </qgis>

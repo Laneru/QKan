@@ -84,7 +84,7 @@ class Synchronisation(QKanPlugin):
     def _run_compare(self) -> bool:
         """Start des Templates"""
 
-        task = CompareTask(self.tgbs_selected)
+        task = CompareTask()
         task.run()
         del task
 

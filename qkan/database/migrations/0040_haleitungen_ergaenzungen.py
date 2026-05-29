@@ -161,147 +161,148 @@ def run(dbcon: DBConnection) -> bool:
 
     dbcon.commit()
 
-    project.read()
+    if 4 == False:
+        project.read()
 
-    # Neuer Layer HA-Schächte
-    grouppath = [
-        enums.LAYERBEZ.QKAN_GROUP.value,
-        enums.LAYERBEZ.SCHAECHTE_GROUP.value,
-    ]
-    loadLayer(
-        layerbez=enums.LAYERBEZ.HA_SCHAECHTE.value,
-        table="schaechte",
-        geom_column='geop',
-        qmlfile="HA-Schächte.qml",
-        filter='',
-        uifile="qkan_anschlussschaechte.ui",
-        group=grouppath,
-        gpos=4,
-    )
-
-    layers = project.mapLayersByName(enums.LAYERBEZ.HA_SCHAECHTE.value)         # können mehrere sein, auch wenn's nicht gewollt ist ...
-    for layer in layers:
-        qmlfile = os.path.join(pluginDirectory("qkan"), 'templates/qml', "HA-Schächte.qml")
-        try:
-            layer.loadNamedStyle(qmlfile)
-        except:
-            logger.error_code(f'Die Styledatei {qmlfile} konnte nicht gelesen werden!')
-            return False
-
-    # Layer Geometrien ändern
-    layers = project.mapLayersByName(enums.LAYERBEZ.GEOMETRIEN.value)         # können mehrere sein, auch wenn's nicht gewollt ist ...
-    for layer in layers:
-        qmlfile = os.path.join(pluginDirectory("qkan"), 'database/migrations', "0040_Geometrien.qml")
-        try:
-            layer.loadNamedStyle(qmlfile)
-        except:
-            logger.error_code(f'Die Styledatei {qmlfile} konnte nicht gelesen werden!')
-            return False
-
-    logger.debug(f'{qkan_db=}')
-    if not loadLayer(
-        layerbez=enums.LAYERBEZ.MATERIAL.value,
-        table='material',
-        geom_column=None,
-        qmlfile='Material.qml',
-        filter='',
-        uifile='qkan_material.ui',
-        group='Referenztabellen',
-        gpos=6,
-        qkan_db=qkan_db,
-    ):
-        logger.error(
-            f"Fehler beim Einfügen des Layers Material"
-        )
-        return False
-    else:
-        logger.debug(f'Layer Material geladen')
-
-    # Attribut haltungen.rwanschluss in Attributtabelle umbenennen
-    layers = project.mapLayersByName(enums.LAYERBEZ.HALTUNGEN.value)
-    for layer in layers:
-        fields = layer.fields()
-        for i, field in enumerate(fields):
-            if field.name() == 'rwanschluss':
-                layer.setFieldAlias(i, 'hat RW-Anschlüsse')
-
-    # Layer Abflusstypen umbennen in Abflussmodelle (enums.LAYERBEZ.ABFLUSSTYPEN)
-    abmodlayers = project.mapLayersByName('Abflusstypen')           # alte Bezeichnung!
-    for abmodlayer in abmodlayers:
-        abmodlayer.setName(enums.LAYERBEZ.ABFLUSSTYPEN.value)
-
-    # Wertebezeichnungen für das Feld "abflusstyp" in Layer "Anbindungen Flächen" korrigieren
-    reflayers = project.mapLayersByName(enums.LAYERBEZ.ABFLUSSTYPEN.value)
-    if (anz := len(reflayers)) != 1:
-        logger.warning_user(f'Es gibt {anz} Layer "{enums.LAYERBEZ.ABFLUSSTYPEN.value}". '
-                          f'Es darf aber nur einen geben!\n'
-                          f'Es wird empfohlen, mit dem Menü "QKan-Projekt übertragen" das Projekt zu aktualisieren')
-    else:
-        reflayer = reflayers[0]
-        layers = project.mapLayersByName(enums.LAYERBEZ.ANBINDUNG_FLAECHEN.value)
-        for layer in layers:
-            # Alle aufgelisteten Attribute
-            idx = layer.fields().indexFromName('abflusstyp')
-            ews = layer.editorWidgetSetup(idx)
-            ewsconf = ews.config()
-            # del ewsconf['LayerSource']
-            ewsconf['Layer'] = reflayer.id()
-            ewsconf['LayerName'] = reflayer.name()
-            ewsconf['Key'] = 'abflusstyp'
-            ewsconf['Value'] = 'abflusstyp'
-            ewsnew = QgsEditorWidgetSetup('ValueRelation', ewsconf)
-            layer.setEditorWidgetSetup(idx, ewsnew)
-
-            logger.debug(f'Layer {layer.name()} geändert')
-
-            # Kontrolle
-            ews = layer.editorWidgetSetup(idx)
-            ewsconf = ews.config()
-            logger.debug(f'{ewsconf=}')
-
-    # Wertebeziehungen, die bisher auf Schächte verweisen, auf Knotentypen ändern
-    reflayers = project.mapLayersByName(enums.LAYERBEZ.KNOTENTYP.value)
-    if len(reflayers) != 1:
-        logger.warning_user('Entweder fehlt der Layer "Knotentypen oder es gibt mehr als einen Layer mit '
-                            'diesem Namen')
-    else:
-        reflayer = reflayers[0]                 # Layer, auf den die Werteliste referenziert
-        layerlist = [
-            (enums.LAYERBEZ.ANBINDUNG_FLAECHEN, 'schnam'),
-            (enums.LAYERBEZ.ANBINDUNG_DIREKTEINLEITUNGEN, 'schnam'),
-            (enums.LAYERBEZ.EINZELFLAECHEN, 'schnam'),
-            (enums.LAYERBEZ.HA_LEITUNGEN, 'schoben', 'schunten'),
-            (enums.LAYERBEZ.AUSSENGEBIETE, 'schnam'),
-            (enums.LAYERBEZ.DROSSELN, 'schoben', 'schunten'),
-            (enums.LAYERBEZ.DIREKTEINLEITUNGEN, 'schnam'),
-            (enums.LAYERBEZ.GRUND_SEITENAUSLASS, 'schoben', 'schunten'),
-            (enums.LAYERBEZ.HALTUNGEN, 'schoben', 'schunten'),
-            (enums.LAYERBEZ.H_REGLER, 'schoben', 'schunten'),
-            (enums.LAYERBEZ.ANBINDUNG_AUSSENGEBIETE, 'schnam'),
-            (enums.LAYERBEZ.PUMPEN, 'schoben', 'schunten'),
-            (enums.LAYERBEZ.Q_REGLER, 'schoben', 'schunten'),
-            (enums.LAYERBEZ.SCHIEBER, 'schoben', 'schunten'),
-            (enums.LAYERBEZ.WEHRE, 'schoben', 'schunten'),
+        # Neuer Layer HA-Schächte
+        grouppath = [
+            enums.LAYERBEZ.QKAN_GROUP.value,
+            enums.LAYERBEZ.SCHAECHTE_GROUP.value,
         ]
-        # Alle Layernamen aus layerlist
-        for (layername, *attrs) in layerlist:
-            layers = project.mapLayersByName(layername.value)
-            # Jedes Auftreten dieses Layernamens
+        loadLayer(
+            layerbez=enums.LAYERBEZ.HA_SCHAECHTE.value,
+            table="schaechte",
+            geom_column='geop',
+            qmlfile="HA-Schächte.qml",
+            filter='',
+            uifile="qkan_anschlussschaechte.ui",
+            group=grouppath,
+            gpos=4,
+        )
+
+        layers = project.mapLayersByName(enums.LAYERBEZ.HA_SCHAECHTE.value)         # können mehrere sein, auch wenn's nicht gewollt ist ...
+        for layer in layers:
+            qmlfile = os.path.join(pluginDirectory("qkan"), 'templates/qml', "HA-Schächte.qml")
+            try:
+                layer.loadNamedStyle(qmlfile)
+            except:
+                logger.error_code(f'Die Styledatei {qmlfile} konnte nicht gelesen werden!')
+                return False
+
+        # Layer Geometrien ändern
+        layers = project.mapLayersByName(enums.LAYERBEZ.GEOMETRIEN.value)         # können mehrere sein, auch wenn's nicht gewollt ist ...
+        for layer in layers:
+            qmlfile = os.path.join(pluginDirectory("qkan"), 'database/migrations', "0040_Geometrien.qml")
+            try:
+                layer.loadNamedStyle(qmlfile)
+            except:
+                logger.error_code(f'Die Styledatei {qmlfile} konnte nicht gelesen werden!')
+                return False
+
+        logger.debug(f'{qkan_db=}')
+        if not loadLayer(
+            layerbez=enums.LAYERBEZ.MATERIAL.value,
+            table='material',
+            geom_column=None,
+            qmlfile='Material.qml',
+            filter='',
+            uifile='qkan_material.ui',
+            group='Referenztabellen',
+            gpos=6,
+            qkan_db=qkan_db,
+        ):
+            logger.error(
+                f"Fehler beim Einfügen des Layers Material"
+            )
+            return False
+        else:
+            logger.debug(f'Layer Material geladen')
+
+        # Attribut haltungen.rwanschluss in Attributtabelle umbenennen
+        layers = project.mapLayersByName(enums.LAYERBEZ.HALTUNGEN.value)
+        for layer in layers:
+            fields = layer.fields()
+            for i, field in enumerate(fields):
+                if field.name() == 'rwanschluss':
+                    layer.setFieldAlias(i, 'hat RW-Anschlüsse')
+
+        # Layer Abflusstypen umbennen in Abflussmodelle (enums.LAYERBEZ.ABFLUSSTYPEN)
+        abmodlayers = project.mapLayersByName('Abflusstypen')           # alte Bezeichnung!
+        for abmodlayer in abmodlayers:
+            abmodlayer.setName(enums.LAYERBEZ.ABFLUSSTYPEN.value)
+
+        # Wertebezeichnungen für das Feld "abflusstyp" in Layer "Anbindungen Flächen" korrigieren
+        reflayers = project.mapLayersByName(enums.LAYERBEZ.ABFLUSSTYPEN.value)
+        if (anz := len(reflayers)) != 1:
+            logger.warning_user(f'Es gibt {anz} Layer "{enums.LAYERBEZ.ABFLUSSTYPEN.value}". '
+                              f'Es darf aber nur einen geben!\n'
+                              f'Es wird empfohlen, mit dem Menü "QKan-Projekt übertragen" das Projekt zu aktualisieren')
+        else:
+            reflayer = reflayers[0]
+            layers = project.mapLayersByName(enums.LAYERBEZ.ANBINDUNG_FLAECHEN.value)
             for layer in layers:
                 # Alle aufgelisteten Attribute
-                for attr in attrs:
-                    idx = layer.fields().indexFromName(attr)
-                    ews = layer.editorWidgetSetup(idx)
-                    ewsconf = ews.config()
-                    ewsconf['Layer'] = reflayer.id()
-                    ewsconf['LayerName'] = reflayer.name()
-                    ewsnew = QgsEditorWidgetSetup('ValueRelation', ewsconf)
-                    layer.setEditorWidgetSetup(idx, ewsnew)
+                idx = layer.fields().indexFromName('abflusstyp')
+                ews = layer.editorWidgetSetup(idx)
+                ewsconf = ews.config()
+                # del ewsconf['LayerSource']
+                ewsconf['Layer'] = reflayer.id()
+                ewsconf['LayerName'] = reflayer.name()
+                ewsconf['Key'] = 'abflusstyp'
+                ewsconf['Value'] = 'abflusstyp'
+                ewsnew = QgsEditorWidgetSetup('ValueRelation', ewsconf)
+                layer.setEditorWidgetSetup(idx, ewsnew)
 
-                    logger.debug(f'Layer {layer.name()} geändert')
+                logger.debug(f'Layer {layer.name()} geändert')
 
-    project.write(pname)
-    project.clear()
-    project.setDirty(False)
+                # Kontrolle
+                ews = layer.editorWidgetSetup(idx)
+                ewsconf = ews.config()
+                logger.debug(f'{ewsconf=}')
+
+        # Wertebeziehungen, die bisher auf Schächte verweisen, auf Knotentypen ändern
+        reflayers = project.mapLayersByName(enums.LAYERBEZ.KNOTENTYP.value)
+        if len(reflayers) != 1:
+            logger.warning_user('Entweder fehlt der Layer "Knotentypen oder es gibt mehr als einen Layer mit '
+                                'diesem Namen')
+        else:
+            reflayer = reflayers[0]                 # Layer, auf den die Werteliste referenziert
+            layerlist = [
+                (enums.LAYERBEZ.ANBINDUNG_FLAECHEN, 'schnam'),
+                (enums.LAYERBEZ.ANBINDUNG_DIREKTEINLEITUNGEN, 'schnam'),
+                (enums.LAYERBEZ.EINZELFLAECHEN, 'schnam'),
+                (enums.LAYERBEZ.HA_LEITUNGEN, 'schoben', 'schunten'),
+                (enums.LAYERBEZ.AUSSENGEBIETE, 'schnam'),
+                (enums.LAYERBEZ.DROSSELN, 'schoben', 'schunten'),
+                (enums.LAYERBEZ.DIREKTEINLEITUNGEN, 'schnam'),
+                (enums.LAYERBEZ.GRUND_SEITENAUSLASS, 'schoben', 'schunten'),
+                (enums.LAYERBEZ.HALTUNGEN, 'schoben', 'schunten'),
+                (enums.LAYERBEZ.H_REGLER, 'schoben', 'schunten'),
+                (enums.LAYERBEZ.ANBINDUNG_AUSSENGEBIETE, 'schnam'),
+                (enums.LAYERBEZ.PUMPEN, 'schoben', 'schunten'),
+                (enums.LAYERBEZ.Q_REGLER, 'schoben', 'schunten'),
+                (enums.LAYERBEZ.SCHIEBER, 'schoben', 'schunten'),
+                (enums.LAYERBEZ.WEHRE, 'schoben', 'schunten'),
+            ]
+            # Alle Layernamen aus layerlist
+            for (layername, *attrs) in layerlist:
+                layers = project.mapLayersByName(layername.value)
+                # Jedes Auftreten dieses Layernamens
+                for layer in layers:
+                    # Alle aufgelisteten Attribute
+                    for attr in attrs:
+                        idx = layer.fields().indexFromName(attr)
+                        ews = layer.editorWidgetSetup(idx)
+                        ewsconf = ews.config()
+                        ewsconf['Layer'] = reflayer.id()
+                        ewsconf['LayerName'] = reflayer.name()
+                        ewsnew = QgsEditorWidgetSetup('ValueRelation', ewsconf)
+                        layer.setEditorWidgetSetup(idx, ewsnew)
+
+                        logger.debug(f'Layer {layer.name()} geändert')
+
+        project.write(pname)
+        project.clear()
+        project.setDirty(False)
 
     return True

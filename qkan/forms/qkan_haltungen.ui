@@ -401,7 +401,7 @@ Haltungsende</string>
      <property name="geometry">
       <rect>
        <x>460</x>
-       <y>60</y>
+       <y>100</y>
        <width>71</width>
        <height>20</height>
       </rect>
@@ -703,7 +703,7 @@ Haltungsende</string>
      <property name="geometry">
       <rect>
        <x>540</x>
-       <y>60</y>
+       <y>100</y>
        <width>31</width>
        <height>21</height>
       </rect>
@@ -722,7 +722,7 @@ Haltungsende</string>
      <property name="geometry">
       <rect>
        <x>320</x>
-       <y>60</y>
+       <y>100</y>
        <width>100</width>
        <height>20</height>
       </rect>
@@ -883,7 +883,7 @@ Haltungsende</string>
      <property name="geometry">
       <rect>
        <x>320</x>
-       <y>200</y>
+       <y>240</y>
        <width>101</width>
        <height>17</height>
       </rect>
@@ -911,7 +911,7 @@ Haltungsende</string>
      <property name="geometry">
       <rect>
        <x>320</x>
-       <y>220</y>
+       <y>260</y>
        <width>161</width>
        <height>17</height>
       </rect>
@@ -980,7 +980,7 @@ Haltungsende</string>
      <property name="geometry">
       <rect>
        <x>320</x>
-       <y>120</y>
+       <y>160</y>
        <width>100</width>
        <height>20</height>
       </rect>
@@ -999,7 +999,7 @@ Haltungsende</string>
      <property name="geometry">
       <rect>
        <x>320</x>
-       <y>150</y>
+       <y>190</y>
        <width>100</width>
        <height>20</height>
       </rect>
@@ -1018,7 +1018,7 @@ Haltungsende</string>
      <property name="geometry">
       <rect>
        <x>320</x>
-       <y>90</y>
+       <y>130</y>
        <width>100</width>
        <height>20</height>
       </rect>
@@ -1037,7 +1037,7 @@ Haltungsende</string>
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>120</y>
+       <y>160</y>
        <width>201</width>
        <height>20</height>
       </rect>
@@ -1053,7 +1053,7 @@ Haltungsende</string>
      <property name="geometry">
       <rect>
        <x>460</x>
-       <y>90</y>
+       <y>130</y>
        <width>71</width>
        <height>20</height>
       </rect>
@@ -1069,7 +1069,7 @@ Haltungsende</string>
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>150</y>
+       <y>190</y>
        <width>201</width>
        <height>20</height>
       </rect>
@@ -1127,6 +1127,41 @@ Haltungsende</string>
      </property>
      <property name="text">
       <string>m</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_68">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>60</y>
+       <width>100</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Tahoma</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Abflussart</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="abflussart">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>60</y>
+       <width>141</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Straßenname&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="statusTip">
+      <string>Straßenname</string>
      </property>
     </widget>
    </widget>

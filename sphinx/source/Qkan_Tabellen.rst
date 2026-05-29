@@ -8,8 +8,8 @@ QKan basiert auf zwei Arten von Tabellen:
 - Referenztabellen, z. B. Entwässerungsarten, Profile
 
 
-Tabelleninhalte
----------------
+Datentabellen
+-------------
 
 Im Folgenden werden QKan-Tabellen und ihre Inhalte dokumentiert. 
 

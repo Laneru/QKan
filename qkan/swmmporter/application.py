@@ -240,8 +240,8 @@ class SWMMPorter(QKanPlugin):
                 )
                 return False
             check_cb = {}
-            check_cb['cb1'] = self.import_dlg.radioButton.isChecked()
-            check_cb['cb2'] = self.import_dlg.radioButton_2.isChecked()
+            check_cb['tezg'] = self.import_dlg.rb_choiceTezg.isChecked()
+            check_cb['flaechen'] = self.import_dlg.rb_choiceFlaechen.isChecked()
 
             self.log.info("DB creation finished, starting importer")
             imp = ImportTask(QKan.config.swmm.import_file, db_qkan, QKan.config.project.file, check_cb)

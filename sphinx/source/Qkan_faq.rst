@@ -1,9 +1,10 @@
-FAQ
-===
+FAQ und Fehler
+==============
 
 
 Fehler beim Update
 ------------------
+
 **Problem:** Beim Update auf QKan Version 3.4.8 erscheint ein Fenster mit der Fehlermeldung "Konnte Erweiterung 'qkan' nicht laden ...".
 
 .. image:: ./QKan_Bilder/faq_updatefehler_348.png
@@ -16,8 +17,8 @@ Menü :guilabel:`Einstellungen` :guilabel:`Benutzerprofile` :guilabel:`Aktuelles
 können Sie QKan wie gewohnt neu installieren.
 
 
-Fehlerhafte Anzeige Linienelemente
-----------------------------------
+Fehlerhafte Anzeige von Linienelementen
+---------------------------------------
 
 **Problem:** Symbole auf Haltungen und Verbindungselementen (Pumpen, Wehre, etc.) wiederholen sich in viel zu engem Abstand
 
@@ -28,7 +29,7 @@ Intervall angezeigt.
 
 .. image:: ./QKan_Bilder/symbole_auf_linien.png
 
-Zur Fehlerbehebung wird im Menü unter :guilabel:`QKan` unter dem Punkt :guilabel:`Allgemein` mit |Tool_projekt_aktualisieren| :guilabel:`QKan-Projekt aktualisieren` 
+Zur Fehlerbehebung wird im Menü unter :guilabel:`QKan` unter dem Punkt :guilabel:`Allgemein` mit |Tool_projekt_aktualisieren| :guilabel:`QKan-Projekt anpassen` 
 ein Fenster geöffnet, welches ohne eine weitere Auswahl mit :guilabel:`OK` geschlossen werden kann. Nun sollten die Symbole richtig 
 angezeigt werden.
 
@@ -36,14 +37,14 @@ angezeigt werden.
                              :width: 1.25 em
 
 
-Fehlerhafte Anzeige QKan Formulare
-----------------------------------
+Fehlerhafte Anzeige von QKan Formularen
+---------------------------------------
 
 **Problem:** QKan Formulare werden in einer falschen Skalierung angezeigt (siehe Bild unten).
 
 .. image:: ./QKan_Bilder/Formular_fehlerhaft.png
 
-**Lösung:** Um dieses Problem zu beheben, müssen die grundlegende Grafikeinstellungen richtig konfiguriert sein. Eine Anleitung zur richtigen Konfiguration
+**Lösung:** Um dieses Problem zu beheben, müssen die grundlegenden Grafikeinstellungen richtig konfiguriert sein. Eine Anleitung zur richtigen Konfiguration
 ist :ref:`hier <linkgrafikeinstellungen>` zu finden.
                              
 
@@ -53,10 +54,10 @@ Objektabfrage funktioniert nicht
 **Problem:** Bei der Verwendung der Menüfunktion |Tool_info| :guilabel:`Objekt abfragen` wird nur ein Formular mit tabellarisch 
 angeordneten Feldern anstelle eines QKan-Formulares angezeigt.
 
-**Lösung:** Hierfür gibt es zwei mögliche Ursachen, welche auch beide zusammen vorliegen können:
+**Lösung:** Hierfür gibt es zwei mögliche Ursachen, die auch beide vorliegen können:
 
 1. Die Projektdatei wurde (in der Regel zusammen mit der eingebundenen QKan-Datenbank) in ein anderes Verzeichnis verschoben. Ist dies der Fall,
-kann im Menü unter :guilabel:`QKan` unter dem Punkt :guilabel:`Allgemein` mit |Tool_projekt_aktualisieren| :guilabel:`QKan-Projekt aktualisieren`
+kann im Menü unter :guilabel:`QKan` unter dem Punkt :guilabel:`Allgemein` mit |Tool_projekt_aktualisieren| :guilabel:`QKan-Projekt anpassen`
 der Pfad wieder hergestellt werden. Dazu muss in dem sich öffnenden Fenster das Kontrollfeld im Bereich "Layer anpassen > Formularanbindung auf
 QKan-Standard setzten" sowie das Optionsfeld im Bereich "QKan-Layer > alle anpassen" aktiviert werden (siehe Bild unten).
 

@@ -40,6 +40,7 @@ class TestQKanHE8(QgisTest):
         super().setUpClass()
 
         # Extract files
+        # with ZipFile(BASE_DATA / "test_he8_AJ_260430.zip") as z:
         with ZipFile(BASE_DATA / "test_he8Export_85.zip") as z:
             z.extractall(BASE_WORK)
 
@@ -146,6 +147,8 @@ class TestQKanUpdateHE8(QgisTest):
         QKan.config.check_export.append = False
         QKan.config.check_export.update = True
         QKan.config.check_export.synch = False
+
+        QKan.config.selections.selectedObjects = False
 
         imp = He8Porter(iface())
         erg = imp._doexport()

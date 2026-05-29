@@ -20,7 +20,6 @@
     QKan_Datenaustausch
     QKan_flaechen
     QKan_Daten
-    QKan_workflow
     QKan_qfield
     QKan_edit
     QKan_Zustandsklassifizierung
@@ -30,12 +29,18 @@
 
 
 .. toctree::
+    :maxdepth: 2
+    :caption: Beispiele
+
+    QKan_workflow
+
+
+.. toctree::
     :maxdepth: 3
     :caption: Übersicht
     
     QKan_Formulare
     QKan_Tabellen
-    QKan_Synchro
 
 
 Register und Tabellen

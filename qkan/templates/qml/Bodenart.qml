@@ -1,34 +1,169 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis hasScaleBasedVisibilityFlag="0" readOnly="0" maxScale="0" minScale="0" version="3.28.13-Firenze" styleCategories="LayerConfiguration|Symbology|Labeling|Fields|Forms|Actions|MapTips|AttributeTable|Rendering|CustomProperties|GeometryOptions|Temporal|Legend|Notes">
+<qgis styleCategories="AllStyleCategories" maxScale="0" minScale="0" readOnly="0" version="3.28.13-Firenze" hasScaleBasedVisibilityFlag="0">
   <flags>
     <Identifiable>1</Identifiable>
     <Removable>1</Removable>
     <Searchable>1</Searchable>
     <Private>0</Private>
   </flags>
-  <temporal durationField="" accumulate="0" enabled="0" durationUnit="min" startExpression="" fixedDuration="0" mode="0" limitMode="0" endExpression="" startField="" endField="">
+  <temporal durationUnit="min" accumulate="0" mode="0" limitMode="0" startExpression="" endExpression="" enabled="0" durationField="" fixedDuration="0" startField="" endField="">
     <fixedRange>
       <start></start>
       <end></end>
     </fixedRange>
   </temporal>
+  <elevation binding="Centroid" extrusionEnabled="0" clamping="Terrain" zoffset="0" showMarkerSymbolInSurfacePlots="0" extrusion="0" symbology="Line" zscale="1" type="IndividualFeatures" respectLayerSymbol="1">
+    <data-defined-properties>
+      <Option type="Map">
+        <Option value="" name="name" type="QString"/>
+        <Option name="properties"/>
+        <Option value="collection" name="type" type="QString"/>
+      </Option>
+    </data-defined-properties>
+    <profileLineSymbol>
+      <symbol alpha="1" is_animated="0" name="" clip_to_extent="1" force_rhr="0" type="line" frame_rate="10">
+        <data_defined_properties>
+          <Option type="Map">
+            <Option value="" name="name" type="QString"/>
+            <Option name="properties"/>
+            <Option value="collection" name="type" type="QString"/>
+          </Option>
+        </data_defined_properties>
+        <layer locked="0" enabled="1" class="SimpleLine" pass="0">
+          <Option type="Map">
+            <Option value="0" name="align_dash_pattern" type="QString"/>
+            <Option value="square" name="capstyle" type="QString"/>
+            <Option value="5;2" name="customdash" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="customdash_map_unit_scale" type="QString"/>
+            <Option value="MM" name="customdash_unit" type="QString"/>
+            <Option value="0" name="dash_pattern_offset" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="dash_pattern_offset_map_unit_scale" type="QString"/>
+            <Option value="MM" name="dash_pattern_offset_unit" type="QString"/>
+            <Option value="0" name="draw_inside_polygon" type="QString"/>
+            <Option value="bevel" name="joinstyle" type="QString"/>
+            <Option value="225,89,137,255" name="line_color" type="QString"/>
+            <Option value="solid" name="line_style" type="QString"/>
+            <Option value="0.6" name="line_width" type="QString"/>
+            <Option value="MM" name="line_width_unit" type="QString"/>
+            <Option value="0" name="offset" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="offset_map_unit_scale" type="QString"/>
+            <Option value="MM" name="offset_unit" type="QString"/>
+            <Option value="0" name="ring_filter" type="QString"/>
+            <Option value="0" name="trim_distance_end" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="trim_distance_end_map_unit_scale" type="QString"/>
+            <Option value="MM" name="trim_distance_end_unit" type="QString"/>
+            <Option value="0" name="trim_distance_start" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="trim_distance_start_map_unit_scale" type="QString"/>
+            <Option value="MM" name="trim_distance_start_unit" type="QString"/>
+            <Option value="0" name="tweak_dash_pattern_on_corners" type="QString"/>
+            <Option value="0" name="use_custom_dash" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="width_map_unit_scale" type="QString"/>
+          </Option>
+          <data_defined_properties>
+            <Option type="Map">
+              <Option value="" name="name" type="QString"/>
+              <Option name="properties"/>
+              <Option value="collection" name="type" type="QString"/>
+            </Option>
+          </data_defined_properties>
+        </layer>
+      </symbol>
+    </profileLineSymbol>
+    <profileFillSymbol>
+      <symbol alpha="1" is_animated="0" name="" clip_to_extent="1" force_rhr="0" type="fill" frame_rate="10">
+        <data_defined_properties>
+          <Option type="Map">
+            <Option value="" name="name" type="QString"/>
+            <Option name="properties"/>
+            <Option value="collection" name="type" type="QString"/>
+          </Option>
+        </data_defined_properties>
+        <layer locked="0" enabled="1" class="SimpleFill" pass="0">
+          <Option type="Map">
+            <Option value="3x:0,0,0,0,0,0" name="border_width_map_unit_scale" type="QString"/>
+            <Option value="225,89,137,255" name="color" type="QString"/>
+            <Option value="bevel" name="joinstyle" type="QString"/>
+            <Option value="0,0" name="offset" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="offset_map_unit_scale" type="QString"/>
+            <Option value="MM" name="offset_unit" type="QString"/>
+            <Option value="161,64,98,255" name="outline_color" type="QString"/>
+            <Option value="solid" name="outline_style" type="QString"/>
+            <Option value="0.2" name="outline_width" type="QString"/>
+            <Option value="MM" name="outline_width_unit" type="QString"/>
+            <Option value="solid" name="style" type="QString"/>
+          </Option>
+          <data_defined_properties>
+            <Option type="Map">
+              <Option value="" name="name" type="QString"/>
+              <Option name="properties"/>
+              <Option value="collection" name="type" type="QString"/>
+            </Option>
+          </data_defined_properties>
+        </layer>
+      </symbol>
+    </profileFillSymbol>
+    <profileMarkerSymbol>
+      <symbol alpha="1" is_animated="0" name="" clip_to_extent="1" force_rhr="0" type="marker" frame_rate="10">
+        <data_defined_properties>
+          <Option type="Map">
+            <Option value="" name="name" type="QString"/>
+            <Option name="properties"/>
+            <Option value="collection" name="type" type="QString"/>
+          </Option>
+        </data_defined_properties>
+        <layer locked="0" enabled="1" class="SimpleMarker" pass="0">
+          <Option type="Map">
+            <Option value="0" name="angle" type="QString"/>
+            <Option value="square" name="cap_style" type="QString"/>
+            <Option value="225,89,137,255" name="color" type="QString"/>
+            <Option value="1" name="horizontal_anchor_point" type="QString"/>
+            <Option value="bevel" name="joinstyle" type="QString"/>
+            <Option value="diamond" name="name" type="QString"/>
+            <Option value="0,0" name="offset" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="offset_map_unit_scale" type="QString"/>
+            <Option value="MM" name="offset_unit" type="QString"/>
+            <Option value="161,64,98,255" name="outline_color" type="QString"/>
+            <Option value="solid" name="outline_style" type="QString"/>
+            <Option value="0.2" name="outline_width" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="outline_width_map_unit_scale" type="QString"/>
+            <Option value="MM" name="outline_width_unit" type="QString"/>
+            <Option value="diameter" name="scale_method" type="QString"/>
+            <Option value="3" name="size" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="size_map_unit_scale" type="QString"/>
+            <Option value="MM" name="size_unit" type="QString"/>
+            <Option value="1" name="vertical_anchor_point" type="QString"/>
+          </Option>
+          <data_defined_properties>
+            <Option type="Map">
+              <Option value="" name="name" type="QString"/>
+              <Option name="properties"/>
+              <Option value="collection" name="type" type="QString"/>
+            </Option>
+          </data_defined_properties>
+        </layer>
+      </symbol>
+    </profileMarkerSymbol>
+  </elevation>
   <customproperties>
     <Option type="Map">
-      <Option type="QString" name="QFieldSync/action" value="copy"/>
-      <Option type="QString" name="QFieldSync/attachment_naming" value="{}"/>
-      <Option type="QString" name="QFieldSync/cloud_action" value="offline"/>
-      <Option type="QString" name="QFieldSync/geometry_locked_expression" value=""/>
-      <Option type="QString" name="QFieldSync/photo_naming" value="{}"/>
-      <Option type="QString" name="QFieldSync/relationship_maximum_visible" value="{}"/>
-      <Option type="int" name="QFieldSync/tracking_distance_requirement_minimum_meters" value="30"/>
-      <Option type="int" name="QFieldSync/tracking_erroneous_distance_safeguard_maximum_meters" value="1"/>
-      <Option type="int" name="QFieldSync/tracking_measurement_type" value="0"/>
-      <Option type="int" name="QFieldSync/tracking_time_requirement_interval_seconds" value="30"/>
-      <Option type="int" name="QFieldSync/value_map_button_interface_threshold" value="0"/>
-      <Option type="List" name="dualview/previewExpressions">
-        <Option type="QString" value="&quot;bknam&quot;"/>
+      <Option value="copy" name="QFieldSync/action" type="QString"/>
+      <Option value="{}" name="QFieldSync/attachment_naming" type="QString"/>
+      <Option value="" name="QFieldSync/attribute_editing_locked_expression" type="QString"/>
+      <Option value="offline" name="QFieldSync/cloud_action" type="QString"/>
+      <Option value="" name="QFieldSync/feature_addition_locked_expression" type="QString"/>
+      <Option value="" name="QFieldSync/feature_deletion_locked_expression" type="QString"/>
+      <Option value="" name="QFieldSync/geometry_editing_locked_expression" type="QString"/>
+      <Option value="{}" name="QFieldSync/photo_naming" type="QString"/>
+      <Option value="{}" name="QFieldSync/relationship_maximum_visible" type="QString"/>
+      <Option value="30" name="QFieldSync/tracking_distance_requirement_minimum_meters" type="int"/>
+      <Option value="1" name="QFieldSync/tracking_erroneous_distance_safeguard_maximum_meters" type="int"/>
+      <Option value="0" name="QFieldSync/tracking_measurement_type" type="int"/>
+      <Option value="30" name="QFieldSync/tracking_time_requirement_interval_seconds" type="int"/>
+      <Option value="0" name="QFieldSync/value_map_button_interface_threshold" type="int"/>
+      <Option name="dualview/previewExpressions" type="List">
+        <Option value="&quot;bknam&quot;" type="QString"/>
       </Option>
-      <Option type="int" name="embeddedWidgets/count" value="0"/>
+      <Option value="0" name="embeddedWidgets/count" type="int"/>
       <Option name="variableNames"/>
       <Option name="variableValues"/>
     </Option>
@@ -37,14 +172,15 @@
     <activeChecks/>
     <checkConfiguration/>
   </geometryOptions>
-  <legend type="default-vector" showLabelLegend="0"/>
+  <legend showLabelLegend="0" type="default-vector"/>
+  <referencedLayers/>
   <fieldConfiguration>
     <field name="pk" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
-            <Option type="QString" name="IsMultiline" value="0"/>
-            <Option type="QString" name="UseHtml" value="0"/>
+            <Option value="0" name="IsMultiline" type="QString"/>
+            <Option value="0" name="UseHtml" type="QString"/>
           </Option>
         </config>
       </editWidget>
@@ -53,8 +189,8 @@
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
-            <Option type="QString" name="IsMultiline" value="0"/>
-            <Option type="QString" name="UseHtml" value="0"/>
+            <Option value="0" name="IsMultiline" type="QString"/>
+            <Option value="0" name="UseHtml" type="QString"/>
           </Option>
         </config>
       </editWidget>
@@ -63,8 +199,8 @@
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
-            <Option type="bool" name="IsMultiline" value="false"/>
-            <Option type="bool" name="UseHtml" value="false"/>
+            <Option value="false" name="IsMultiline" type="bool"/>
+            <Option value="false" name="UseHtml" type="bool"/>
           </Option>
         </config>
       </editWidget>
@@ -73,8 +209,8 @@
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
-            <Option type="bool" name="IsMultiline" value="false"/>
-            <Option type="bool" name="UseHtml" value="false"/>
+            <Option value="false" name="IsMultiline" type="bool"/>
+            <Option value="false" name="UseHtml" type="bool"/>
           </Option>
         </config>
       </editWidget>
@@ -83,8 +219,8 @@
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
-            <Option type="bool" name="IsMultiline" value="false"/>
-            <Option type="bool" name="UseHtml" value="false"/>
+            <Option value="false" name="IsMultiline" type="bool"/>
+            <Option value="false" name="UseHtml" type="bool"/>
           </Option>
         </config>
       </editWidget>
@@ -93,8 +229,8 @@
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
-            <Option type="QString" name="IsMultiline" value="0"/>
-            <Option type="QString" name="UseHtml" value="0"/>
+            <Option value="0" name="IsMultiline" type="QString"/>
+            <Option value="0" name="UseHtml" type="QString"/>
           </Option>
         </config>
       </editWidget>
@@ -103,8 +239,8 @@
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
-            <Option type="QString" name="IsMultiline" value="0"/>
-            <Option type="QString" name="UseHtml" value="0"/>
+            <Option value="0" name="IsMultiline" type="QString"/>
+            <Option value="0" name="UseHtml" type="QString"/>
           </Option>
         </config>
       </editWidget>
@@ -113,8 +249,8 @@
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
-            <Option type="QString" name="IsMultiline" value="0"/>
-            <Option type="QString" name="UseHtml" value="0"/>
+            <Option value="0" name="IsMultiline" type="QString"/>
+            <Option value="0" name="UseHtml" type="QString"/>
           </Option>
         </config>
       </editWidget>
@@ -123,8 +259,8 @@
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
-            <Option type="QString" name="IsMultiline" value="0"/>
-            <Option type="QString" name="UseHtml" value="0"/>
+            <Option value="0" name="IsMultiline" type="QString"/>
+            <Option value="0" name="UseHtml" type="QString"/>
           </Option>
         </config>
       </editWidget>
@@ -133,80 +269,80 @@
       <editWidget type="DateTime">
         <config>
           <Option type="Map">
-            <Option type="QString" name="allow_null" value="1"/>
-            <Option type="QString" name="calendar_popup" value="1"/>
-            <Option type="QString" name="display_format" value="dd.MM.yyyy HH:mm:ss"/>
-            <Option type="QString" name="field_format" value="yyyy-MM-dd HH:mm:ss"/>
+            <Option value="1" name="allow_null" type="QString"/>
+            <Option value="1" name="calendar_popup" type="QString"/>
+            <Option value="dd.MM.yyyy HH:mm:ss" name="display_format" type="QString"/>
+            <Option value="yyyy-MM-dd HH:mm:ss" name="field_format" type="QString"/>
           </Option>
         </config>
       </editWidget>
     </field>
   </fieldConfiguration>
   <aliases>
-    <alias name="" index="0" field="pk"/>
-    <alias name="Name" index="1" field="bknam"/>
-    <alias name="Infilt_rate Max (Anfang)" index="2" field="infiltrationsrateanfang"/>
-    <alias name="Infilt_rate Min (Ende)" index="3" field="infiltrationsrateende"/>
-    <alias name="Infilt_rate Simulationsstart" index="4" field="infiltrationsratestart"/>
-    <alias name="Rückgangskonstante" index="5" field="rueckgangskonstante"/>
-    <alias name="Regenerationskonstante" index="6" field="regenerationskonstante"/>
-    <alias name="Sättigungswassergehalt" index="7" field="saettigungswassergehalt"/>
-    <alias name="Kommentar" index="8" field="kommentar"/>
-    <alias name="bearbeitet" index="9" field="createdat"/>
+    <alias field="pk" index="0" name=""/>
+    <alias field="bknam" index="1" name="Name"/>
+    <alias field="infiltrationsrateanfang" index="2" name="Infilt_rate Max (Anfang)"/>
+    <alias field="infiltrationsrateende" index="3" name="Infilt_rate Min (Ende)"/>
+    <alias field="infiltrationsratestart" index="4" name="Infilt_rate Simulationsstart"/>
+    <alias field="rueckgangskonstante" index="5" name="Rückgangskonstante"/>
+    <alias field="regenerationskonstante" index="6" name="Regenerationskonstante"/>
+    <alias field="saettigungswassergehalt" index="7" name="Sättigungswassergehalt"/>
+    <alias field="kommentar" index="8" name="Kommentar"/>
+    <alias field="createdat" index="9" name="bearbeitet"/>
   </aliases>
   <defaults>
-    <default applyOnUpdate="0" expression="" field="pk"/>
-    <default applyOnUpdate="0" expression="" field="bknam"/>
-    <default applyOnUpdate="0" expression="" field="infiltrationsrateanfang"/>
-    <default applyOnUpdate="0" expression="" field="infiltrationsrateende"/>
-    <default applyOnUpdate="0" expression="" field="infiltrationsratestart"/>
-    <default applyOnUpdate="0" expression="" field="rueckgangskonstante"/>
-    <default applyOnUpdate="0" expression="" field="regenerationskonstante"/>
-    <default applyOnUpdate="0" expression="" field="saettigungswassergehalt"/>
-    <default applyOnUpdate="0" expression="" field="kommentar"/>
-    <default applyOnUpdate="0" expression=" format_date( now(), 'yyyy-MM-dd HH:mm:ss')" field="createdat"/>
+    <default field="pk" applyOnUpdate="0" expression=""/>
+    <default field="bknam" applyOnUpdate="0" expression=""/>
+    <default field="infiltrationsrateanfang" applyOnUpdate="0" expression=""/>
+    <default field="infiltrationsrateende" applyOnUpdate="0" expression=""/>
+    <default field="infiltrationsratestart" applyOnUpdate="0" expression=""/>
+    <default field="rueckgangskonstante" applyOnUpdate="0" expression=""/>
+    <default field="regenerationskonstante" applyOnUpdate="0" expression=""/>
+    <default field="saettigungswassergehalt" applyOnUpdate="0" expression=""/>
+    <default field="kommentar" applyOnUpdate="0" expression=""/>
+    <default field="createdat" applyOnUpdate="0" expression=" format_date( now(), 'yyyy-MM-dd HH:mm:ss')"/>
   </defaults>
   <constraints>
-    <constraint exp_strength="0" unique_strength="2" constraints="3" notnull_strength="2" field="pk"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="bknam"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="infiltrationsrateanfang"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="infiltrationsrateende"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="infiltrationsratestart"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="rueckgangskonstante"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="regenerationskonstante"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="saettigungswassergehalt"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="kommentar"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="createdat"/>
+    <constraint field="pk" exp_strength="0" unique_strength="2" notnull_strength="2" constraints="3"/>
+    <constraint field="bknam" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="infiltrationsrateanfang" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="infiltrationsrateende" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="infiltrationsratestart" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="rueckgangskonstante" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="regenerationskonstante" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="saettigungswassergehalt" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="kommentar" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="createdat" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
   </constraints>
   <constraintExpressions>
-    <constraint exp="" desc="" field="pk"/>
-    <constraint exp="" desc="" field="bknam"/>
-    <constraint exp="" desc="" field="infiltrationsrateanfang"/>
-    <constraint exp="" desc="" field="infiltrationsrateende"/>
-    <constraint exp="" desc="" field="infiltrationsratestart"/>
-    <constraint exp="" desc="" field="rueckgangskonstante"/>
-    <constraint exp="" desc="" field="regenerationskonstante"/>
-    <constraint exp="" desc="" field="saettigungswassergehalt"/>
-    <constraint exp="" desc="" field="kommentar"/>
-    <constraint exp="" desc="" field="createdat"/>
+    <constraint field="pk" exp="" desc=""/>
+    <constraint field="bknam" exp="" desc=""/>
+    <constraint field="infiltrationsrateanfang" exp="" desc=""/>
+    <constraint field="infiltrationsrateende" exp="" desc=""/>
+    <constraint field="infiltrationsratestart" exp="" desc=""/>
+    <constraint field="rueckgangskonstante" exp="" desc=""/>
+    <constraint field="regenerationskonstante" exp="" desc=""/>
+    <constraint field="saettigungswassergehalt" exp="" desc=""/>
+    <constraint field="kommentar" exp="" desc=""/>
+    <constraint field="createdat" exp="" desc=""/>
   </constraintExpressions>
   <expressionfields/>
   <attributeactions>
-    <defaultAction key="Canvas" value="{00000000-0000-0000-0000-000000000000}"/>
+    <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
   </attributeactions>
   <attributetableconfig sortOrder="0" actionWidgetStyle="dropDown" sortExpression="">
     <columns>
-      <column width="-1" type="field" name="pk" hidden="0"/>
-      <column width="-1" type="field" name="bknam" hidden="0"/>
-      <column width="-1" type="field" name="infiltrationsrateanfang" hidden="0"/>
-      <column width="-1" type="field" name="infiltrationsrateende" hidden="0"/>
-      <column width="-1" type="field" name="infiltrationsratestart" hidden="0"/>
-      <column width="-1" type="field" name="rueckgangskonstante" hidden="0"/>
-      <column width="-1" type="field" name="regenerationskonstante" hidden="0"/>
-      <column width="-1" type="field" name="saettigungswassergehalt" hidden="0"/>
-      <column width="-1" type="field" name="kommentar" hidden="0"/>
-      <column width="-1" type="field" name="createdat" hidden="0"/>
-      <column width="-1" type="actions" hidden="1"/>
+      <column name="pk" hidden="0" width="-1" type="field"/>
+      <column name="bknam" hidden="0" width="-1" type="field"/>
+      <column name="infiltrationsrateanfang" hidden="0" width="-1" type="field"/>
+      <column name="infiltrationsrateende" hidden="0" width="-1" type="field"/>
+      <column name="infiltrationsratestart" hidden="0" width="-1" type="field"/>
+      <column name="rueckgangskonstante" hidden="0" width="-1" type="field"/>
+      <column name="regenerationskonstante" hidden="0" width="-1" type="field"/>
+      <column name="saettigungswassergehalt" hidden="0" width="-1" type="field"/>
+      <column name="kommentar" hidden="0" width="-1" type="field"/>
+      <column name="createdat" hidden="0" width="-1" type="field"/>
+      <column hidden="1" width="-1" type="actions"/>
     </columns>
   </attributetableconfig>
   <conditionalstyles>
@@ -238,72 +374,72 @@ def my_form_open(dialog, layer, feature):
   <editorlayout>uifilelayout</editorlayout>
   <attributeEditorForm>
     <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
-      <labelFont underline="0" strikethrough="0" style="" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" bold="0"/>
+      <labelFont strikethrough="0" italic="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" style="" bold="0" underline="0"/>
     </labelStyle>
-    <attributeEditorField name="bknam" index="1" showLabel="1">
+    <attributeEditorField index="1" name="bknam" showLabel="1">
       <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont underline="0" strikethrough="0" style="" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" italic="0" bold="0"/>
+        <labelFont strikethrough="0" italic="0" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style="" bold="0" underline="0"/>
       </labelStyle>
     </attributeEditorField>
-    <attributeEditorField name="infiltrationsrateanfang" index="2" showLabel="1">
+    <attributeEditorField index="2" name="infiltrationsrateanfang" showLabel="1">
       <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont underline="0" strikethrough="0" style="" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" italic="0" bold="0"/>
+        <labelFont strikethrough="0" italic="0" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style="" bold="0" underline="0"/>
       </labelStyle>
     </attributeEditorField>
-    <attributeEditorField name="infiltrationsrateende" index="3" showLabel="1">
+    <attributeEditorField index="3" name="infiltrationsrateende" showLabel="1">
       <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont underline="0" strikethrough="0" style="" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" italic="0" bold="0"/>
+        <labelFont strikethrough="0" italic="0" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style="" bold="0" underline="0"/>
       </labelStyle>
     </attributeEditorField>
-    <attributeEditorField name="infiltrationsratestart" index="4" showLabel="1">
+    <attributeEditorField index="4" name="infiltrationsratestart" showLabel="1">
       <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont underline="0" strikethrough="0" style="" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" italic="0" bold="0"/>
+        <labelFont strikethrough="0" italic="0" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style="" bold="0" underline="0"/>
       </labelStyle>
     </attributeEditorField>
-    <attributeEditorField name="rueckgangskonstante" index="5" showLabel="1">
+    <attributeEditorField index="5" name="rueckgangskonstante" showLabel="1">
       <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont underline="0" strikethrough="0" style="" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" italic="0" bold="0"/>
+        <labelFont strikethrough="0" italic="0" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style="" bold="0" underline="0"/>
       </labelStyle>
     </attributeEditorField>
-    <attributeEditorField name="regenerationskonstante" index="6" showLabel="1">
+    <attributeEditorField index="6" name="regenerationskonstante" showLabel="1">
       <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont underline="0" strikethrough="0" style="" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" italic="0" bold="0"/>
+        <labelFont strikethrough="0" italic="0" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style="" bold="0" underline="0"/>
       </labelStyle>
     </attributeEditorField>
-    <attributeEditorField name="saettigungswassergehalt" index="7" showLabel="1">
+    <attributeEditorField index="7" name="saettigungswassergehalt" showLabel="1">
       <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont underline="0" strikethrough="0" style="" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" italic="0" bold="0"/>
+        <labelFont strikethrough="0" italic="0" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style="" bold="0" underline="0"/>
       </labelStyle>
     </attributeEditorField>
-    <attributeEditorField name="kommentar" index="8" showLabel="1">
+    <attributeEditorField index="8" name="kommentar" showLabel="1">
       <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont underline="0" strikethrough="0" style="" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" italic="0" bold="0"/>
+        <labelFont strikethrough="0" italic="0" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style="" bold="0" underline="0"/>
       </labelStyle>
     </attributeEditorField>
   </attributeEditorForm>
   <editable>
-    <field editable="1" name="bknam"/>
-    <field editable="1" name="createdat"/>
-    <field editable="1" name="infiltrationsrateanfang"/>
-    <field editable="1" name="infiltrationsrateende"/>
-    <field editable="1" name="infiltrationsratestart"/>
-    <field editable="1" name="kommentar"/>
-    <field editable="1" name="pk"/>
-    <field editable="1" name="regenerationskonstante"/>
-    <field editable="1" name="rueckgangskonstante"/>
-    <field editable="1" name="saettigungswassergehalt"/>
+    <field name="bknam" editable="1"/>
+    <field name="createdat" editable="1"/>
+    <field name="infiltrationsrateanfang" editable="1"/>
+    <field name="infiltrationsrateende" editable="1"/>
+    <field name="infiltrationsratestart" editable="1"/>
+    <field name="kommentar" editable="1"/>
+    <field name="pk" editable="1"/>
+    <field name="regenerationskonstante" editable="1"/>
+    <field name="rueckgangskonstante" editable="1"/>
+    <field name="saettigungswassergehalt" editable="1"/>
   </editable>
   <labelOnTop>
-    <field labelOnTop="0" name="bknam"/>
-    <field labelOnTop="0" name="createdat"/>
-    <field labelOnTop="0" name="infiltrationsrateanfang"/>
-    <field labelOnTop="0" name="infiltrationsrateende"/>
-    <field labelOnTop="0" name="infiltrationsratestart"/>
-    <field labelOnTop="0" name="kommentar"/>
-    <field labelOnTop="0" name="pk"/>
-    <field labelOnTop="0" name="regenerationskonstante"/>
-    <field labelOnTop="0" name="rueckgangskonstante"/>
-    <field labelOnTop="0" name="saettigungswassergehalt"/>
+    <field name="bknam" labelOnTop="0"/>
+    <field name="createdat" labelOnTop="0"/>
+    <field name="infiltrationsrateanfang" labelOnTop="0"/>
+    <field name="infiltrationsrateende" labelOnTop="0"/>
+    <field name="infiltrationsratestart" labelOnTop="0"/>
+    <field name="kommentar" labelOnTop="0"/>
+    <field name="pk" labelOnTop="0"/>
+    <field name="regenerationskonstante" labelOnTop="0"/>
+    <field name="rueckgangskonstante" labelOnTop="0"/>
+    <field name="saettigungswassergehalt" labelOnTop="0"/>
   </labelOnTop>
   <reuseLastValue>
     <field name="bknam" reuseLastValue="0"/>

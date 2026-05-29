@@ -1,12 +1,5 @@
-import os
-
-from qgis.core import QgsProject, QgsEditorWidgetSetup
-
 from qkan.database.dbfunc import DBConnection
 from qkan.utils import get_logger, QkanDbError
-from qgis.utils import pluginDirectory
-from qkan import QKan, enums
-from qkan.tools.qkan_utils import loadLayer, get_database_QKan
 VERSION = "3.4.9"  # must be higher than previous one and correspond with qkan_database.py: __dbVersion__
 
 logger = get_logger("QKan.database.migrations.0041")

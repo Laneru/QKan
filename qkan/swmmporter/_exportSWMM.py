@@ -67,9 +67,9 @@ class ExportTask:
             # i would recommend raising an exception here (or in the fehlermeldung function) otherwise
             # the process will keep running and eventually crash
 
-    def __del__(self) -> None:
-        self.db_qkan.sql("SELECT RecoverSpatialIndex()")
-
+    # def __del__(self) -> None:
+    #     self.db_qkan.sql("SELECT RecoverSpatialIndex()")
+    #
     def insertfunk(self, search_phrase, value):
         line_num = 0
         line_num2 = 0
@@ -284,8 +284,7 @@ class ExportTask:
                   area(flaechen.geom)/10000 AS area,
                   pow(area(flaechen.geom), 0.5)*1.3 AS width,
                   100 AS imperv,
-                  flaechen.neigung AS neigung,
-                  flaechen.haltnam
+                  flaechen.neigung AS neigung
                   FROM flaechen
 				  LEFT Join haltungen WHERE flaechen.haltnam = haltungen.haltnam
                 {auswahl}"""

@@ -138,1191 +138,1031 @@ class Zustandsklassen_funkt:
             pass
 
 
-        if self.datetype == 'Befahrungsdatum':
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Verformung'
+                    WHERE kuerzel = 'BAA'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
 
-            if haltung is True:
-
-                sql = """
-                    SELECT
-                        untersuchdat_haltung_bewertung.pk,
-                        untersuchdat_haltung_bewertung.untersuchhal,
-                        NULL,
-                        untersuchdat_haltung_bewertung.schoben,
-                        untersuchdat_haltung_bewertung.schunten,
-                        untersuchdat_haltung_bewertung.id,
-                        untersuchdat_haltung_bewertung.videozaehler,
-                        untersuchdat_haltung_bewertung.inspektionslaenge,
-                        untersuchdat_haltung_bewertung.station,
-                        untersuchdat_haltung_bewertung.timecode,
-                        untersuchdat_haltung_bewertung.kuerzel,
-                        untersuchdat_haltung_bewertung.charakt1,
-                        untersuchdat_haltung_bewertung.charakt2,
-                        untersuchdat_haltung_bewertung.quantnr1,
-                        untersuchdat_haltung_bewertung.quantnr2,
-                        untersuchdat_haltung_bewertung.streckenschaden,
-                        untersuchdat_haltung_bewertung.pos_von,
-                        untersuchdat_haltung_bewertung.pos_bis,
-                        untersuchdat_haltung_bewertung.foto_dateiname,
-                        untersuchdat_haltung_bewertung.film_dateiname,
-                        untersuchdat_haltung_bewertung.kommentar,
-                        untersuchdat_haltung_bewertung.untersuchtag,
-                        haltungen.haltnam,
-                        haltungen.material,
-                        haltungen.hoehe,
-                        haltungen.createdat
-                    FROM untersuchdat_haltung_bewertung, haltungen
-                    WHERE haltungen.haltnam = untersuchdat_haltung_bewertung.untersuchhal AND ABS(strftime('%s', untersuchdat_haltung_bewertung.untersuchtag) - strftime('%s', ?)) < 120
-                """
-                data = (date, )
-                db.sql(sql, parameters=data)
-
-            elif leitung is True:
-
-                sql = """
-                        SELECT
-                            untersuchdat_anschlussleitung_bewertung.pk,
-                            untersuchdat_anschlussleitung_bewertung.untersuchleit,
-                            anschlussleitungen.createdat,
-                            untersuchdat_anschlussleitung_bewertung.schoben,
-                            untersuchdat_anschlussleitung_bewertung.schunten,
-                            untersuchdat_anschlussleitung_bewertung.id,
-                            untersuchdat_anschlussleitung_bewertung.videozaehler,
-                            untersuchdat_anschlussleitung_bewertung.inspektionslaenge,
-                            untersuchdat_anschlussleitung_bewertung.station,
-                            untersuchdat_anschlussleitung_bewertung.timecode,
-                            untersuchdat_anschlussleitung_bewertung.kuerzel,
-                            untersuchdat_anschlussleitung_bewertung.charakt1,
-                            untersuchdat_anschlussleitung_bewertung.charakt2,
-                            untersuchdat_anschlussleitung_bewertung.quantnr1,
-                            untersuchdat_anschlussleitung_bewertung.quantnr2,
-                            untersuchdat_anschlussleitung_bewertung.streckenschaden,
-                            untersuchdat_anschlussleitung_bewertung.pos_von,
-                            untersuchdat_anschlussleitung_bewertung.pos_bis,
-                            untersuchdat_anschlussleitung_bewertung.foto_dateiname,
-                            untersuchdat_anschlussleitung_bewertung.film_dateiname,
-                            untersuchdat_anschlussleitung_bewertung.kommentar,
-                            untersuchdat_anschlussleitung_bewertung.untersuchtag,
-                            anschlussleitungen.leitnam,
-                            anschlussleitungen.material,
-                            anschlussleitungen.hoehe
-                        FROM untersuchdat_anschlussleitung_bewertung, anschlussleitungen
-                        WHERE anschlussleitungen.leitnam = untersuchdat_anschlussleitung_bewertung.untersuchleit AND ABS(strftime('%s', untersuchdat_anschlussleitung_bewertung.untersuchtag) - strftime('%s', ?)) < 120 
-                    """
-                data = (date,)
-                db.sql(sql, parameters=data)
-
-        elif self.datetype == 'Importdatum':
+        data = {'datumswahl': self.datetype, 'datumswert': date}
 
 
-            if haltung is True:
-                sql = """
-                    SELECT
-                        untersuchdat_haltung_bewertung.pk,
-                        untersuchdat_haltung_bewertung.untersuchhal,
-                        NULL,
-                        untersuchdat_haltung_bewertung.schoben,
-                        untersuchdat_haltung_bewertung.schunten,
-                        untersuchdat_haltung_bewertung.id,
-                        untersuchdat_haltung_bewertung.videozaehler,
-                        untersuchdat_haltung_bewertung.inspektionslaenge,
-                        untersuchdat_haltung_bewertung.station,
-                        untersuchdat_haltung_bewertung.timecode,
-                        untersuchdat_haltung_bewertung.kuerzel,
-                        untersuchdat_haltung_bewertung.charakt1,
-                        untersuchdat_haltung_bewertung.charakt2,
-                        untersuchdat_haltung_bewertung.quantnr1,
-                        untersuchdat_haltung_bewertung.quantnr2,
-                        untersuchdat_haltung_bewertung.streckenschaden,
-                        untersuchdat_haltung_bewertung.pos_von,
-                        untersuchdat_haltung_bewertung.pos_bis,
-                        untersuchdat_haltung_bewertung.foto_dateiname,
-                        untersuchdat_haltung_bewertung.film_dateiname,
-                        untersuchdat_haltung_bewertung.kommentar,
-                        untersuchdat_haltung_bewertung.createdat,
-                        haltungen.haltnam,
-                        haltungen.material,
-                        haltungen.hoehe,
-                        haltungen.createdat
-                    FROM untersuchdat_haltung_bewertung, haltungen
-                    WHERE haltungen.haltnam = untersuchdat_haltung_bewertung.untersuchhal AND ABS(strftime('%s', untersuchdat_haltung_bewertung.createdat) - strftime('%s', ?)) < 120
-                """
-                data = (date,)
-                db.sql(sql, parameters=data)
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
 
-            elif leitung is True:
-                sql = """
-                        SELECT
-                            untersuchdat_anschlussleitung_bewertung.pk,
-                            untersuchdat_anschlussleitung_bewertung.untersuchleit,
-                            anschlussleitungen.createdat,
-                            untersuchdat_anschlussleitung_bewertung.schoben,
-                            untersuchdat_anschlussleitung_bewertung.schunten,
-                            untersuchdat_anschlussleitung_bewertung.id,
-                            untersuchdat_anschlussleitung_bewertung.videozaehler,
-                            untersuchdat_anschlussleitung_bewertung.inspektionslaenge,
-                            untersuchdat_anschlussleitung_bewertung.station,
-                            untersuchdat_anschlussleitung_bewertung.timecode,
-                            untersuchdat_anschlussleitung_bewertung.kuerzel,
-                            untersuchdat_anschlussleitung_bewertung.charakt1,
-                            untersuchdat_anschlussleitung_bewertung.charakt2,
-                            untersuchdat_anschlussleitung_bewertung.quantnr1,
-                            untersuchdat_anschlussleitung_bewertung.quantnr2,
-                            untersuchdat_anschlussleitung_bewertung.streckenschaden,
-                            untersuchdat_anschlussleitung_bewertung.pos_von,
-                            untersuchdat_anschlussleitung_bewertung.pos_bis,
-                            untersuchdat_anschlussleitung_bewertung.foto_dateiname,
-                            untersuchdat_anschlussleitung_bewertung.film_dateiname,
-                            untersuchdat_anschlussleitung_bewertung.kommentar,
-                            untersuchdat_anschlussleitung_bewertung.createdat,
-                            anschlussleitungen.leitnam,
-                            anschlussleitungen.material,
-                            anschlussleitungen.hoehe
-                        FROM untersuchdat_anschlussleitung_bewertung, anschlussleitungen
-                        WHERE anschlussleitungen.leitnam = untersuchdat_anschlussleitung_bewertung.untersuchleit AND ABS(strftime('%s', untersuchdat_anschlussleitung_bewertung.createdat) - strftime('%s', ?)) < 120 
-                    """
-                data = (date,)
-                db.sql(sql, parameters=data)
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                    beschreibung = 'Rissbildung'
+                                WHERE kuerzel = 'BAB'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
 
-        for attr in db.fetchall():
+        data = {'datumswahl': self.datetype, 'datumswert': date}
 
-            sql = ""
-            data = ()
-            # Tab A.2
-            if attr[10] == "BAA":
-                z = 'Verformung'
-                sql = f"""
-                      UPDATE untersuchdat_haltung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_haltung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
 
-            # Tab A.3
-            elif attr[10] == "BAB":
-                z = 'Rissbildung'
-                sql = f"""
-                      UPDATE untersuchdat_haltung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_haltung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                                beschreibung = 'Rohrbruch/Einsturz'
+                                            WHERE kuerzel = 'BAC'
+                                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                  );"""
 
-            elif attr[10] == "BAC":
-                z = 'Rohrbruch/Einsturz'
-                sql = f"""
-                      UPDATE untersuchdat_haltung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_haltung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        data = {'datumswahl': self.datetype, 'datumswert': date}
 
-            elif attr[10] == "BAD":
-                z = 'Defektes Mauerwerk'
-                sql = f"""
-                      UPDATE untersuchdat_haltung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_haltung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
 
-            elif attr[10] == "BAE":
-                z = 'Fehlender Mörtel'
-                sql = f"""
-                      UPDATE untersuchdat_haltung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_haltung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                #     db.commit()
-                    continue
-                except:
-                    pass
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                                            beschreibung = 'Defektes Mauerwerk'
+                                                        WHERE kuerzel = 'BAD'
+                                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                              );"""
 
-            elif attr[10] == "BAF":
-                z = 'Oberflächenschäden'
-                sql = f"""
-                      UPDATE untersuchdat_haltung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_haltung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        data = {'datumswahl': self.datetype, 'datumswert': date}
 
-            elif attr[10] == "BAG":
-                z = 'Einragender Anschluss'
-                sql = f"""
-                        UPDATE untersuchdat_haltung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_haltung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
 
-            elif attr[10] == "BAH":
-                z = 'Schadhafter Anschluss'
-                sql = f"""
-                      UPDATE untersuchdat_haltung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_haltung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                                                        beschreibung = 'Fehlender Mörtel'
+                                                                    WHERE kuerzel = 'BAE'
+                                                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                                          );"""
 
-            elif attr[10] == "BAI":
-                z = 'Einragendes Dichtungsmaterial'
-                sql = f"""
-                      UPDATE untersuchdat_haltung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_haltung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAJ":
-                z = 'Verschobene Verbindung'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "A":
-                z = 'Feststellung der Innenauskleidung: Innenauskleidung abgelöst'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "B":
-                z = 'Feststellung der Innenauskleidung: Innenauskleidung verfärbt'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "C":
-                z = 'Feststellung der Innenauskleidung: Endstelle der Auskleidung schadhaft'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "D":
-                z = 'Feststellung der Innenauskleidung: Faten in der Auskleidung'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "E":
-                z = 'Feststellung der Innenauskleidung: Blasen oder Beulen in der Auskleidung nach innen'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "F":
-                z = 'Feststellung der Innenauskleidung: Beulen aussen'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "G":
-                z = 'Feststellung der Innenauskleidung: Ablösen der Innenhaut/Beschichtung'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "H":
-                z = 'Feststellung der Innenauskleidung: Ablösen der Abdeckung der Verbindungsnaht'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "I":
-                z = 'Feststellung der Innenauskleidung: Riss oder Spalt (einschließlich schadhafter Schweissnaht)'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "J":
-                z = 'Feststellung der Innenauskleidung: Loch in der Auskleidung'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "K":
-                z = 'Feststellung der Innenauskleidung: Auskleidungsverbindung defekt'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "L":
-                z = 'Feststellung der Innenauskleidung: Auskleidungswerkstoff erscheint weich'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "M":
-                z = 'Feststellung der Innenauskleidung: Harz fehlt im Laminat'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "N":
-                z = 'Feststellung der Innenauskleidung: Ende der Auskleidung ist nicht abgedichtet, um das Rohr oder den Schacht aufzunehmen.'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "Z":
-                z = 'Feststellung der Innenauskleidung: Anderer Auskleidungsschaden'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "A":
-                z = 'Schadhafte Reperatur: Wand fehlt teilweise'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "B":
-                z = 'Schadhafte Reperatur: Reperatur zur Abdichtung eines Lochs ist schadhaft'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "C":
-                z = 'Schadhafte Reperatur: Ablösen des Reperaturwerkstofes vom Basisrohr'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "D":
-                z = 'Schadhafte Reperatur: fehlender Reperaturwerkstoff an der Kontaktfläche'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "E":
-                z = 'Schadhafte Reperatur: überschüssiger Reperaturwerkstoff, der ein Hindernis darstellt'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "P":
-                z = 'Schadhafte Reperatur: Loch im Reperaturwerkstoff'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "G":
-                z = 'Schadhafte Reperatur: Riss im Reperaturwerkstoff'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "Z":
-                z = 'Schadhafte Reperatur: Andere'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAM":
-                z = 'Schadhafte Schweissnaht'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAN":
-                z = 'Poroeses Rohr'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAO":
-                z = 'Boden sichtbar'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAP":
-                z = 'Hohlraum sichtbar'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBA":
-                z = 'Wurzeln'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBB":
-                z = 'Anhaftende Stoffe'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBC":
-                z = 'Ablagerungen'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBD":
-                z = 'Eindringen von Bodenmaterial'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBE":
-                z = 'Andere Hindernisse'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBF":
-                z = 'Infiltration'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBG":
-                z = 'Exfiltration'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBH":
-                z = 'Ungeziefer'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCA":
-                z = 'Anschluss'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "A":
-                z = 'Punktuelle Reperatur: Reperatur mit Injektionstechnik'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "B":
-                z = 'Punktuelle Reperatur: Reperatur mit Roboter'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "C":
-                z = 'Punktuelle Reperatur: Reperatur mit partieller Auskleidungs-/Manchettentechnik'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "D":
-                z = 'Punktuelle Reperatur: Zulaufeinbindung'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "E":
-                z = 'Punktuelle Reperatur: Reperatur Rohrwand manuell'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "F":
-                z = 'Punktuelle Reperatur: Reperatur Rohrverbindung manuell'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "G":
-                z = 'Punktuelle Reperatur: Ringspalt-/-raumdichtung (der Auskleidung) zum Anschluss an Schacht/Inspektionsöffnung'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "H":
-                z = 'Punktuelle Reperatur: Zulauföffnung ohne Einbindung (Auskleidung)'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "I":
-                z = 'Punktuelle Reperatur: Rohr ausgetauscht'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "Z":
-                z = 'Punktuelle Reperatur: sonstige Technink'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCC":
-                z = 'Krümmung der Leitung'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCD":
-                z = 'Anfangsknoten'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCE":
-                z = 'Endknoten'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDA":
-                z = 'Allgemeines Foto'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "AA":
-                z = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, eingesteckt, gerade'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "AB":
-                z = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, uebergestuelpt, gerade'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "AC":
-                z = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, eingesteckt, abgewinkelt'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "AD":
-                z = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, uebergestuelpt, abgewinkelt'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "AE":
-                z = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, stumpf aneinandergestossen'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "BA":
-                z = 'Allgemeine Anmerkung: Verschluss eines Rohrs durch Abmauerung'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "BB":
-                z = 'Allgemeine Anmerkung: Verschluss eines Rohrs durch Moertel'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "BC":
-                z = 'Allgemeine Anmerkung: Verschluss eines Rohrs durch Deckel (Muffenstopfen)'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDC":
-                z = 'Inspektion endet vor dem Endknoten'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDD":
-                z = 'Wasserspiegel'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDE":
-                z = 'Zufluss aus einem Anschluss'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDF":
-                z = 'Atmosphäre in der Leitung'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDG":
-                z = 'Keine Sicht'
-                sql = f"""
-                    UPDATE untersuchdat_haltung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_haltung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            try:
-                db.commit()
-            except:
-                pass
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                beschreibung = 'Oberflächenschäden'
+                            WHERE kuerzel = 'BAF'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                            beschreibung = 'Einragender Anschluss'
+                                        WHERE kuerzel = 'BAG'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                            beschreibung = 'Schadhafter Anschluss'
+                        WHERE kuerzel = 'BAH'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                        beschreibung = 'Einragendes Dichtungsmaterial'
+                                    WHERE kuerzel = 'BAI'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Verschobene Verbindung'
+                    WHERE kuerzel = 'BAJ'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                    beschreibung = 'Feststellung der Innenauskleidung: Innenauskleidung abgelöst'
+                                WHERE kuerzel = 'BAK' AND charakt1 = 'A'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                            beschreibung = 'Feststellung der Innenauskleidung: Innenauskleidung verfärbt'
+                        WHERE kuerzel = 'BAK' AND charakt1 = 'B'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                        beschreibung = 'Feststellung der Innenauskleidung: Endstelle der Auskleidung schadhaft'
+                                    WHERE kuerzel = 'BAK' AND charakt1 = 'C'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                    beschreibung = 'Feststellung der Innenauskleidung: Faten in der Auskleidung'
+                WHERE kuerzel = 'BAK' AND charakt1 = 'D'
+                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                beschreibung = 'Feststellung der Innenauskleidung: Blasen oder Beulen in der Auskleidung nach innen'
+                            WHERE kuerzel = 'BAK' AND charakt1 = 'E'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                            beschreibung = 'Feststellung der Innenauskleidung: Beulen aussen'
+                        WHERE kuerzel = 'BAK' AND charakt1 = 'F'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                        beschreibung = 'Feststellung der Innenauskleidung: Ablösen der Innenhaut/Beschichtung'
+                                    WHERE kuerzel = 'BAK' AND charakt1 = 'G'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Feststellung der Innenauskleidung: Ablösen der Abdeckung der Verbindungsnaht'
+                    WHERE kuerzel = 'BAK' AND charakt1 = 'H'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                    beschreibung = 'Feststellung der Innenauskleidung: Riss oder Spalt (einschließlich schadhafter Schweissnaht)'
+                WHERE kuerzel = 'BAK' AND charakt1 = 'I'
+                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                beschreibung = 'Feststellung der Innenauskleidung: Loch in der Auskleidung'
+                            WHERE kuerzel = 'BAK' AND charakt1 = 'J'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Feststellung der Innenauskleidung: Auskleidungsverbindung defekt'
+                    WHERE kuerzel = 'BAK' AND charakt1 = 'K'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                    beschreibung = 'Feststellung der Innenauskleidung: Auskleidungswerkstoff erscheint weich'
+                                WHERE kuerzel = 'BAK' AND charakt1 = 'L'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                    beschreibung = 'Feststellung der Innenauskleidung: Harz fehlt im Laminat'
+                WHERE kuerzel = 'BAK' AND charakt1 = 'M'
+                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                beschreibung = 'Feststellung der Innenauskleidung: Ende der Auskleidung ist nicht abgedichtet, um das Rohr oder den Schacht aufzunehmen'
+                            WHERE kuerzel = 'BAK' AND charakt1 = 'N'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Feststellung der Innenauskleidung: Anderer Auskleidungsschaden'
+                    WHERE kuerzel = 'BAK' AND charakt1 = 'Z'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                    beschreibung = 'Schadhafte Reperatur: Wand fehlt teilweise'
+                                WHERE kuerzel = 'BAL' AND charakt1 = 'A'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Schadhafte Reperatur: Reperatur zur Abdichtung eines Lochs ist schadhaft'
+                    WHERE kuerzel = 'BAL' AND charakt1 = 'B'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                    beschreibung = 'Schadhafte Reperatur: Ablösen des Reperaturwerkstofes vom Basisrohr'
+                                WHERE kuerzel = 'BAL' AND charakt1 = 'C'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                                beschreibung = 'Schadhafte Reperatur: fehlender Reperaturwerkstoff an der Kontaktfläche'
+                                            WHERE kuerzel = 'BAL' AND charakt1 = 'D'
+                                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Schadhafte Reperatur: überschüssiger Reperaturwerkstoff, der ein Hindernis darstellt'
+                    WHERE kuerzel = 'BAL' AND charakt1 = 'E'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Schadhafte Reperatur: Loch im Reperaturwerkstoff'
+                    WHERE kuerzel = 'BAL' AND charakt1 = 'P'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                    beschreibung = 'Schadhafte Reperatur: Riss im Reperaturwerkstoff'
+                                WHERE kuerzel = 'BAL' AND charakt1 = 'G'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                                beschreibung = 'Schadhafte Reperatur: Andere'
+                                            WHERE kuerzel = 'BAL' AND charakt1 = 'Z'
+                                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Schadhafte Schweissnaht'
+                    WHERE kuerzel = 'BAM' 
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                    beschreibung = 'Poroeses Rohr'
+                                WHERE kuerzel = 'BAN' 
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                                beschreibung = 'Boden sichtbar'
+                                            WHERE kuerzel = 'BAO' 
+                                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                    beschreibung = 'Hohlraum sichtbar'
+                WHERE kuerzel = 'BAP' 
+                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                            beschreibung = 'Wurzeln'
+                        WHERE kuerzel = 'BBA' 
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Anhaftende Stoffe'
+                    WHERE kuerzel = 'BBB' 
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                    beschreibung = 'Ablagerungen'
+                                WHERE kuerzel = 'BBC' 
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                beschreibung = 'Eindringen von Bodenmaterial'
+            WHERE kuerzel = 'BBD' 
+              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                            beschreibung = 'Andere Hindernisse'
+                        WHERE kuerzel = 'BBE' 
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                        beschreibung = 'Infiltration'
+                                    WHERE kuerzel = 'BBF' 
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Exfiltration'
+                    WHERE kuerzel = 'BBG' 
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                    beschreibung = 'Ungeziefer'
+                                WHERE kuerzel = 'BBH' 
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Anschluss'
+                    WHERE kuerzel = 'BCA' 
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                    beschreibung = 'Punktuelle Reperatur: Reperatur mit Injektionstechnik'
+                                WHERE kuerzel = 'BCB' AND charakt1 = 'A'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Punktuelle Reperatur: Reperatur mit Roboter'
+                    WHERE kuerzel = 'BCB' AND charakt1 = 'B'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                    beschreibung = 'Punktuelle Reperatur: Reperatur mit partieller Auskleidungs-/Manchettentechnik'
+                WHERE kuerzel = 'BCB' AND charakt1 = 'C'
+                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                beschreibung = 'Punktuelle Reperatur: Zulaufeinbindung'
+                            WHERE kuerzel = 'BCB' AND charakt1 = 'D'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Punktuelle Reperatur: Reperatur Rohrwand manuell'
+                    WHERE kuerzel = 'BCB' AND charakt1 = 'E'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                    beschreibung = 'Punktuelle Reperatur: Reperatur Rohrverbindung manuell'
+                WHERE kuerzel = 'BCB' AND charakt1 = 'F'
+                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                            beschreibung = 'Punktuelle Reperatur: Ringspalt-/-raumdichtung (der Auskleidung) zum Anschluss an Schacht/Inspektionsöffnung'
+                        WHERE kuerzel = 'BCB' AND charakt1 = 'G'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                    beschreibung = 'Punktuelle Reperatur: Zulauföffnung ohne Einbindung (Auskleidung)'
+                WHERE kuerzel = 'BCB' AND charakt1 = 'H'
+                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Punktuelle Reperatur: Rohr ausgetauscht'
+                    WHERE kuerzel = 'BCB' AND charakt1 = 'I'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                    beschreibung = 'Punktuelle Reperatur: sonstige Technink'
+                                WHERE kuerzel = 'BCB' AND charakt1 = 'Z'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Krümmung der Leitung'
+                    WHERE kuerzel = 'BCC'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                    beschreibung = 'Anfangsknoten'
+                WHERE kuerzel = 'BCD'
+                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                beschreibung = 'Endknoten'
+                            WHERE kuerzel = 'BCE'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                            beschreibung = 'Allgemeines Foto'
+                        WHERE kuerzel = 'BDA'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, eingesteckt, gerade'
+                    WHERE kuerzel = 'BDB' AND charakt1 = 'AA'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, uebergestuelpt, gerade'
+                    WHERE kuerzel = 'BDB' AND charakt1 = 'AB'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                    beschreibung = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, eingesteckt, abgewinkelt'
+                WHERE kuerzel = 'BDB' AND charakt1 = 'AC'
+                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                beschreibung = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, uebergestuelpt, abgewinkelt'
+                            WHERE kuerzel = 'BDB' AND charakt1 = 'AD'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, stumpf aneinandergestossen'
+                    WHERE kuerzel = 'BDB' AND charakt1 = 'AE'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                    beschreibung = 'Allgemeine Anmerkung: Verschluss eines Rohrs durch Abmauerung'
+                WHERE kuerzel = 'BDB' AND charakt1 = 'BA'
+                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                beschreibung = 'Allgemeine Anmerkung: Verschluss eines Rohrs durch Moertel'
+                            WHERE kuerzel = 'BDB' AND charakt1 = 'BB'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                    beschreibung = 'Allgemeine Anmerkung: Verschluss eines Rohrs durch Deckel (Muffenstopfen)'
+                WHERE kuerzel = 'BDB' AND charakt1 = 'BC'
+                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                    beschreibung = 'Inspektion endet vor dem Endknoten'
+                WHERE kuerzel = 'BDC' 
+                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                beschreibung = 'Wasserspiegel'
+                            WHERE kuerzel = 'BDD' 
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                            beschreibung = 'Zufluss aus einem Anschluss'
+                                        WHERE kuerzel = 'BDE' 
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                        beschreibung = 'Atmosphäre in der Leitung'
+                    WHERE kuerzel = 'BDF' 
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_haltung_bewertung set
+                                    beschreibung = 'Keine Sicht'
+                                WHERE kuerzel = 'BDG' 
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+
+
         sql = """SELECT RecoverGeometryColumn('untersuchdat_haltung_bewertung', 'geom', ?, 'LINESTRING', 'XY');"""
         data = (crs,)
         try:
@@ -1373,1122 +1213,1028 @@ class Zustandsklassen_funkt:
         except:
             pass
 
-        if self.datetype == 'Importdatum':
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Verformung'
+                            WHERE kuerzel = 'BAA'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
 
-            if leitung is True:
+        data = {'datumswahl': self.datetype, 'datumswert': date}
 
-                sql = """
-                        SELECT
-                            untersuchdat_anschlussleitung_bewertung.pk,
-                            untersuchdat_anschlussleitung_bewertung.untersuchleit,
-                            NULL,
-                            untersuchdat_anschlussleitung_bewertung.schoben,
-                            untersuchdat_anschlussleitung_bewertung.schunten,
-                            untersuchdat_anschlussleitung_bewertung.id,
-                            untersuchdat_anschlussleitung_bewertung.videozaehler,
-                            untersuchdat_anschlussleitung_bewertung.inspektionslaenge,
-                            untersuchdat_anschlussleitung_bewertung.station,
-                            untersuchdat_anschlussleitung_bewertung.timecode,
-                            untersuchdat_anschlussleitung_bewertung.kuerzel,
-                            untersuchdat_anschlussleitung_bewertung.charakt1,
-                            untersuchdat_anschlussleitung_bewertung.charakt2,
-                            untersuchdat_anschlussleitung_bewertung.quantnr1,
-                            untersuchdat_anschlussleitung_bewertung.quantnr2,
-                            untersuchdat_anschlussleitung_bewertung.streckenschaden,
-                            untersuchdat_anschlussleitung_bewertung.pos_von,
-                            untersuchdat_anschlussleitung_bewertung.pos_bis,
-                            untersuchdat_anschlussleitung_bewertung.foto_dateiname,
-                            untersuchdat_anschlussleitung_bewertung.film_dateiname,
-                            NULL,
-                            untersuchdat_anschlussleitung_bewertung.createdat,
-                            anschlussleitungen.leitnam,
-                            anschlussleitungen.material,
-                            anschlussleitungen.hoehe,
-                            anschlussleitungen.createdat
-                        FROM untersuchdat_anschlussleitung_bewertung, anschlussleitungen
-                        WHERE anschlussleitungen.leitnam = untersuchdat_anschlussleitung_bewertung.untersuchleit AND ABS(strftime('%s', untersuchdat_anschlussleitung_bewertung.createdat) - strftime('%s', ?)) < 120  
-                    """
-                data = (date,)
-                db.sql(sql, parameters=data)
-        if self.datetype == 'Befahrungsdatum':
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
 
-            if leitung is True:
-                sql = """
-                        SELECT
-                            untersuchdat_anschlussleitung_bewertung.pk,
-                            untersuchdat_anschlussleitung_bewertung.untersuchleit,
-                            NULL,
-                            untersuchdat_anschlussleitung_bewertung.schoben,
-                            untersuchdat_anschlussleitung_bewertung.schunten,
-                            untersuchdat_anschlussleitung_bewertung.id,
-                            untersuchdat_anschlussleitung_bewertung.videozaehler,
-                            untersuchdat_anschlussleitung_bewertung.inspektionslaenge,
-                            untersuchdat_anschlussleitung_bewertung.station,
-                            untersuchdat_anschlussleitung_bewertung.timecode,
-                            untersuchdat_anschlussleitung_bewertung.kuerzel,
-                            untersuchdat_anschlussleitung_bewertung.charakt1,
-                            untersuchdat_anschlussleitung_bewertung.charakt2,
-                            untersuchdat_anschlussleitung_bewertung.quantnr1,
-                            untersuchdat_anschlussleitung_bewertung.quantnr2,
-                            untersuchdat_anschlussleitung_bewertung.streckenschaden,
-                            untersuchdat_anschlussleitung_bewertung.pos_von,
-                            untersuchdat_anschlussleitung_bewertung.pos_bis,
-                            untersuchdat_anschlussleitung_bewertung.foto_dateiname,
-                            untersuchdat_anschlussleitung_bewertung.film_dateiname,
-                            NULL,
-                            untersuchdat_anschlussleitung_bewertung.untersuchtag,
-                            anschlussleitungen.leitnam,
-                            anschlussleitungen.material,
-                            anschlussleitungen.hoehe,
-                            anschlussleitungen.createdat
-                        FROM untersuchdat_anschlussleitung_bewertung, anschlussleitungen
-                        WHERE anschlussleitungen.leitnam = untersuchdat_anschlussleitung_bewertung.untersuchleit AND ABS(strftime('%s', untersuchdat_anschlussleitung_bewertung.untersuchtag) - strftime('%s', ?)) < 120  
-                    """
-                data = (date,)
-                db.sql(sql, parameters=data)
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                        beschreibung = 'Rissbildung'
+                    WHERE kuerzel = 'BAB'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
 
+        data = {'datumswahl': self.datetype, 'datumswert': date}
 
-        for attr in db.fetchall():
-            sql = ""
-            data = ()
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
 
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Rohrbruch/Einsturz'
+                        WHERE kuerzel = 'BAC'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
 
-            # Tab A.2
-            if attr[10] == "BAA":
-                z = 'Verformung'
-                sql = f"""
-                      UPDATE untersuchdat_anschlussleitung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        data = {'datumswahl': self.datetype, 'datumswert': date}
 
-            # Tab A.3
-            elif attr[10] == "BAB":
-                z = 'Rissbildung'
-                sql = f"""
-                      UPDATE untersuchdat_anschlussleitung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
 
-            elif attr[10] == "BAC":
-                z = 'Rohrbruch/Einsturz'
-                sql = f"""
-                      UPDATE untersuchdat_anschlussleitung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                        beschreibung = 'Defektes Mauerwerk'
+                    WHERE kuerzel = 'BAD'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
 
-            elif attr[10] == "BAD":
-                z = 'Defektes Mauerwerk'
-                sql = f"""
-                      UPDATE untersuchdat_anschlussleitung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        data = {'datumswahl': self.datetype, 'datumswert': date}
 
-            elif attr[10] == "BAE":
-                z = 'Fehlender Mörtel'
-                sql = f"""
-                      UPDATE untersuchdat_anschlussleitung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                #     db.commit()
-                    continue
-                except:
-                    pass
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
 
-            elif attr[10] == "BAF":
-                z = 'Oberflächenschäden'
-                sql = f"""
-                      UPDATE untersuchdat_anschlussleitung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Fehlender Mörtel'
+                        WHERE kuerzel = 'BAE'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
 
-            elif attr[10] == "BAG":
-                z = 'Einragender Anschluss'
-                sql = f"""
-                        UPDATE untersuchdat_anschlussleitung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        data = {'datumswahl': self.datetype, 'datumswert': date}
 
-            elif attr[10] == "BAH":
-                z = 'Schadhafter Anschluss'
-                sql = f"""
-                      UPDATE untersuchdat_anschlussleitung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
 
-            elif attr[10] == "BAI":
-                z = 'Einragendes Dichtungsmaterial'
-                sql = f"""
-                      UPDATE untersuchdat_anschlussleitung_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAJ":
-                z = 'Verschobene Verbindung'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "A":
-                z = 'Feststellung der Innenauskleidung: Innenauskleidung abgelöst'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "B":
-                z = 'Feststellung der Innenauskleidung: Innenauskleidung verfärbt'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "C":
-                z = 'Feststellung der Innenauskleidung: Endstelle der Auskleidung schadhaft'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "D":
-                z = 'Feststellung der Innenauskleidung: Faten in der Auskleidung'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "E":
-                z = 'Feststellung der Innenauskleidung: Blasen oder Beulen in der Auskleidung nach innen'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "F":
-                z = 'Feststellung der Innenauskleidung: Beulen aussen'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "G":
-                z = 'Feststellung der Innenauskleidung: Ablösen der Innenhaut/Beschichtung'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "H":
-                z = 'Feststellung der Innenauskleidung: Ablösen der Abdeckung der Verbindungsnaht'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "I":
-                z = 'Feststellung der Innenauskleidung: Riss oder Spalt (einschließlich schadhafter Schweissnaht)'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "J":
-                z = 'Feststellung der Innenauskleidung: Loch in der Auskleidung'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "K":
-                z = 'Feststellung der Innenauskleidung: Auskleidungsverbindung defekt'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "L":
-                z = 'Feststellung der Innenauskleidung: Auskleidungswerkstoff erscheint weich'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "M":
-                z = 'Feststellung der Innenauskleidung: Harz fehlt im Laminat'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "N":
-                z = 'Feststellung der Innenauskleidung: Ende der Auskleidung ist nicht abgedichtet, um das Rohr oder den Schacht aufzunehmen.'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAK" and attr[11] == "Z":
-                z = 'Feststellung der Innenauskleidung: Anderer Auskleidungsschaden'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "A":
-                z = 'Schadhafte Reperatur: Wand fehlt teilweise'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "B":
-                z = 'Schadhafte Reperatur: Reperatur zur Abdichtung eines Lochs ist schadhaft'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "C":
-                z = 'Schadhafte Reperatur: Ablösen des Reperaturwerkstofes vom Basisrohr'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "D":
-                z = 'Schadhafte Reperatur: fehlender Reperaturwerkstoff an der Kontaktfläche'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "E":
-                z = 'Schadhafte Reperatur: überschüssiger Reperaturwerkstoff, der ein Hindernis darstellt'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "P":
-                z = 'Schadhafte Reperatur: Loch im Reperaturwerkstoff'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "G":
-                z = 'Schadhafte Reperatur: Riss im Reperaturwerkstoff'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAL" and attr[11] == "Z":
-                z = 'Schadhafte Reperatur: Andere'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAM":
-                z = 'Schadhafte Schweissnaht'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAN":
-                z = 'Poroeses Rohr'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAO":
-                z = 'Boden sichtbar'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BAP":
-                z = 'Hohlraum sichtbar'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBA":
-                z = 'Wurzeln'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBB":
-                z = 'Anhaftende Stoffe'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBC":
-                z = 'Ablagerungen'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBD":
-                z = 'Eindringen von Bodenmaterial'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBE":
-                z = 'Andere Hindernisse'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBF":
-                z = 'Infiltration'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBG":
-                z = 'Exfiltration'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BBH":
-                z = 'Ungeziefer'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCA":
-                z = 'Anschluss'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "A":
-                z = 'Punktuelle Reperatur: Reperatur mit Injektionstechnik'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "B":
-                z = 'Punktuelle Reperatur: Reperatur mit Roboter'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "C":
-                z = 'Punktuelle Reperatur: Reperatur mit partieller Auskleidungs-/Manchettentechnik'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "D":
-                z = 'Punktuelle Reperatur: Zulaufeinbindung'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "E":
-                z = 'Punktuelle Reperatur: Reperatur Rohrwand manuell'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "F":
-                z = 'Punktuelle Reperatur: Reperatur Rohrverbindung manuell'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "G":
-                z = 'Punktuelle Reperatur: Ringspalt-/-raumdichtung (der Auskleidung) zum Anschluss an Schacht/Inspektionsöffnung'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "H":
-                z = 'Punktuelle Reperatur: Zulauföffnung ohne Einbindung (Auskleidung)'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "I":
-                z = 'Punktuelle Reperatur: Rohr ausgetauscht'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCB" and attr[11] == "Z":
-                z = 'Punktuelle Reperatur: sonstige Technink'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCC":
-                z = 'Krümmung der Leitung'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCD":
-                z = 'Anfangsknoten'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BCE":
-                z = 'Endknoten'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDA":
-                z = 'Allgemeines Foto'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "AA":
-                z = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, eingesteckt, gerade'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "AB":
-                z = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, uebergestuelpt, gerade'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "AC":
-                z = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, eingesteckt, abgewinkelt'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "AD":
-                z = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, uebergestuelpt, abgewinkelt'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "AE":
-                z = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, stumpf aneinandergestossen'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "BA":
-                z = 'Allgemeine Anmerkung: Verschluss eines Rohrs durch Abmauerung'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "BB":
-                z = 'Allgemeine Anmerkung: Verschluss eines Rohrs durch Moertel'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDB" and attr[11] == "BC":
-                z = 'Allgemeine Anmerkung: Verschluss eines Rohrs durch Deckel (Muffenstopfen)'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDC":
-                z = 'Inspektion endet vor dem Endknoten'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDD":
-                z = 'Wasserspiegel'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDE":
-                z = 'Zufluss aus einem Anschluss'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDF":
-                z = 'Atmosphäre in der Leitung'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[10] == "BDG":
-                z = 'Keine Sicht'
-                sql = f"""
-                    UPDATE untersuchdat_anschlussleitung_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_anschlussleitung_bewertung.pk = ?;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #     db.commit()
-                    continue
-                except:
-                    pass
-            try:
-                db.commit()
-            except:
-                pass
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                        beschreibung = 'Oberflächenschäden'
+                                    WHERE kuerzel = 'BAF'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Einragender Anschluss'
+                        WHERE kuerzel = 'BAG'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                    beschreibung = 'Schadhafter Anschluss'
+                                WHERE kuerzel = 'BAH'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Einragendes Dichtungsmaterial'
+                            WHERE kuerzel = 'BAI'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Verschobene Verbindung'
+                            WHERE kuerzel = 'BAJ'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                            beschreibung = 'Feststellung der Innenauskleidung: Innenauskleidung abgelöst'
+                                        WHERE kuerzel = 'BAK' AND charakt1 = 'A'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                    beschreibung = 'Feststellung der Innenauskleidung: Innenauskleidung verfärbt'
+                                WHERE kuerzel = 'BAK' AND charakt1 = 'B'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Feststellung der Innenauskleidung: Endstelle der Auskleidung schadhaft'
+                            WHERE kuerzel = 'BAK' AND charakt1 = 'C'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Feststellung der Innenauskleidung: Faten in der Auskleidung'
+                        WHERE kuerzel = 'BAK' AND charakt1 = 'D'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                        beschreibung = 'Feststellung der Innenauskleidung: Blasen oder Beulen in der Auskleidung nach innen'
+                                    WHERE kuerzel = 'BAK' AND charakt1 = 'E'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                    beschreibung = 'Feststellung der Innenauskleidung: Beulen aussen'
+                                WHERE kuerzel = 'BAK' AND charakt1 = 'F'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                                beschreibung = 'Feststellung der Innenauskleidung: Ablösen der Innenhaut/Beschichtung'
+                                            WHERE kuerzel = 'BAK' AND charakt1 = 'G'
+                                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Feststellung der Innenauskleidung: Ablösen der Abdeckung der Verbindungsnaht'
+                            WHERE kuerzel = 'BAK' AND charakt1 = 'H'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Feststellung der Innenauskleidung: Riss oder Spalt (einschließlich schadhafter Schweissnaht)'
+                        WHERE kuerzel = 'BAK' AND charakt1 = 'I'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                        beschreibung = 'Feststellung der Innenauskleidung: Loch in der Auskleidung'
+                                    WHERE kuerzel = 'BAK' AND charakt1 = 'J'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Feststellung der Innenauskleidung: Auskleidungsverbindung defekt'
+                            WHERE kuerzel = 'BAK' AND charakt1 = 'K'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                            beschreibung = 'Feststellung der Innenauskleidung: Auskleidungswerkstoff erscheint weich'
+                                        WHERE kuerzel = 'BAK' AND charakt1 = 'L'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Feststellung der Innenauskleidung: Harz fehlt im Laminat'
+                        WHERE kuerzel = 'BAK' AND charakt1 = 'M'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                        beschreibung = 'Feststellung der Innenauskleidung: Ende der Auskleidung ist nicht abgedichtet, um das Rohr oder den Schacht aufzunehmen'
+                                    WHERE kuerzel = 'BAK' AND charakt1 = 'N'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Feststellung der Innenauskleidung: Anderer Auskleidungsschaden'
+                            WHERE kuerzel = 'BAK' AND charakt1 = 'Z'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                            beschreibung = 'Schadhafte Reperatur: Wand fehlt teilweise'
+                                        WHERE kuerzel = 'BAL' AND charakt1 = 'A'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Schadhafte Reperatur: Reperatur zur Abdichtung eines Lochs ist schadhaft'
+                            WHERE kuerzel = 'BAL' AND charakt1 = 'B'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                            beschreibung = 'Schadhafte Reperatur: Ablösen des Reperaturwerkstofes vom Basisrohr'
+                                        WHERE kuerzel = 'BAL' AND charakt1 = 'C'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                                        beschreibung = 'Schadhafte Reperatur: fehlender Reperaturwerkstoff an der Kontaktfläche'
+                                                    WHERE kuerzel = 'BAL' AND charakt1 = 'D'
+                                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Schadhafte Reperatur: überschüssiger Reperaturwerkstoff, der ein Hindernis darstellt'
+                            WHERE kuerzel = 'BAL' AND charakt1 = 'E'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Schadhafte Reperatur: Loch im Reperaturwerkstoff'
+                            WHERE kuerzel = 'BAL' AND charakt1 = 'P'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                            beschreibung = 'Schadhafte Reperatur: Riss im Reperaturwerkstoff'
+                                        WHERE kuerzel = 'BAL' AND charakt1 = 'G'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                                        beschreibung = 'Schadhafte Reperatur: Andere'
+                                                    WHERE kuerzel = 'BAL' AND charakt1 = 'Z'
+                                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Schadhafte Schweissnaht'
+                            WHERE kuerzel = 'BAM' 
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                            beschreibung = 'Poroeses Rohr'
+                                        WHERE kuerzel = 'BAN' 
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                                        beschreibung = 'Boden sichtbar'
+                                                    WHERE kuerzel = 'BAO' 
+                                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Hohlraum sichtbar'
+                        WHERE kuerzel = 'BAP' 
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                    beschreibung = 'Wurzeln'
+                                WHERE kuerzel = 'BBA' 
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Anhaftende Stoffe'
+                            WHERE kuerzel = 'BBB' 
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                            beschreibung = 'Ablagerungen'
+                                        WHERE kuerzel = 'BBC' 
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                        beschreibung = 'Eindringen von Bodenmaterial'
+                    WHERE kuerzel = 'BBD' 
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                    beschreibung = 'Andere Hindernisse'
+                                WHERE kuerzel = 'BBE' 
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                                beschreibung = 'Infiltration'
+                                            WHERE kuerzel = 'BBF' 
+                                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Exfiltration'
+                            WHERE kuerzel = 'BBG' 
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                            beschreibung = 'Ungeziefer'
+                                        WHERE kuerzel = 'BBH' 
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Anschluss'
+                            WHERE kuerzel = 'BCA' 
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                            beschreibung = 'Punktuelle Reperatur: Reperatur mit Injektionstechnik'
+                                        WHERE kuerzel = 'BCB' AND charakt1 = 'A'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Punktuelle Reperatur: Reperatur mit Roboter'
+                            WHERE kuerzel = 'BCB' AND charakt1 = 'B'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Punktuelle Reperatur: Reperatur mit partieller Auskleidungs-/Manchettentechnik'
+                        WHERE kuerzel = 'BCB' AND charakt1 = 'C'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                        beschreibung = 'Punktuelle Reperatur: Zulaufeinbindung'
+                                    WHERE kuerzel = 'BCB' AND charakt1 = 'D'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Punktuelle Reperatur: Reperatur Rohrwand manuell'
+                            WHERE kuerzel = 'BCB' AND charakt1 = 'E'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Punktuelle Reperatur: Reperatur Rohrverbindung manuell'
+                        WHERE kuerzel = 'BCB' AND charakt1 = 'F'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                    beschreibung = 'Punktuelle Reperatur: Ringspalt-/-raumdichtung (der Auskleidung) zum Anschluss an Schacht/Inspektionsöffnung'
+                                WHERE kuerzel = 'BCB' AND charakt1 = 'G'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Punktuelle Reperatur: Zulauföffnung ohne Einbindung (Auskleidung)'
+                        WHERE kuerzel = 'BCB' AND charakt1 = 'H'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Punktuelle Reperatur: Rohr ausgetauscht'
+                            WHERE kuerzel = 'BCB' AND charakt1 = 'I'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                            beschreibung = 'Punktuelle Reperatur: sonstige Technink'
+                                        WHERE kuerzel = 'BCB' AND charakt1 = 'Z'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Krümmung der Leitung'
+                            WHERE kuerzel = 'BCC'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Anfangsknoten'
+                        WHERE kuerzel = 'BCD'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                        beschreibung = 'Endknoten'
+                                    WHERE kuerzel = 'BCE'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                    beschreibung = 'Allgemeines Foto'
+                                WHERE kuerzel = 'BDA'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, eingesteckt, gerade'
+                            WHERE kuerzel = 'BDB' AND charakt1 = 'AA'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, uebergestuelpt, gerade'
+                            WHERE kuerzel = 'BDB' AND charakt1 = 'AB'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, eingesteckt, abgewinkelt'
+                        WHERE kuerzel = 'BDB' AND charakt1 = 'AC'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                        beschreibung = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, uebergestuelpt, abgewinkelt'
+                                    WHERE kuerzel = 'BDB' AND charakt1 = 'AD'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Allgemeine Anmerkung: Verbindung zweier Rohre ohne Fomrstück, stumpf aneinandergestossen'
+                            WHERE kuerzel = 'BDB' AND charakt1 = 'AE'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Allgemeine Anmerkung: Verschluss eines Rohrs durch Abmauerung'
+                        WHERE kuerzel = 'BDB' AND charakt1 = 'BA'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                        beschreibung = 'Allgemeine Anmerkung: Verschluss eines Rohrs durch Moertel'
+                                    WHERE kuerzel = 'BDB' AND charakt1 = 'BB'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Allgemeine Anmerkung: Verschluss eines Rohrs durch Deckel (Muffenstopfen)'
+                        WHERE kuerzel = 'BDB' AND charakt1 = 'BC'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                            beschreibung = 'Inspektion endet vor dem Endknoten'
+                        WHERE kuerzel = 'BDC' 
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                        beschreibung = 'Wasserspiegel'
+                                    WHERE kuerzel = 'BDD' 
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                                    beschreibung = 'Zufluss aus einem Anschluss'
+                                                WHERE kuerzel = 'BDE' 
+                                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                beschreibung = 'Atmosphäre in der Leitung'
+                            WHERE kuerzel = 'BDF' 
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_anschlussleitung_bewertung set
+                                            beschreibung = 'Keine Sicht'
+                                        WHERE kuerzel = 'BDG' 
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
         sql = """SELECT RecoverGeometryColumn('untersuchdat_anschlussleitung_bewertung', 'geom', ?, 'LINESTRING', 'XY');"""
         data = (crs,)
         try:
@@ -2538,1074 +2284,1019 @@ class Zustandsklassen_funkt:
         except:
             pass
 
-        if self.datetype == 'Importdatum':
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                        beschreibung = 'Verformung'
+                                    WHERE kuerzel = 'DAA' 
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
 
-            sql = """
-                SELECT
-                    untersuchdat_schacht_bewertung.pk,
-                    untersuchdat_schacht_bewertung.untersuchsch,
-                    untersuchdat_schacht_bewertung.id,
-                    untersuchdat_schacht_bewertung.videozaehler,
-                    untersuchdat_schacht_bewertung.timecode,
-                    untersuchdat_schacht_bewertung.kuerzel,
-                    untersuchdat_schacht_bewertung.charakt1,
-                    untersuchdat_schacht_bewertung.charakt2,
-                    untersuchdat_schacht_bewertung.quantnr1,
-                    untersuchdat_schacht_bewertung.quantnr2,
-                    untersuchdat_schacht_bewertung.streckenschaden,
-                    untersuchdat_schacht_bewertung.pos_von,
-                    untersuchdat_schacht_bewertung.pos_bis,
-                    untersuchdat_schacht_bewertung.bereich,
-                    untersuchdat_schacht_bewertung.foto_dateiname,
-                    untersuchdat_schacht_bewertung.createdat
-                FROM untersuchdat_schacht_bewertung
-                WHERE ABS(strftime('%s', untersuchdat_schacht_bewertung.createdat) - strftime('%s', ?)) < 120
-            """
-            data = (date,)
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
             db.sql(sql, parameters=data)
+        except:
+            pass
 
-        if self.datetype == 'Befahrungsdatum':
-            sql = """
-                            SELECT
-                                untersuchdat_schacht_bewertung.pk,
-                                untersuchdat_schacht_bewertung.untersuchsch,
-                                untersuchdat_schacht_bewertung.id,
-                                untersuchdat_schacht_bewertung.videozaehler,
-                                untersuchdat_schacht_bewertung.timecode,
-                                untersuchdat_schacht_bewertung.kuerzel,
-                                untersuchdat_schacht_bewertung.charakt1,
-                                untersuchdat_schacht_bewertung.charakt2,
-                                untersuchdat_schacht_bewertung.quantnr1,
-                                untersuchdat_schacht_bewertung.quantnr2,
-                                untersuchdat_schacht_bewertung.streckenschaden,
-                                untersuchdat_schacht_bewertung.pos_von,
-                                untersuchdat_schacht_bewertung.pos_bis,
-                                untersuchdat_schacht_bewertung.bereich,
-                                untersuchdat_schacht_bewertung.foto_dateiname,
-                                untersuchdat_schacht_bewertung.untersuchtag
-                            FROM untersuchdat_schacht_bewertung
-                            WHERE ABS(strftime('%s', untersuchdat_schacht_bewertung.untersuchtag) - strftime('%s', ?)) < 120 
-                        """
-            data = (date,)
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                beschreibung = 'Rissbildung'
+                                            WHERE kuerzel = 'DAB' 
+                                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
             db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                        beschreibung = 'Bruch/Einsturz'
+                                                    WHERE kuerzel = 'DAC' 
+                                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                beschreibung = 'Defektes Mauerwerk'
+                            WHERE kuerzel = 'DAD' 
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                        beschreibung = 'Fehlender Moertel'
+                                    WHERE kuerzel = 'DAE' 
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Oberflaechenschaden'
+                        WHERE kuerzel = 'DAF' 
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                    beschreibung = 'Einragender Anschluss'
+                                WHERE kuerzel = 'DAG' 
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Schadhafter Anschluss'
+                        WHERE kuerzel = 'DAH' 
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                    beschreibung = 'Einragendes Dichtungsmaterial'
+                                WHERE kuerzel = 'DAI' 
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Verschobene Verbindung'
+                        WHERE kuerzel = 'DAJ' 
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                    beschreibung = 'Feststellung der Innenauskleidung: Innenauskleidung abgeloest'
+                                WHERE kuerzel = 'DAK' AND charakt1 = 'A'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                            beschreibung = 'Feststellung der Innenauskleidung: Innenauskleidung verfaerbt'
+                                        WHERE kuerzel = 'DAK' AND charakt1 = 'B'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                        beschreibung = 'Feststellung der Innenauskleidung: Endstelle der Auskleidung schadhaft'
+                    WHERE kuerzel = 'DAK' AND charakt1 = 'C'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                beschreibung = 'Feststellung der Innenauskleidung: Falten in der Innenauskleidung'
+                            WHERE kuerzel = 'DAK' AND charakt1 = 'D'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Feststellung der Innenauskleidung: Blasen oder Beulen in der Auskleidung innen'
+                        WHERE kuerzel = 'DAK' AND charakt1 = 'E'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                    beschreibung = 'Feststellung der Innenauskleidung: Beulen aussen'
+                                WHERE kuerzel = 'DAK' AND charakt1 = 'F'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                            beschreibung = 'Feststellung der Innenauskleidung: Abloesen der Innenhaut/Beschichtung'
+                                        WHERE kuerzel = 'DAK' AND charakt1 = 'G'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Feststellung der Innenauskleidung: Abloesen der Abdeckung der Verbindungsnaht'
+                        WHERE kuerzel = 'DAK' AND charakt1 = 'H'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Feststellung der Innenauskleidung: Riss oder Spalt (einschliesslich schadhafter Schweissnaht)'
+                        WHERE kuerzel = 'DAK' AND charakt1 = 'I'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                    beschreibung = 'Feststellung der Innenauskleidung: Loch in der Auskleidung'
+                                WHERE kuerzel = 'DAK' AND charakt1 = 'J'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Feststellung der Innenauskleidung: Auskleidungsverbindung defekt'
+                        WHERE kuerzel = 'DAK' AND charakt1 = 'K'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                    beschreibung = 'Feststellung der Innenauskleidung: Auskleidungswerkstoff erscheint weich'
+                                WHERE kuerzel = 'DAK' AND charakt1 = 'L'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                        beschreibung = 'Feststellung der Innenauskleidung: Harz fehlt im Laminat'
+                    WHERE kuerzel = 'DAK' AND charakt1 = 'M'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                beschreibung = 'Feststellung der Innenauskleidung: Ende der Auskleidung ist nicht abgedichtet, um das Rohr oder den Schacht aufzunehmen'
+                            WHERE kuerzel = 'DAK' AND charakt1 = 'N'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                        beschreibung = 'Feststellung der Innenauskleidung: Anderer Auskleidungsschaden'
+                    WHERE kuerzel = 'DAK' AND charakt1 = 'Z'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                beschreibung = 'Schadhafte Reperatur: Wand fehlt teilweise'
+                            WHERE kuerzel = 'DAL' AND charakt1 = 'A'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                        beschreibung = 'Schadhafte Reperatur: Reperatur zur Abdichtung eines Lochs ist schadhaft'
+                                    WHERE kuerzel = 'DAL' AND charakt1 = 'B'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                        beschreibung = 'Schadhafte Reperatur: Abloesen des Reperaturwerkstoffs vom Basisrohr'
+                    WHERE kuerzel = 'DAL' AND charakt1 = 'C'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                beschreibung = 'Schadhafte Reperatur: fehlender Reperaturwerkstoff an der Kontaktflaeche'
+                            WHERE kuerzel = 'DAL' AND charakt1 = 'D'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                        beschreibung = 'Schadhafte Reperatur: ueberschuessiger Reperaturwerkstof, der ein Hindernis darstellt'
+                    WHERE kuerzel = 'DAL' AND charakt1 = 'E'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                        beschreibung = 'Schadhafte Reperatur: Loch im Reperaturwerkstoff'
+                    WHERE kuerzel = 'DAL' AND charakt1 = 'F'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                beschreibung = 'Schadhafte Reperatur: Riss im Reperaturwerkstoff'
+                            WHERE kuerzel = 'DAL' AND charakt1 = 'G'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                        beschreibung = 'Schadhafte Reperatur: Andere'
+                                    WHERE kuerzel = 'DAL' AND charakt1 = 'Z'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                beschreibung = 'Schadhafte Schweissnaht'
+                                            WHERE kuerzel = 'DAM'
+                                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                        beschreibung = 'Poroese Wand'
+                                                    WHERE kuerzel = 'DAN'
+                                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                beschreibung = 'Boden sichtbar'
+                            WHERE kuerzel = 'DAO'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                        beschreibung = 'Hohlraum sichtbar'
+                                    WHERE kuerzel = 'DAP'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                beschreibung = 'Schadhafte Steighilfen'
+                                            WHERE kuerzel = 'DAQ'
+                                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Schaeden an Abdeckung oder Rahmen'
+                        WHERE kuerzel = 'DAR'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                    beschreibung = 'Wurzeln'
+                                WHERE kuerzel = 'DBA'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                            beschreibung = 'Anhaftene Stoffe'
+                                        WHERE kuerzel = 'DBB'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                    beschreibung = 'Ablagerungen'
+                                                WHERE kuerzel = 'DBC'
+                                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Eindringen von Bodenmaterial'
+                        WHERE kuerzel = 'DBD'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                    beschreibung = 'Andere Hindernisse'
+                                WHERE kuerzel = 'DBE'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                            beschreibung = 'Infiltration'
+                                        WHERE kuerzel = 'DBF'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                    beschreibung = 'Exfiltration'
+                                                WHERE kuerzel = 'DBG'
+                                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                        beschreibung = 'Ungeziefer'
+                    WHERE kuerzel = 'DBH'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                beschreibung = 'Anschluss'
+                            WHERE kuerzel = 'DCA'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                        beschreibung = 'Punktuelle Reperatur: Reperatur mit Injektionstechnik'
+                                    WHERE kuerzel = 'DCB' AND charakt1 = 'A'
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                beschreibung = 'Punktuelle Reperatur: Reperatur Bauteilwandung'
+                                            WHERE kuerzel = 'DCB' AND charakt1 = 'B'
+                                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Punktuelle Reperatur: Reperatur Bauteilverbindung'
+                        WHERE kuerzel = 'DCB' AND charakt1 = 'C'
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                    beschreibung = 'Punktuelle Reperatur: Ringsplat-/-raumabdichtung(Auskleidung in Kanaelen/Leitungen) zum Anschuss an Schacht/Inspektionsoeffnung'
+                                WHERE kuerzel = 'DCB' AND charakt1 = 'D'
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                            beschreibung = 'Punktuelle Reperatur: Anschlusseinbindung manuell'
+                                        WHERE kuerzel = 'DCB' AND charakt1 = 'E'
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                    beschreibung = 'Punktuelle Reperatur: Anschlusseoeffnung ohne Einbindung(Auskleidung)'
+                                                WHERE kuerzel = 'DCB' AND charakt1 = 'F'
+                                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                        beschreibung = 'Punktuelle Reperatur: Schachtbauteil ausgetauscht'
+                    WHERE kuerzel = 'DCB' AND charakt1 = 'G'
+                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                beschreibung = 'Punktuelle Reperatur: Reperatur sonstige Technik'
+                            WHERE kuerzel = 'DCB' AND charakt1 = 'Z'
+                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                        beschreibung = 'Anschlussleitung'
+                                    WHERE kuerzel = 'DCG' 
+                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                beschreibung = 'Auftritt'
+                                            WHERE kuerzel = 'DCH' 
+                                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                        beschreibung = 'Gerinne'
+                                                    WHERE kuerzel = 'DCI' 
+                                                      AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                            OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                          );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                                beschreibung = 'Sicherheitsketten/-balken'
+                                                            WHERE kuerzel = 'DCJ' 
+                                                              AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                                    OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                                  );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Abflussregulierung'
+                        WHERE kuerzel = 'DCK' 
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                    beschreibung = 'Rohrdurchfuehrung durch andere Abwasserleitung'
+                                WHERE kuerzel = 'DCL' 
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                            beschreibung = 'Schmutzfaenger unter der Abdeckung'
+                                        WHERE kuerzel = 'DCM' 
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                    beschreibung = 'Schlammfang in der Sohle'
+                                                WHERE kuerzel = 'DCN' 
+                                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                            beschreibung = 'Querschnitt'
+                                                        WHERE kuerzel = 'DCO' 
+                                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                                    beschreibung = 'Allgemeines Foto'
+                                                                WHERE kuerzel = 'DDA' 
+                                                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Allgemeine Anmerkung'
+                        WHERE kuerzel = 'DDB' 
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                    beschreibung = 'Inspektion nicht vollstaendig durchgefuehrt'
+                                WHERE kuerzel = 'DDC' 
+                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                            beschreibung = 'Wasserspiegel'
+                                        WHERE kuerzel = 'DDD' 
+                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                    beschreibung = 'Zufluss aus einem Anschluss'
+                                                WHERE kuerzel = 'DDE' 
+                                                  AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                        OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                      );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                                                            beschreibung = 'Atmosphäre im Schacht oder in der Inspektionsoeffnung'
+                                                        WHERE kuerzel = 'DDF' 
+                                                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                                                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
+
+        sql = f"""update untersuchdat_schacht_bewertung set
+                            beschreibung = 'Keine Sicht'
+                        WHERE kuerzel = 'DDG' 
+                          AND (    (:datumswahl = 'Importdatum'     AND julianday(untersuchtag) = julianday(:datumswert))
+                                OR (:datumswahl = 'Befahrungsdatum' AND julianday(createdat)    = julianday(:datumswert))
+                              );"""
+
+        data = {'datumswahl': self.datetype, 'datumswert': date}
+
+        try:
+            db.sql(sql, parameters=data)
+        except:
+            pass
 
 
-        for attr in db.fetchall():
-
-
-            if attr[5] == "DAA":
-                z = 'Verformung'
-                sql = f"""
-                      UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAB":
-                z = 'Rissbildung'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAC":
-                z = 'Bruch/Einsturz'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAD":
-                z = 'Defektes Mauerwerk'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAE":
-                z = 'Fehlender Moertel'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAF":
-                z = 'Oberflaechenschaden'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAG":
-                z = 'Einragender Anschluss'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAH":
-                z = 'Schadhafter Anschluss'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAI":
-                z = 'Einragendes Dichtungsmaterial'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAJ":
-                z = 'Verschobene Verbindung'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "A":
-                z = 'Feststellung der Innenauskleidung: Innenauskleidung abgeloest'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "B":
-                z = 'Feststellung der Innenauskleidung: Innenauskleidung verfaerbt'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "C":
-                z = 'Feststellung der Innenauskleidung: Endstelle der Auskleidung schadhaft'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "D":
-                z = 'Feststellung der Innenauskleidung: Falten in der Innenauskleidung'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "E":
-                z = 'Feststellung der Innenauskleidung: Blasen oder Beulen in der Auskleidung innen'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "F":
-                z = 'Feststellung der Innenauskleidung: Beulen aussen'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "G":
-                z = 'Feststellung der Innenauskleidung: Abloesen der Innenhaut/Beschichtung'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "H":
-                z = 'Feststellung der Innenauskleidung: Abloesen der Abdeckung der Verbindungsnaht'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "I":
-                z = 'Feststellung der Innenauskleidung: Riss oder Spalt (einschliesslich schadhafter Schweissnaht)'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "J":
-                z = 'Feststellung der Innenauskleidung: Loch in der Auskleidung'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "K":
-                z = 'Feststellung der Innenauskleidung: Auskleidungsverbindung defekt'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "L":
-                z = 'Feststellung der Innenauskleidung: Auskleidungswerkstoff erscheint weich'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "M":
-                z = 'Feststellung der Innenauskleidung: Harz fehlt im Laminat'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "N":
-                z = 'Feststellung der Innenauskleidung: Ende der Auskleidung ist nicht abgedichtet, um das Rohr oder den Schacht aufzunehmen'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAK" and attr[6] == "Z":
-                z = 'Feststellung der Innenauskleidung: Anderer Auskleidungsschaden'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAL" and attr[6] == "A":
-                z = 'Schadhafte Reperatur: Wand fehlt teilweise'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAL" and attr[6] == "B":
-                z = 'Schadhafte Reperatur: Reperatur zur Abdichtung eines Lochs ist schadhaft'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAL" and attr[6] == "C":
-                z = 'Schadhafte Reperatur: Abloesen des Reperaturwerkstoffs vom Basisrohr'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAL" and attr[6] == "D":
-                z = 'Schadhafte Reperatur: fehlender Reperaturwerkstoff an der Kontaktflaeche'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAL" and attr[6] == "E":
-                z = 'Schadhafte Reperatur: ueberschuessiger Reperaturwerkstof, der ein Hindernis darstellt'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAL" and attr[6] == "F":
-                z = 'Schadhafte Reperatur: Loch im Reperaturwerkstoff'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAL" and attr[6] == "G":
-                z = 'Schadhafte Reperatur: Riss im Reperaturwerkstoff'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAL" and attr[6] == "Z":
-                z = 'Schadhafte Reperatur: Andere'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAM":
-                z = 'Schadhafte Schweissnaht'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAN":
-                z = 'Poroese Wand'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAO":
-                z = 'Boden sichtbar'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAP":
-                z = 'Hohlraum sichtbar'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAQ":
-                z = 'Schadhafte Steighilfen'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DAR":
-                z = 'Schaeden an Abdeckung oder Rahmen'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                            SET Beschreibung = ?
-                            WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                            """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DBA":
-                z = 'Wurzeln'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DBB":
-                z = 'Anaftene Stoffe'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DBC":
-                z = 'Ablagerungen'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DBD":
-                z = 'Eindringen von Bodenmaterial'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DBE":
-                z = 'Andere Hindernisse'
-                sql = f"""
-                        UPDATE untersuchdat_schacht_bewertung
-                        SET Beschreibung = ?
-                        WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                        """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DBF":
-                z = 'Infiltration'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DBG":
-                z = 'Exfiltration'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DBH":
-                z = 'Ungeziefer'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCA":
-                z = 'Anschluss'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCB" and attr[6] == "A":
-                z = 'Punktuelle Reperatur: Reperatur mit Injektionstechnik'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCB" and attr[6] == "B":
-                z = 'Punktuelle Reperatur: Reperatur Bauteilwandung'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCB" and attr[6] == "C":
-                z = 'Punktuelle Reperatur: Reperatur Bauteilverbindung'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCB" and attr[6] == "D":
-                z = 'Punktuelle Reperatur: Ringsplat-/-raumabdichtung(Auskleidung in Kanaelen/Leitungen) zum Anschuss an Schacht/Inspektionsoeffnung'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCB" and attr[6] == "E":
-                z = 'Punktuelle Reperatur: Anschlusseinbindung manuell'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCB" and attr[6] == "F":
-                z = 'Punktuelle Reperatur: Anschlusseoeffnung ohne Einbindung(Auskleidung)'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCB" and attr[6] == "G":
-                z = 'Punktuelle Reperatur: Schachtbauteil ausgetauscht'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCB" and attr[6] == "Z":
-                z = 'Punktuelle Reperatur: Reperatur sonstige Technik'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCG":
-                z = 'Anschlussleitung'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCH":
-                z = 'Auftritt'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCI":
-                z = 'Gerinne'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCJ":
-                z = 'Sicherheitsketten/-balken'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCK":
-                z = 'Abflussregulierung'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCL":
-                z = 'Rohrdurchfuehrung durch andere Abwasserleitung'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCM":
-                z = 'Schmutzfaenger unter der Abdeckung'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCN":
-                z = 'Schlammfang in der Sohle'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DCO":
-                z = 'Querschnitt'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DDA":
-                z = 'Allgemeines Foto'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DDB":
-                z = 'Allgemeine Anmerkung'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DDC":
-                z = 'Inspektion nicht vollstaendig durchgefuehrt'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DDD":
-                z = 'Wasserspiegel'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ?; 
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DDE":
-                z = 'Zufluss aus einem Anschluss'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DDF":
-                z = 'Atmosphäre im Schacht oder in der Inspektionsoeffnung'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-            elif attr[5] == "DDG":
-                z = 'Keine Sicht'
-                sql = f"""
-                    UPDATE untersuchdat_schacht_bewertung
-                    SET Beschreibung = ?
-                    WHERE untersuchdat_schacht_bewertung.pk = ? ;
-                    """
-                data = (z, attr[0])
-                try:
-                    db.sql(sql, parameters=data)
-                    #db.commit()
-                    continue
-                except:
-                    pass
-
-            try:
-                db.commit()
-            except:
-                pass
+        try:
+            db.commit()
+        except:
+            pass
         sql = """SELECT RecoverGeometryColumn('untersuchdat_schacht_bewertung', 'geom', ?, 'LINESTRING', 'XY');"""
         data = (crs,)
         try:
@@ -3638,155 +3329,6 @@ class Zustandsklassen_funkt:
         crs = self.crs
         leitung = self.leitung
         haltung = self.haltung
-
-
-        if self.datetype == 'Befahrungsdatum':
-
-            if haltung is True:
-                sql = """
-                            SELECT
-                                untersuchdat_haltung_bewertung.pk,
-                                untersuchdat_haltung_bewertung.untersuchhal,
-                                haltungen.createdat,
-                                untersuchdat_haltung_bewertung.schoben,
-                                untersuchdat_haltung_bewertung.schunten,
-                                untersuchdat_haltung_bewertung.id,
-                                untersuchdat_haltung_bewertung.videozaehler,
-                                untersuchdat_haltung_bewertung.inspektionslaenge,
-                                untersuchdat_haltung_bewertung.station,
-                                untersuchdat_haltung_bewertung.timecode,
-                                untersuchdat_haltung_bewertung.kuerzel,
-                                untersuchdat_haltung_bewertung.charakt1,
-                                untersuchdat_haltung_bewertung.charakt2,
-                                untersuchdat_haltung_bewertung.quantnr1,
-                                untersuchdat_haltung_bewertung.quantnr2,
-                                untersuchdat_haltung_bewertung.streckenschaden,
-                                untersuchdat_haltung_bewertung.pos_von,
-                                untersuchdat_haltung_bewertung.pos_bis,
-                                untersuchdat_haltung_bewertung.foto_dateiname,
-                                untersuchdat_haltung_bewertung.film_dateiname,
-                                untersuchdat_haltung_bewertung.kommentar,
-                                untersuchdat_haltung_bewertung.bw_bs,
-                                untersuchdat_haltung_bewertung.untersuchtag,
-                                haltungen.haltnam,
-                                haltungen.material,
-                                haltungen.hoehe
-                            FROM untersuchdat_haltung_bewertung, haltungen
-                            WHERE haltungen.haltnam = untersuchdat_haltung_bewertung.untersuchhal AND ABS(strftime('%s', untersuchdat_haltung_bewertung.untersuchtag) - strftime('%s', ?)) < 120
-                        """
-                data = (date,)
-
-                db.sql(sql, parameters=data)
-
-            elif leitung is True:
-                sql = """
-                            SELECT
-                                untersuchdat_anschlussleitung_bewertung.pk,
-                                untersuchdat_anschlussleitung_bewertung.untersuchleit,
-                                anschlussleitungen.createdat,
-                                untersuchdat_anschlussleitung_bewertung.schoben,
-                                untersuchdat_anschlussleitung_bewertung.schunten,
-                                untersuchdat_anschlussleitung_bewertung.id,
-                                untersuchdat_anschlussleitung_bewertung.videozaehler,
-                                untersuchdat_anschlussleitung_bewertung.inspektionslaenge,
-                                untersuchdat_anschlussleitung_bewertung.station,
-                                untersuchdat_anschlussleitung_bewertung.timecode,
-                                untersuchdat_anschlussleitung_bewertung.kuerzel,
-                                untersuchdat_anschlussleitung_bewertung.charakt1,
-                                untersuchdat_anschlussleitung_bewertung.charakt2,
-                                untersuchdat_anschlussleitung_bewertung.quantnr1,
-                                untersuchdat_anschlussleitung_bewertung.quantnr2,
-                                untersuchdat_anschlussleitung_bewertung.streckenschaden,
-                                untersuchdat_anschlussleitung_bewertung.pos_von,
-                                untersuchdat_anschlussleitung_bewertung.pos_bis,
-                                untersuchdat_anschlussleitung_bewertung.foto_dateiname,
-                                untersuchdat_anschlussleitung_bewertung.film_dateiname,
-                                untersuchdat_anschlussleitung_bewertung.kommentar,
-                                untersuchdat_anschlussleitung_bewertung.bw_bs,
-                                untersuchdat_anschlussleitung_bewertung.untersuchtag,
-                                anschlussleitungen.leitnam,
-                                anschlussleitungen.material,
-                                anschlussleitungen.hoehe
-                            FROM untersuchdat_anschlussleitung_bewertung, anschlussleitungen
-                            WHERE anschlussleitungen.leitnam = untersuchdat_anschlussleitung_bewertung.untersuchleit AND ABS(strftime('%s', untersuchdat_anschlussleitung_bewertung.untersuchtag) - strftime('%s', ?)) < 120 
-                        """
-                data = (date, )
-
-                db.sql(sql, parameters=data)
-
-        if self.datetype == 'Importdatum':
-
-            if haltung is True:
-                sql = """
-                            SELECT
-                                untersuchdat_haltung_bewertung.pk,
-                                untersuchdat_haltung_bewertung.untersuchhal,
-                                haltungen.createdat,
-                                untersuchdat_haltung_bewertung.schoben,
-                                untersuchdat_haltung_bewertung.schunten,
-                                untersuchdat_haltung_bewertung.id,
-                                untersuchdat_haltung_bewertung.videozaehler,
-                                untersuchdat_haltung_bewertung.inspektionslaenge,
-                                untersuchdat_haltung_bewertung.station,
-                                untersuchdat_haltung_bewertung.timecode,
-                                untersuchdat_haltung_bewertung.kuerzel,
-                                untersuchdat_haltung_bewertung.charakt1,
-                                untersuchdat_haltung_bewertung.charakt2,
-                                untersuchdat_haltung_bewertung.quantnr1,
-                                untersuchdat_haltung_bewertung.quantnr2,
-                                untersuchdat_haltung_bewertung.streckenschaden,
-                                untersuchdat_haltung_bewertung.pos_von,
-                                untersuchdat_haltung_bewertung.pos_bis,
-                                untersuchdat_haltung_bewertung.foto_dateiname,
-                                untersuchdat_haltung_bewertung.film_dateiname,
-                                untersuchdat_haltung_bewertung.kommentar,
-                                untersuchdat_haltung_bewertung.bw_bs,
-                                untersuchdat_haltung_bewertung.createdat,
-                                haltungen.haltnam,
-                                haltungen.material,
-                                haltungen.hoehe
-                            FROM untersuchdat_haltung_bewertung, haltungen
-                            WHERE haltungen.haltnam = untersuchdat_haltung_bewertung.untersuchhal AND ABS(strftime('%s', untersuchdat_haltung_bewertung.createdat) - strftime('%s', ?)) < 120 
-                        """
-                data = (date,)
-
-                db.sql(sql, parameters=data)
-
-            elif leitung is True:
-                sql = """
-                            SELECT
-                                untersuchdat_anschlussleitung_bewertung.pk,
-                                untersuchdat_anschlussleitung_bewertung.untersuchleit,
-                                anschlussleitungen.createdat,
-                                untersuchdat_anschlussleitung_bewertung.schoben,
-                                untersuchdat_anschlussleitung_bewertung.schunten,
-                                untersuchdat_anschlussleitung_bewertung.id,
-                                untersuchdat_anschlussleitung_bewertung.videozaehler,
-                                untersuchdat_anschlussleitung_bewertung.inspektionslaenge,
-                                untersuchdat_anschlussleitung_bewertung.station,
-                                untersuchdat_anschlussleitung_bewertung.timecode,
-                                untersuchdat_anschlussleitung_bewertung.kuerzel,
-                                untersuchdat_anschlussleitung_bewertung.charakt1,
-                                untersuchdat_anschlussleitung_bewertung.charakt2,
-                                untersuchdat_anschlussleitung_bewertung.quantnr1,
-                                untersuchdat_anschlussleitung_bewertung.quantnr2,
-                                untersuchdat_anschlussleitung_bewertung.streckenschaden,
-                                untersuchdat_anschlussleitung_bewertung.pos_von,
-                                untersuchdat_anschlussleitung_bewertung.pos_bis,
-                                untersuchdat_anschlussleitung_bewertung.foto_dateiname,
-                                untersuchdat_anschlussleitung_bewertung.film_dateiname,
-                                untersuchdat_anschlussleitung_bewertung.kommentar,
-                                untersuchdat_anschlussleitung_bewertung.bw_bs,
-                                untersuchdat_anschlussleitung_bewertung.createdat,
-                                anschlussleitungen.leitnam,
-                                anschlussleitungen.material,
-                                anschlussleitungen.hoehe
-                            FROM untersuchdat_anschlussleitung_bewertung, anschlussleitungen
-                            WHERE anschlussleitungen.leitnam = untersuchdat_anschlussleitung_bewertung.untersuchleit AND ABS(strftime('%s', untersuchdat_anschlussleitung_bewertung.createdat) - strftime('%s', ?)) < 120
-                        """
-                data = (date,)
-
-                db.sql(sql, parameters=data)
 
 
         try:
@@ -3929,84 +3471,6 @@ class Zustandsklassen_funkt:
         leitung = self.leitung
         haltung = self.haltung
 
-        if self.datetype == 'Befahrungsdatum':
-
-            if leitung is True:
-                sql = """
-                            SELECT
-                                untersuchdat_anschlussleitung_bewertung.pk,
-                                untersuchdat_anschlussleitung_bewertung.untersuchleit,
-                                NULL,
-                                untersuchdat_anschlussleitung_bewertung.schoben,
-                                untersuchdat_anschlussleitung_bewertung.schunten,
-                                untersuchdat_anschlussleitung_bewertung.id,
-                                untersuchdat_anschlussleitung_bewertung.videozaehler,
-                                untersuchdat_anschlussleitung_bewertung.inspektionslaenge,
-                                untersuchdat_anschlussleitung_bewertung.station,
-                                untersuchdat_anschlussleitung_bewertung.timecode,
-                                untersuchdat_anschlussleitung_bewertung.kuerzel,
-                                untersuchdat_anschlussleitung_bewertung.charakt1,
-                                untersuchdat_anschlussleitung_bewertung.charakt2,
-                                untersuchdat_anschlussleitung_bewertung.quantnr1,
-                                untersuchdat_anschlussleitung_bewertung.quantnr2,
-                                untersuchdat_anschlussleitung_bewertung.streckenschaden,
-                                untersuchdat_anschlussleitung_bewertung.pos_von,
-                                untersuchdat_anschlussleitung_bewertung.pos_bis,
-                                untersuchdat_anschlussleitung_bewertung.foto_dateiname,
-                                untersuchdat_anschlussleitung_bewertung.film_dateiname,
-                                NULL,
-                                untersuchdat_anschlussleitung_bewertung.bw_bs,
-                                untersuchdat_anschlussleitung_bewertung.untersuchtag,
-                                anschlussleitungen.leitnam,
-                                anschlussleitungen.material,
-                                anschlussleitungen.hoehe,
-                                anschlussleitungen.createdat
-                            FROM untersuchdat_anschlussleitung_bewertung, anschlussleitungen
-                            WHERE anschlussleitungen.leitnam = untersuchdat_anschlussleitung_bewertung.untersuchleit AND ABS(strftime('%s', untersuchdat_anschlussleitung_bewertung.untersuchtag) - strftime('%s', ?)) < 120  
-                        """
-                data = (date, )
-
-                db.sql(sql, parameters=data)
-
-        elif self.datetype == 'Importdatum':
-            if leitung is True:
-                sql = """
-                            SELECT
-                                untersuchdat_anschlussleitung_bewertung.pk,
-                                untersuchdat_anschlussleitung_bewertung.untersuchleit,
-                                NULL,
-                                untersuchdat_anschlussleitung_bewertung.schoben,
-                                untersuchdat_anschlussleitung_bewertung.schunten,
-                                untersuchdat_anschlussleitung_bewertung.id,
-                                untersuchdat_anschlussleitung_bewertung.videozaehler,
-                                untersuchdat_anschlussleitung_bewertung.inspektionslaenge,
-                                untersuchdat_anschlussleitung_bewertung.station,
-                                untersuchdat_anschlussleitung_bewertung.timecode,
-                                untersuchdat_anschlussleitung_bewertung.kuerzel,
-                                untersuchdat_anschlussleitung_bewertung.charakt1,
-                                untersuchdat_anschlussleitung_bewertung.charakt2,
-                                untersuchdat_anschlussleitung_bewertung.quantnr1,
-                                untersuchdat_anschlussleitung_bewertung.quantnr2,
-                                untersuchdat_anschlussleitung_bewertung.streckenschaden,
-                                untersuchdat_anschlussleitung_bewertung.pos_von,
-                                untersuchdat_anschlussleitung_bewertung.pos_bis,
-                                untersuchdat_anschlussleitung_bewertung.foto_dateiname,
-                                untersuchdat_anschlussleitung_bewertung.film_dateiname,
-                                NULL,
-                                untersuchdat_anschlussleitung_bewertung.bw_bs,
-                                untersuchdat_anschlussleitung_bewertung.createdat,
-                                anschlussleitungen.leitnam,
-                                anschlussleitungen.material,
-                                anschlussleitungen.hoehe,
-                                anschlussleitungen.createdat
-                            FROM untersuchdat_anschlussleitung_bewertung, anschlussleitungen
-                            WHERE anschlussleitungen.leitnam = untersuchdat_anschlussleitung_bewertung.untersuchleit AND ABS(strftime('%s', untersuchdat_anschlussleitung_bewertung.createdat) - strftime('%s', ?)) < 120 
-                        """
-                data = (date,)
-
-                db.sql(sql, parameters=data)
-
-
         try:
             db.sql("""UPDATE anschlussleitungen_untersucht_bewertung 
                                 SET objektklasse_dichtheit =
@@ -4144,61 +3608,6 @@ class Zustandsklassen_funkt:
         date = self.date
         db = self.db
         crs = self.crs
-
-
-        if self.datetype == 'Befahrungsdatum':
-
-            sql = """
-                        SELECT
-                            untersuchdat_schacht_bewertung.pk,
-                            untersuchdat_schacht_bewertung.untersuchsch,
-                            untersuchdat_schacht_bewertung.id,
-                            untersuchdat_schacht_bewertung.videozaehler,
-                            untersuchdat_schacht_bewertung.timecode,
-                            untersuchdat_schacht_bewertung.kuerzel,
-                            untersuchdat_schacht_bewertung.charakt1,
-                            untersuchdat_schacht_bewertung.charakt2,
-                            untersuchdat_schacht_bewertung.quantnr1,
-                            untersuchdat_schacht_bewertung.quantnr2,
-                            untersuchdat_schacht_bewertung.streckenschaden,
-                            untersuchdat_schacht_bewertung.pos_von,
-                            untersuchdat_schacht_bewertung.pos_bis,
-                            untersuchdat_schacht_bewertung.bereich,
-                            untersuchdat_schacht_bewertung.foto_dateiname,
-                            untersuchdat_schacht_bewertung.bw_bs,
-                            untersuchdat_schacht_bewertung.untersuchtag
-                        FROM untersuchdat_schacht_bewertung  
-                        WHERE ABS(strftime('%s', untersuchdat_schacht_bewertung.untersuchtag) - strftime('%s', ?)) < 120
-                    """
-            data = (date,)
-            db.sql(sql, parameters=data)
-
-        elif self.datetype == 'Importdatum':
-            sql = """
-                                    SELECT
-                                        untersuchdat_schacht_bewertung.pk,
-                                        untersuchdat_schacht_bewertung.untersuchsch,
-                                        untersuchdat_schacht_bewertung.id,
-                                        untersuchdat_schacht_bewertung.videozaehler,
-                                        untersuchdat_schacht_bewertung.timecode,
-                                        untersuchdat_schacht_bewertung.kuerzel,
-                                        untersuchdat_schacht_bewertung.charakt1,
-                                        untersuchdat_schacht_bewertung.charakt2,
-                                        untersuchdat_schacht_bewertung.quantnr1,
-                                        untersuchdat_schacht_bewertung.quantnr2,
-                                        untersuchdat_schacht_bewertung.streckenschaden,
-                                        untersuchdat_schacht_bewertung.pos_von,
-                                        untersuchdat_schacht_bewertung.pos_bis,
-                                        untersuchdat_schacht_bewertung.bereich,
-                                        untersuchdat_schacht_bewertung.foto_dateiname,
-                                        untersuchdat_schacht_bewertung.bw_bs,
-                                        untersuchdat_schacht_bewertung.createdat
-                                    FROM untersuchdat_schacht_bewertung  
-                                    WHERE ABS(strftime('%s', untersuchdat_schacht_bewertung.createdat) - strftime('%s', ?)) < 120
-                                """
-            data = (date,)
-            db.sql(sql, parameters=data)
-
 
         try:
             db.sql("""UPDATE schaechte_untersucht_bewertung 
@@ -30294,6 +29703,22 @@ class Zustandsklassen_funkt:
         except:
             pass
 
+        loadLayer(
+            layerbez=enums.LAYERBEZ.ZK_EINZELSCHAEDEN_HALTUNGEN.value,
+            table='untersuchdat_haltung_bewertung',
+            geom_column='geom',
+            qmlfile=os.path.join(self.qmlDir, 'untersuchdat_haltung_bewertung_dwa.qml'),
+            group=['QKan', enums.LAYERBEZ.ZUSTANDSBEWERTUNG_GROUP.value, enums.LAYERBEZ.ZK_HALTUNGEN_GROUP.value],
+        )
+
+        loadLayer(
+            layerbez=enums.LAYERBEZ.ZK_ZUSTAND_HALTUNGEN.value,
+            table='haltungen_untersucht_bewertung',
+            geom_column='geom',
+            qmlfile=os.path.join(self.qmlDir, 'haltungen_untersucht_bewertung_dwa.qml'),
+            group=['QKan', enums.LAYERBEZ.ZUSTANDSBEWERTUNG_GROUP.value, enums.LAYERBEZ.ZK_HALTUNGEN_GROUP.value],
+        )
+
     def tab_dwa_leitung(self):
         #tabellen DWA anlegen und vorhandene Zustandsklassen in richtige Spalte kopieren
         date = self.date
@@ -30467,7 +29892,7 @@ class Zustandsklassen_funkt:
                                     SET objektklasse_dichtheit =
                                     (SELECT min(Zustandsklasse_D)
                                     FROM untersuchdat_anschlussleitung_bewertung
-                                    WHERE untersuchdat_anschlussleitung_bewertung.untersuchleit = anschlussleitungen_untersucht_bewertung.haltnam AND Zustandsklasse_D <> '-'
+                                    WHERE untersuchdat_anschlussleitung_bewertung.untersuchleit = anschlussleitungen_untersucht_bewertung.leitnam AND Zustandsklasse_D <> '-'
                                     GROUP BY untersuchdat_anschlussleitung_bewertung.untersuchleit);""")
         # db.commit()
         except:
@@ -30478,7 +29903,7 @@ class Zustandsklassen_funkt:
                                     SET objektklasse_standsicherheit =
                                     (SELECT min(Zustandsklasse_S)
                                     FROM untersuchdat_anschlussleitung_bewertung
-                                    WHERE untersuchdat_anschlussleitung_bewertung.untersuchleit = anschlussleitungen_untersucht_bewertung.haltnam AND Zustandsklasse_S <> '-'
+                                    WHERE untersuchdat_anschlussleitung_bewertung.untersuchleit = anschlussleitungen_untersucht_bewertung.leitnam AND Zustandsklasse_S <> '-'
                                     GROUP BY untersuchdat_anschlussleitung_bewertung.untersuchleit);""")
         # db.commit()
         except:
@@ -30489,7 +29914,7 @@ class Zustandsklassen_funkt:
                                     SET objektklasse_betriebssicherheit =
                                     (SELECT min(Zustandsklasse_B)
                                     FROM untersuchdat_anschlussleitung_bewertung
-                                    WHERE untersuchdat_anschlussleitung_bewertung.untersuchleit = anschlussleitungen_untersucht_bewertung.haltnam AND Zustandsklasse_B <> '-'
+                                    WHERE untersuchdat_anschlussleitung_bewertung.untersuchleit = anschlussleitungen_untersucht_bewertung.leitnam AND Zustandsklasse_B <> '-'
                                     GROUP BY untersuchdat_anschlussleitung_bewertung.untersuchleit);""")
         # db.commit()
         except:
@@ -30578,6 +30003,22 @@ class Zustandsklassen_funkt:
             db.commit()
         except:
             pass
+
+        loadLayer(
+            layerbez=enums.LAYERBEZ.ZK_EINZELSCHAEDEN_HA_LEITUNGEN.value,
+            table='untersuchdat_anschlussleitung_bewertung',
+            geom_column='geom',
+            qmlfile=os.path.join(self.qmlDir, 'untersuchdat_anschlussleitung_bewertung_dwa.qml'),
+            group=['QKan', enums.LAYERBEZ.ZUSTANDSBEWERTUNG_GROUP.value, enums.LAYERBEZ.ZK_HA_LEITUNGEN_GROUP.value],
+        )
+
+        loadLayer(
+            layerbez=enums.LAYERBEZ.ZK_ZUSTAND_HA_LEITUNGEN.value,
+            table='anschlussleitungen_untersucht_bewertung',
+            geom_column='geom',
+            qmlfile=os.path.join(self.qmlDir, 'anschlussleitungen_untersucht_bewertung_dwa.qml'),
+            group=['QKan', enums.LAYERBEZ.ZUSTANDSBEWERTUNG_GROUP.value, enums.LAYERBEZ.ZK_HA_LEITUNGEN_GROUP.value],
+        )
 
     def tab_dwa_schacht(self):
         #tabellen DWA anlegen und vorhandene Zustandsklassen in richtige Spalte kopieren
@@ -30864,6 +30305,22 @@ class Zustandsklassen_funkt:
         except:
             pass
 
+        loadLayer(
+            layerbez=enums.LAYERBEZ.ZK_EINZELSCHAEDEN_SCHAECHTE.value,
+            table='untersuchdat_schacht_bewertung',
+            geom_column='geom',
+            qmlfile=os.path.join(self.qmlDir, 'untersuchdat_schacht_bewertung_dwa.qml'),
+            group=['QKan', enums.LAYERBEZ.ZUSTANDSBEWERTUNG_GROUP.value, enums.LAYERBEZ.ZK_SCHAECHTE_GROUP.value],
+        )
+
+        loadLayer(
+            layerbez=enums.LAYERBEZ.ZK_ZUSTAND_SCHAECHTE.value,
+            table='schaechte_untersucht_bewertung',
+            geom_column='geop',
+            qmlfile=os.path.join(self.qmlDir, 'schaechte_untersucht_bewertung_dwa.qml'),
+            group=['QKan', enums.LAYERBEZ.ZUSTANDSBEWERTUNG_GROUP.value, enums.LAYERBEZ.ZK_SCHAECHTE_GROUP.value],
+        )
+
     def tab_isybau_haltung(self):
         # tabellen ISYBAU anlegen und vorhandene Zustandsklassen in richtige Spalte kopieren
 
@@ -31132,6 +30589,22 @@ class Zustandsklassen_funkt:
         except:
             pass
 
+        loadLayer(
+            layerbez=enums.LAYERBEZ.ZK_EINZELSCHAEDEN_HALTUNGEN.value,
+            table='untersuchdat_haltung_bewertung',
+            geom_column='geom',
+            qmlfile=os.path.join(self.qmlDir, 'untersuchdat_haltung_bewertung_isy.qml'),
+            group=['QKan', enums.LAYERBEZ.ZUSTANDSBEWERTUNG_GROUP.value, enums.LAYERBEZ.ZK_HALTUNGEN_GROUP.value],
+        )
+
+        loadLayer(
+            layerbez=enums.LAYERBEZ.ZK_ZUSTAND_HALTUNGEN.value,
+            table='haltungen_untersucht_bewertung',
+            geom_column='geom',
+            qmlfile=os.path.join(self.qmlDir, 'haltungen_untersucht_bewertung_isy.qml'),
+            group=['QKan', enums.LAYERBEZ.ZUSTANDSBEWERTUNG_GROUP.value, enums.LAYERBEZ.ZK_HALTUNGEN_GROUP.value],
+        )
+
     def tab_isybau_leitung(self):
         # tabellen ISYBAU anlegen und vorhandene Zustandsklassen in richtige Spalte kopieren
         date = self.date
@@ -31396,6 +30869,22 @@ class Zustandsklassen_funkt:
             db.commit()
         except:
             pass
+
+        loadLayer(
+            layerbez=enums.LAYERBEZ.ZK_EINZELSCHAEDEN_HA_LEITUNGEN.value,
+            table='untersuchdat_anschlussleitung_bewertung',
+            geom_column='geom',
+            qmlfile=os.path.join(self.qmlDir, 'untersuchdat_anschlussleitung_bewertung_isy.qml'),
+            group=['QKan', enums.LAYERBEZ.ZUSTANDSBEWERTUNG_GROUP.value, enums.LAYERBEZ.ZK_HA_LEITUNGEN_GROUP.value],
+        )
+
+        loadLayer(
+            layerbez=enums.LAYERBEZ.ZK_ZUSTAND_HA_LEITUNGEN.value,
+            table='anschlussleitungen_untersucht_bewertung',
+            geom_column='geom',
+            qmlfile=os.path.join(self.qmlDir, 'anschlussleitungen_untersucht_bewertung_isy.qml'),
+            group=['QKan', enums.LAYERBEZ.ZUSTANDSBEWERTUNG_GROUP.value, enums.LAYERBEZ.ZK_HA_LEITUNGEN_GROUP.value],
+        )
 
     def tab_isybau_schacht(self):
         # tabellen ISYBAU anlegen und vorhandene Zustandsklassen in richtige Spalte kopieren
@@ -31663,3 +31152,19 @@ class Zustandsklassen_funkt:
             db.commit()
         except:
             pass
+
+        loadLayer(
+            layerbez=enums.LAYERBEZ.ZK_EINZELSCHAEDEN_SCHAECHTE.value,
+            table='untersuchdat_schacht_bewertung',
+            geom_column='geom',
+            qmlfile=os.path.join(self.qmlDir, 'untersuchdat_schacht_bewertung_isy.qml'),
+            group=['QKan', enums.LAYERBEZ.ZUSTANDSBEWERTUNG_GROUP.value, enums.LAYERBEZ.ZK_SCHAECHTE_GROUP.value],
+        )
+
+        loadLayer(
+            layerbez=enums.LAYERBEZ.ZK_ZUSTAND_SCHAECHTE.value,
+            table='schaechte_untersucht_bewertung',
+            geom_column='geop',
+            qmlfile=os.path.join(self.qmlDir, 'schaechte_untersucht_bewertung_isy.qml'),
+            group=['QKan', enums.LAYERBEZ.ZUSTANDSBEWERTUNG_GROUP.value, enums.LAYERBEZ.ZK_SCHAECHTE_GROUP.value],
+        )

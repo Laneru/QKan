@@ -1,6 +1,6 @@
 import sys
-import xml.etree.ElementTree as ElementTree
-from lxml import etree
+#import xml.etree.ElementTree as ElementTree
+import lxml.etree as ElementTree
 from typing import Dict, Iterator, Union
 from fnmatch import fnmatch
 

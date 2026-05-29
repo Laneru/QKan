@@ -40,6 +40,9 @@ class Selection(QKanPlugin):
 
         toolbar_name = 'QKan-Allgemein'
         self.toolbar = self.iface.mainWindow().findChild(QToolBar, toolbar_name)
+        # Abbruch für automatisierte Tests
+        if self.toolbar is None:
+            return
 
         action_to_remove = None
         for action in self.toolbar.actions():

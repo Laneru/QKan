@@ -189,7 +189,7 @@ berücksichtigen:</source>
     <name>ImportFromHEDialogBase</name>
     <message encoding="UTF-8">
         <location filename="../tools/res/application_qgsadapt.ui" line="19"/>
-        <source>QKan-Projektdatei übertragen</source>
+        <source>QKan-Projektdatei übernehmen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -523,7 +523,7 @@ Haltungen pro Strang:</source>
     </message>
     <message>
         <location filename="../tools/application.py" line="66"/>
-        <source>QKan-Projekt aktualisieren</source>
+        <source>QKan-Projekt anpassen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

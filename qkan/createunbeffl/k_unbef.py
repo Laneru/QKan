@@ -125,30 +125,16 @@ def create_unpaved_areas(
         fehlermeldung("Interner Fehler", "Fehler in Fallunterscheidung!")
         return False
 
-    # Anfang SQL-Krierien zur Auswahl der tezg-Flächen
-    first = True
-    for attr in selected_abflparam:
-        if attr[4] == "None" or attr[1] == "None":
-            fehlermeldung(
-                "Datenfehler: ",
-                'In den ausgewählten Daten sind noch Datenfelder nicht definiert ("NULL").',
-            )
-            return False
-        if first:
-            first = False
-            auswahl += """ (tezg.abflussparameter = '{abflussparameter}' AND
-                            tezg.teilgebiet = '{teilgebiet}')""".format(
-                abflussparameter=attr[0], teilgebiet=attr[1]
-            )
-        else:
-            auswahl += """ OR\n      (tezg.abflussparameter = '{abflussparameter}' AND
-                            tezg.teilgebiet = '{teilgebiet}')""".format(
-                abflussparameter=attr[0], teilgebiet=attr[1]
-            )
-
-    if len(selected_abflparam) >= 2:
-        auswahl += ")"
-    # Ende SQL-Krierien zur Auswahl der tezg-Flächen
+    if len(selected_abflparam) > 0:
+        auswahl = ' AND ( (' + \
+          ') OR\n ('.join(
+              [
+                  f"tezg.abflussparameter = '{attr[0]}' AND tezg.teilgebiet = '{attr[1]}'"
+                  for attr in selected_abflparam if attr[1] is not None
+              ]
+          ) + '))'
+    else:
+        auswahl = ''
 
     # Erläuterung zur nachfolgenden SQL-Abfrage:
     # 1. aus der Abfrage werden alle Datensätze ohne geom-Objekte ausgeschlossen

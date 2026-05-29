@@ -1,8 +1,8 @@
-strakat_kanal_attrs: "
-PRAGMA table_list('t_strakatkanal');"
+strakat_drop_t_strakatkanal: "
+SELECT DropTable(NULL, 't_strakatkanal', True);"
 
 strakat_create_t_strakatkanal: "
-CREATE TABLE IF NOT EXISTS {tabnam} (
+CREATE TABLE IF NOT EXISTS t_strakatkanal (
     pk INTEGER PRIMARY KEY,
     nummer INTEGER,
     rw_gerinne_o REAL,
@@ -61,20 +61,21 @@ CREATE TABLE IF NOT EXISTS {tabnam} (
     eigentum INTEGER,
     naechste_halt INTEGER,
     rueckadresse INTEGER,
-    mark INTEGER DEFAULT 0,
+    strangnr INTEGER,
+    betriebspunkt INTEGER,
     strakatid TEXT);"
 
 strakat_addgeometrycolumn_geom: "
-SELECT AddGeometryColumn(?, 'geom', ?, 'LINESTRING', 2);"
+SELECT AddGeometryColumn('t_strakatkanal', 'geom', ?, 'LINESTRING', 2);"
 
 strakat_addgeometrycolumn_geop: "
-SELECT AddGeometryColumn(?, 'geop', ?, 'POINT', 2);"
+SELECT AddGeometryColumn('t_strakatkanal', 'geop', ?, 'POINT', 2);"
 
 strakat_createspatialindex_geom: "
-SELECT CreateSpatialIndex(?, 'geom');"
+SELECT CreateSpatialIndex('t_strakatkanal', 'geom');"
 
 strakat_createspatialindex_geop: "
-SELECT CreateSpatialIndex(?, 'geop');"
+SELECT CreateSpatialIndex('t_strakatkanal', 'geop');"
 
 strakat_kanaltabelle: "
 INSERT INTO t_strakatkanal (
@@ -94,7 +95,7 @@ INSERT INTO t_strakatkanal (
     schachtnummer, schachtart, berichtsnummer,
     laenge, schachtmaterial, oberflaeche,
     baujahr, wasserschutz, eigentum,
-    naechste_halt, rueckadresse, strakatid
+    naechste_halt, rueckadresse, strangnr, betriebspunkt, strakatid
 )
 VALUES (
     :nummer, 
@@ -113,7 +114,7 @@ VALUES (
     :schachtnummer, :schachtart, :berichtsnummer,
     :laenge, :schachtmaterial, :oberflaeche,
     :baujahr, :wasserschutz, :eigentum,
-    :naechste_halt, :rueckadresse, :strakatid);"
+    :naechste_halt, :rueckadresse, :strangnr, :betriebspunkt, :strakatid);"
 
 strakat_update_geom: "
 UPDATE t_strakatkanal
@@ -135,6 +136,7 @@ UPDATE t_strakatkanal
 SET geop = Makepoint(rw_gerinne_o, hw_gerinne_o, :epsg)
 WHERE rw_gerinne_o > 1   AND hw_gerinne_o > 1;"
 
+# Aktuell deaktiviert:
 strakat_delete_schnr0: "
 DELETE FROM t_strakatkanal WHERE schachtnummer = 0;"
 
@@ -144,8 +146,1290 @@ INSERT INTO t_strakatk_ori SELECT * FROM t_strakatkanal;"
 
 # Bereinigung inkonsistenter Schachtbezeichnungen
 
+# Fehlende Schacht- und Haltungsbezeichnungen ergänzen
+# Die 2. Abfrage übernimmt den Schachtnamen nur dann als Haltungsnamen, wenn dadurch keine
+# neuen Dopplungen entstehen könnten.
+
 # 1. Übertragen des schacht_oben auf Kanäle ohne schachtoben oder mit einem schachtoben,
 #    der nicht mit anderen Schachtoben übereinstimmt.
 strakat_prep1: "
 UPDATE t_strakatkanal SET schacht_oben = 'SN_' || substr(printf('0000%d', pk), -5)
-WHERE schacht_oben = '' OR schacht_oben = '0';"
+WHERE schachtnummer <> 0           /* nicht gelöscht */ 
+  AND (schacht_oben = '' OR schacht_oben = '0');"
+
+strakat_prep2: "
+UPDATE t_strakatkanal SET haltungsname = schacht_oben
+WHERE schachtnummer <> 0            /* nicht gelöscht */ 
+  AND (haltungsname = '' OR haltungsname = '0')
+  AND schacht_oben NOT IN (
+    SELECT stk.haltungsname
+    FROM t_strakatkanal AS stk)
+  AND schacht_oben IN (
+    SELECT stk.schacht_oben
+    FROM t_strakatkanal AS stk
+    GROUP BY stk.schacht_oben
+    HAVING count() = 1);"
+
+strakat_prep3: "
+UPDATE t_strakatkanal SET haltungsname = 'HN_' || substr(printf('0000%d', pk), -5)
+WHERE schachtnummer <> 0           /* nicht gelöscht */ 
+  AND (haltungsname = '' OR haltungsname = '0');"
+
+# 1.1 Doppelte Haltungsbezeichnungen eindeutig machen. Erkennungsmerkmal zur späteren
+#     Analyse: Diese Haltungsnamen beginnen
+#     mit HA_ im Gegensatz zu den Haltungen ohne Namen, die mit HN_ beginnen
+strakat_prep4: "
+UPDATE t_strakatkanal
+SET haltungsname = 'HA_' || substr(printf('0000%d', t_strakatkanal.pk), -5)
+FROM (SELECT pk, haltungsname FROM t_strakatkanal) AS std
+WHERE t_strakatkanal.schachtnummer <> 0           /* nicht gelöscht */ 
+  AND t_strakatkanal.haltungsname = std.haltungsname AND t_strakatkanal.pk > std.pk;"
+
+# 1.2.1 Schacht_unten auf Schacht_oben von Haltungen übertragen, 
+#       auf die Abflussnummer (abflussnummer1 - abflussnummer5) verweist.
+strakat_prep5: "
+WITH abflussnummern AS (
+    SELECT abflussnummer1 AS abflussnummer, schacht_unten AS schachtname
+    FROM t_strakatkanal
+    UNION
+    SELECT abflussnummer2 AS abflussnummer, schacht_unten AS schachtname
+    FROM t_strakatkanal
+    UNION
+    SELECT abflussnummer3 AS abflussnummer, schacht_unten AS schachtname
+    FROM t_strakatkanal
+    UNION
+    SELECT abflussnummer4 AS abflussnummer, schacht_unten AS schachtname
+    FROM t_strakatkanal
+    UNION
+    SELECT abflussnummer5 AS abflussnummer, schacht_unten AS schachtname
+    FROM t_strakatkanal
+), schaechte_unten AS (
+    SELECT abflussnummer, schachtname
+    FROM abflussnummern
+    WHERE abflussnummer IS NOT NULL AND
+          abflussnummer <> 0 AND
+          schachtname <> '0' AND
+          schachtname <> ''
+    ORDER BY abflussnummer
+)
+UPDATE t_strakatkanal SET schacht_oben = schaechte_unten.schachtname
+FROM schaechte_unten
+WHERE t_strakatkanal.nummer = schaechte_unten.abflussnummer
+  AND t_strakatkanal.schachtnummer <> 0;          /* nicht gelöscht */ "
+
+# Mehrfache "schacht_oben" mit SA_ im Gegensatz zu den Haltungen ohne Namen, die mit SN_ beginnen
+strakat_prep6: "
+UPDATE t_strakatkanal
+SET schacht_oben = 'SA_' || substr(printf('SA_00000%d_', t_strakatkanal.pk), -7) || t_strakatkanal.schacht_oben
+FROM (SELECT pk, schacht_oben FROM t_strakatkanal) AS std
+WHERE t_strakatkanal.schachtnummer <> 0           /* nicht gelöscht */ 
+  AND t_strakatkanal.schacht_oben = std.schacht_oben AND t_strakatkanal.pk > std.pk;"
+
+# 1.2.2 Abzweigende Haltungen (k1k), deren schacht_oben nicht mit dem eines durchlaufenden
+#       Stranges (schacht_unten = schacht_oben: k2k) übereinstimmt.
+# strakat_prep7: "
+# WITH k2k AS (
+    # SELECT ku.ROWID, ku.nummer, ku.geop, ku.schacht_oben, ku.schachtart, ku.kanalart
+    # FROM t_strakatkanal ko
+    # JOIN t_strakatkanal ku ON ko.abflussnummer1 = ku.nummer AND ko.schacht_unten = ku.schacht_oben
+# ),
+# k1k AS (
+    # SELECT
+        # k1.nummer AS n1, k2.nummer AS n2, k1.schacht_oben AS schoben_diff, 
+        # k2.schacht_oben AS schoben, k1.schachtart, k1.kanalart
+    # FROM k2k AS k2
+    # JOIN t_strakatkanal AS k1 ON st_distance(k2.geop, k1.geop) < :maxdiff
+    # WHERE
+        # k2.ROWID IN (SELECT ROWID FROM SpatialIndex WHERE f_table_name='t_strakatkanal'
+            # AND search_frame=makecircle(x(k1.geop),y(k1.geop), :maxdiff, :epsg))
+        # AND k2.schacht_oben <> k1.schacht_oben
+# )
+# UPDATE t_strakatkanal SET schacht_oben = ksk.schoben
+# FROM (SELECT n1, schoben FROM k1k) AS ksk
+# WHERE ksk.n1 = t_strakatkanal.nummer AND ksk.schoben <> '' AND ksk.schoben <> '0';"
+
+# 1.3 Unterschiedliche Schachtnamen an der gleichen Position
+# strakat_prep8: "
+# WITH k2k AS (
+    # SELECT k2.nummer AS nummer, k1.schacht_oben AS schoben
+    # FROM t_strakatkanal AS k2
+    # JOIN t_strakatkanal AS k1 ON st_distance(k2.geop, k1.geop) < :maxdiff
+    # WHERE
+        # k2.ROWID IN (SELECT ROWID FROM SpatialIndex WHERE f_table_name='t_strakatkanal'
+            # AND search_frame=makecircle(x(k1.geop),y(k1.geop), :maxdiff, :epsg))
+        # AND k1.schacht_oben <> k2.schacht_oben AND k1.nummer < k2.nummer
+# )
+# UPDATE t_strakatkanal SET schacht_oben = ksk.schoben
+# FROM (SELECT nummer, schoben FROM k2k) AS ksk
+# WHERE ksk.nummer = t_strakatkanal.nummer AND ksk.schoben <> '';"
+
+# 1.4 Test der Haltungen, die über "abflussnummmerx" und "zuflussnummerx" verbunden sind.
+# strakat_prep9: "
+# WITH ka AS (
+    # SELECT n1 AS id, n4, kurz, text
+    # FROM t_reflists
+    # WHERE tabtyp = 'schachtart' 
+# ),
+# sx AS (
+    # SELECT ko.nummer AS nummer_oben, ku.nummer AS nummer_unten, ko.schacht_unten, ku.schacht_oben, ko.schachtart AS schachtart_ob, ku.schachtart AS schachtart_un
+    # FROM t_strakatkanal AS ko
+    # JOIN t_strakatkanal AS ku ON ko.abflussnummer1 = ku.nummer
+    # WHERE ko.abflussnummer1 > 0 AND ko.schacht_unten <> ku.schacht_oben
+    # UNION 
+    # SELECT ko.nummer AS nummer_oben, ku.nummer AS nummer_unten, ko.schacht_unten, ku.schacht_oben, ko.schachtart AS schachtart_ob, ku.schachtart AS schachtart_un
+    # FROM t_strakatkanal AS ko
+    # JOIN t_strakatkanal AS ku ON ko.abflussnummer2 = ku.nummer
+    # WHERE ko.abflussnummer2 > 0 AND ko.schacht_unten <> ku.schacht_oben
+    # UNION 
+    # SELECT ko.nummer AS nummer_oben, ku.nummer AS nummer_unten, ko.schacht_unten, ku.schacht_oben, ko.schachtart AS schachtart_ob, ku.schachtart AS schachtart_un
+    # FROM t_strakatkanal AS ko
+    # JOIN t_strakatkanal AS ku ON ko.abflussnummer3 = ku.nummer
+    # WHERE ko.abflussnummer3 > 0 AND ko.schacht_unten <> ku.schacht_oben
+    # UNION 
+    # SELECT ko.nummer AS nummer_oben, ku.nummer AS nummer_unten, ko.schacht_unten, ku.schacht_oben, ko.schachtart AS schachtart_ob, ku.schachtart AS schachtart_un
+    # FROM t_strakatkanal AS ko
+    # JOIN t_strakatkanal AS ku ON ko.abflussnummer4 = ku.nummer
+    # WHERE ko.abflussnummer4 > 0 AND ko.schacht_unten <> ku.schacht_oben
+    # UNION 
+    # SELECT ko.nummer AS nummer_oben, ku.nummer AS nummer_unten, ko.schacht_unten, ku.schacht_oben, ko.schachtart AS schachtart_ob, ku.schachtart AS schachtart_un
+    # FROM t_strakatkanal AS ko
+    # JOIN t_strakatkanal AS ku ON ko.abflussnummer5 = ku.nummer
+    # WHERE ko.abflussnummer5 > 0 AND ko.schacht_unten <> ku.schacht_oben
+# )
+# UPDATE t_strakatkanal SET schacht_unten = sx.schacht_oben
+# FROM sx
+# WHERE sx.nummer_oben = t_strakatkanal.nummer AND t_strakatkanal.schacht_unten <> sx.schacht_oben AND sx.schacht_oben <> '';"
+
+strakat_create_t_reflists: "
+CREATE TABLE IF NOT EXISTS t_reflists (
+    pk INTEGER PRIMARY KEY,
+    id INTEGER,                 /* Schlüssel je Tabellenart */ 
+    tabtyp TEXT,                /* Tabellenart */ 
+    n1 INTEGER,                 /* Inhalt abhängig von von tabtyp  */ 
+    n2 INTEGER,                 /* Inhalt abhängig von von tabtyp */ 
+    n3 INTEGER,                 /* Inhalt abhängig von von tabtyp */ 
+    n4 INTEGER,                 /* Inhalt abhängig von von tabtyp */ 
+    n5 INTEGER,                 /* Inhalt abhängig von von tabtyp */ 
+    kurz TEXT, 
+    text TEXT
+);"
+
+strakat_add_t_reflists: "
+INSERT INTO t_reflists (
+    tabtyp, id,
+    n1, n2, n3, n4, n5, 
+    kurz, text                    
+)
+VALUES (
+    :tabtyp, :id, :n1, :n2, :n3, :n4, :n5, :kurz, :text
+);"
+
+strakat_02: "
+SELECT DropTable(NULL, 't_strakathausanschluesse', True);"
+
+strakat_03: "
+CREATE TABLE IF NOT EXISTS t_strakathausanschluesse (
+    pk INTEGER PRIMARY KEY,
+    nummer INTEGER,
+    nextnum INTEGER,
+    x1 REAL,                    /* Ende der Leitung am Kanal  */ 
+    x2 REAL,
+    x3 REAL,
+    x4 REAL,
+    x5 REAL,
+    x6 REAL,
+    x7 REAL,
+    x8 REAL,
+    x9 REAL,
+    y1 REAL,
+    y2 REAL,
+    y3 REAL,
+    y4 REAL,
+    y5 REAL,
+    y6 REAL,
+    y7 REAL,
+    y8 REAL,
+    y9 REAL,
+    z1 REAL,
+    z2 REAL,
+    z3 REAL,
+    z4 REAL,
+    z5 REAL,
+    z6 REAL,
+    z7 REAL,
+    z8 REAL,
+    z9 REAL,
+    xanf REAL,                  /* Anfang der Leitung am Haus */ 
+    yanf REAL,
+    zanf REAL,
+    rohrbreite REAL,
+    berichtnr INTEGER,
+    anschlusshalnr INTEGER,
+    anschlusshalname TEXT,      /* Bezeichnung der Anschlussleitung */
+    anschlussschob TEXT,
+    anschlussschun TEXT,
+    sohleoben REAL,             /* aus z-Wert */ 
+    sohleunten REAL,            /* aus z-Wert */ 
+    urstation REAL,
+    strassennummer INTEGER,
+    hausnummer TEXT,
+    geloescht INTEGER,
+    strakatid TEXT,
+    hausanschlid TEXT
+);"
+
+strakat_04: "
+INSERT INTO t_strakathausanschluesse (
+        nummer, nextnum,
+        x1, x2, x3,
+        x4, x5, x6,
+        x7, x8, x9,
+        y1, y2, y3,
+        y4, y5, y6,
+        y7, y8, y9,
+        z1, z2, z3,
+        z4, z5, z6,
+        z7, z8, z9,
+        xanf, yanf, zanf, 
+        rohrbreite,
+        berichtnr,
+        anschlusshalnr, anschlusshalname,
+        anschlussschob, anschlussschun, sohleoben, sohleunten, urstation, 
+        strassennummer, hausnummer, geloescht,
+        strakatid, hausanschlid, geom
+    )
+    VALUES (
+        :nummer, :nextnum,
+        :x1, :x2, :x3,
+        :x4, :x5, :x6,
+        :x7, :x8, :x9,
+        :y1, :y2, :y3,
+        :y4, :y5, :y6,
+        :y7, :y8, :y9,
+        :z1, :z2, :z3,
+        :z4, :z5, :z6,
+        :z7, :z8, :z9,
+        :xanf, :yanf, :zanf, 
+        :rohrbreite,
+        :berichtnr,
+        :anschlusshalnr, :anschlusshalname,
+        :anschlussschob, :anschlussschun, :sohleoben, :sohleunten, :urstation, 
+        :strassennummer, :hausnummer, :geloescht,
+        :strakatid, :hausanschlid, GeomFromWKB(:geomwkb, :epsg)
+    );"
+
+strakat_05: "
+WITH sta AS (
+    SELECT anschlusshalname, count() AS anzahl
+    FROM t_strakathausanschluesse
+    GROUP BY anschlusshalname
+),
+sdd AS (
+    SELECT 
+        sth.pk                     AS pk,
+        CASE WHEN abs(sth.urstation + 1.0) < 0.0001
+        THEN replace(printf('sc_%d', 1000000 + sth.nummer), 'sc_1', 'sc')    /* Schachtanschluss */ 
+        ELSE replace(printf('ha_%d', 1000000 + sth.nummer), 'ha_1', 'ha')    /* Haltungsanschluss */ 
+        END                        AS anschlusshalname
+    FROM sta
+    JOIN t_strakathausanschluesse AS sth ON sth.anschlusshalname = sta.anschlusshalname
+    WHERE sta.anzahl > 1 OR sth.anschlusshalname = '' OR sth.anschlusshalname IS NULL
+)
+UPDATE t_strakathausanschluesse AS snn
+SET anschlusshalname = sdd.anschlusshalname
+FROM sdd
+WHERE snn.pk = sdd.pk;"
+
+strakat_06: "
+SELECT DropTable(NULL, 't_strakatberichte', True);"
+
+strakat_07: "
+CREATE TABLE IF NOT EXISTS t_strakatberichte (
+    pk INTEGER PRIMARY KEY,
+    nummer INTEGER,
+    datum TEXT,
+    untersucher TEXT,
+    ag_kontrolle TEXT,
+    fahrzeug TEXT,
+    inspekteur TEXT,
+    wetter TEXT,
+    bewertungsart TEXT,
+    atv149 REAL,
+    fortsetzung INTEGER,
+    station_gegen REAL,
+    station_untersucher REAL,
+    atv_kuerzel TEXT,
+    atv_langtext TEXT,
+    charakt1 TEXT,
+    charakt2 TEXT,
+    quantnr1 TEXT,
+    quantnr2 TEXT,
+    streckenschaden TEXT,
+    pos_von INTEGER,
+    pos_bis INTEGER,
+    sandatum TEXT,
+    geloescht INTEGER,
+    schadensklasse INTEGER,
+    untersuchungsrichtung INTEGER,
+    bandnr INTEGER,
+    videozaehler INTEGER,
+    foto_dateiname TEXT,
+    film_dateiname TEXT,
+    sanierung TEXT,
+    atv143 REAL,
+    skdichtheit INTEGER,
+    skbetriebssicherheit INTEGER,
+    skstandsicherheit INTEGER,
+    kommentar TEXT,
+    strakatid TEXT,
+    hausanschlid TEXT,
+    berichtid TEXT
+);"
+
+strakat_08: "
+INSERT INTO t_strakatberichte (
+    nummer,
+    datum,
+    untersucher, 
+    ag_kontrolle, 
+    fahrzeug, 
+    inspekteur, 
+    wetter,
+    bewertungsart, 
+    atv149, 
+    fortsetzung, 
+    station_gegen, 
+    station_untersucher, 
+    atv_kuerzel, 
+    atv_langtext, 
+    charakt1,
+    charakt2,
+    quantnr1,
+    quantnr2,
+    streckenschaden,
+    pos_von,
+    pos_bis,
+    sandatum, 
+    geloescht, 
+    schadensklasse, 
+    untersuchungsrichtung, 
+    bandnr, 
+    videozaehler,
+    foto_dateiname, 
+    sanierung, 
+    atv143, 
+    skdichtheit, 
+    skbetriebssicherheit,
+    skstandsicherheit, 
+    kommentar, 
+    strakatid, 
+    hausanschlid, 
+    berichtid
+) VALUES (
+    :nummer,
+    :datum, 
+    :untersucher, 
+    :ag_kontrolle, 
+    :fahrzeug, 
+    :inspekteur, 
+    :wetter,
+    :bewertungsart, 
+    :atv149, 
+    :fortsetzung, 
+    :station_gegen, 
+    :station_untersucher, 
+    :atv_kuerzel, 
+    :atv_langtext, 
+    :charakt1,
+    :charakt2,
+    :quantnr1,
+    :quantnr2,
+    :streckenschaden,
+    :pos_von,
+    :pos_bis,
+    :sandatum, 
+    :geloescht, 
+    :schadensklasse, 
+    :untersuchungsrichtung, 
+    :bandnr, 
+    :videozaehler,
+    :foto_dateiname, 
+    :sanierung, 
+    :atv143, 
+    :skdichtheit, 
+    :skbetriebssicherheit,
+    :skstandsicherheit, 
+    :kommentar, 
+    :strakatid, 
+    :hausanschlid, 
+    :berichtid
+);"
+
+strakat_09: "
+INSERT INTO entwaesserungsarten (bezeichnung, kuerzel, bemerkung)
+    SELECT text, kurz, 'Importiert aus STRAKAT'
+    FROM t_reflists
+    WHERE tabtyp = 'kanalart';"
+
+strakat_10: "
+INSERT INTO haltungstypen (bezeichnung, bemerkung)
+    SELECT ?, ?
+    WHERE ? NOT IN (SELECT bezeichnung FROM haltungstypen);"
+
+strakat_11: "
+INSERT INTO profile (profilnam, kuerzel, kommentar)
+    SELECT iif(trim(text) = '', kurz,text), kurz, 'Importiert aus STRAKAT'
+    FROM t_reflists
+    WHERE tabtyp = 'profilart';"
+
+strakat_12: "
+INSERT INTO teilgebiete (tgnam, kommentar)
+    SELECT rl.text, 'Importiert aus STRAKAT'
+    FROM t_reflists AS rl
+    JOIN t_strakatkanal AS skt ON skt.e_gebiet = rl.id         /* nur verwendete */ 
+    WHERE tabtyp = 'entwaesserungsgebiet'
+    GROUP BY rl.id;"
+
+strakat_13: "
+INSERT INTO pumpentypen (bezeichnung, he_nr)
+    SELECT ?, ?
+    WHERE ? NOT IN (SELECT bezeichnung FROM pumpentypen);"
+
+strakat_14: "
+INSERT INTO untersuchrichtung (bezeichnung, kuerzel, bemerkung)
+    SELECT ?, ?, ?
+    WHERE ? NOT IN (SELECT bezeichnung FROM untersuchrichtung);"
+
+strakat_15: "
+PRAGMA table_list('t_mapper_untersuchrichtung');"
+
+strakat_16: "
+CREATE TABLE IF NOT EXISTS t_mapper_untersuchrichtung (
+    id INTEGER PRIMARY KEY,
+    untersuchungsrichtung TEXT
+);"
+
+strakat_17: "
+INSERT INTO t_mapper_untersuchrichtung (id, untersuchungsrichtung)
+SELECT ? AS id, ? as untersuchungsrichtung
+WHERE id NOT IN (SELECT id FROM t_mapper_untersuchrichtung);"
+
+strakat_18: "
+INSERT INTO simulationsstatus (bezeichnung, kuerzel)
+SELECT text, kurz FROM t_reflists
+WHERE tabtyp = 'kanalart' AND 
+      (kurz like '%stillg%' OR kurz like '%neub%' OR kurz like '%plan%' OR kurz like '%verdäm%')
+GROUP BY text ;"
+
+strakat_19: "
+INSERT INTO eigentum (name, kommentar)
+    SELECT text, 'Importiert aus STRAKAT'
+    FROM t_reflists
+    WHERE tabtyp = 'eigentum';"
+
+strakat_20: "
+INSERT INTO entwaesserungsarten (
+    bezeichnung, kuerzel, bemerkung, he_nr, kp_nr, m150, isybau)
+    SELECT ?, ?, ?, ?, ?, ?, ?
+    WHERE ? NOT IN (SELECT bezeichnung FROM entwaesserungsarten);"
+
+strakat_21: "
+INSERT INTO simulationsstatus (
+    bezeichnung, kuerzel, he_nr, mu_nr, kp_nr, m150, m145, isybau, kommentar)
+    SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?
+    WHERE ? NOT IN (SELECT bezeichnung FROM simulationsstatus);"
+
+strakat_22: "
+UPDATE simulationsstatus
+    SET he_nr = ?, mu_nr = ?, kp_nr = ?, m150 = ?, m145 = ?, isybau = ?, kommentar = ?
+    WHERE bezeichnung = ?;"
+
+strakat_23: "
+WITH strassen AS (
+    SELECT n1 AS id, kurz, trim(text) AS name
+    FROM t_reflists
+    WHERE tabtyp = 'strasse'
+),
+schachtmaterial AS (
+    SELECT n1 AS id, kurz, text
+    FROM t_reflists
+    WHERE tabtyp = 'schachtmaterial'
+),
+entwart AS (
+    SELECT n1 AS id, kurz, text
+    FROM t_reflists
+    WHERE tabtyp = 'kanalart' 
+),
+knotenart AS (
+    SELECT n1 AS id, n4, kurz, text
+    FROM t_reflists
+    WHERE tabtyp = 'schachtart' 
+),
+gebiet AS (
+    SELECT n1 AS id, text, kurz
+    FROM t_reflists
+    WHERE tabtyp = 'entwaesserungsgebiet'
+),
+eigentum AS (
+    SELECT n1 AS id, text, kurz
+    FROM t_reflists
+    WHERE tabtyp = 'eigentum'
+)
+INSERT INTO schaechte (schnam, xsch, ysch, sohlhoehe, deckelhoehe, strasse, material, 
+                    durchm, entwart, schachttyp, knotentyp, baujahr, eigentum, teilgebiet,
+                    kommentar, geop, geom)
+SELECT
+    stk.schacht_oben                            AS schnam,
+    stk.rw_gerinne_o                            AS xsch,
+    stk.hw_gerinne_o                            AS ysch,
+    MIN(CASE WHEN stk.s_sohle_oben_v<1 Or stk.s_sohle_oben_v > 5000
+        THEN stk.sohle_oben___v
+        ELSE stk.s_sohle_oben_v
+        END
+    )                                           AS sohlhoehe,
+    MAX(CASE WHEN stk.deckel_oben_v <1 Or stk.deckel_oben_v > 5000
+        THEN Null 
+        ELSE stk.deckel_oben_v
+        END
+    )                                           AS deckelhoehe,
+    strassen.name                               AS strasse,
+    schachtmaterial.text                        AS material,
+    1.0                                         AS durchm,
+    k2e.text                                    AS entwart,
+    'Schacht'                                   AS schachttyp,
+    k2t.text                                    AS knotentyp,
+    stk.baujahr                                 AS baujahr,
+    eg.text                                     AS eigentum,
+    k2g.text                                    AS teilgebiet,
+    CASE WHEN count(*) > 1
+    THEN printf('Schacht in STRAKAT %s mal vorhanden', count(*))
+    ELSE 'QKan-STRAKAT-Import' END              AS kommentar,
+    Makepoint(stk.rw_gerinne_o, stk.hw_gerinne_o, :epsg)  AS geop,
+    CastToMultiLineString(MakeCircle(
+        stk.rw_gerinne_o, stk.hw_gerinne_o, 0.5, :epsg)) AS geom
+FROM t_strakatkanal AS stk
+LEFT JOIN strassen          ON stk.strassennummer = strassen.id
+LEFT JOIN schachtmaterial   ON stk.schachtmaterial = schachtmaterial.id
+JOIN entwart AS k2e         ON stk.kanalart = k2e.id
+JOIN knotenart AS k2t       ON stk.schachtart = k2t.id
+JOIN gebiet AS k2g          ON stk.e_gebiet = k2g.id
+LEFT JOIN schaechte AS sd   ON sd.schnam = stk.schacht_oben
+LEFT JOIN eigentum AS eg    ON eg.id = stk.eigentum 
+WHERE
+        stk.schachtnummer <> 0                                      /* nicht geloescht */ 
+    AND stk.schacht_oben Is Not Null
+    AND stk.rw_gerinne_o Is Not Null
+    AND stk.hw_gerinne_o Is Not Null
+    AND (stk.zuflussnummer1 > 0 OR stk.abflussnummer1 > 0)          /* kein Symbol */ 
+    AND sd.pk IS NULL                                               /* nur neue hinzufügen */ 
+GROUP BY
+    stk.schacht_oben;"
+
+strakat_24: "
+WITH knotenart AS (
+    SELECT n1 AS id, n4, kurz, text
+    FROM t_reflists
+    WHERE tabtyp = 'schachtart' 
+)
+INSERT INTO symbole (bezeichnung, art, gruppe, kommentar, geom)
+SELECT
+    stk.schacht_oben                            AS bezeichnung,
+    k2t.text                                    AS art,
+    'strakat'                                   AS gruppe,
+    'STRAKAT-Import'                            AS kommentar,
+    Makepoint(stk.rw_gerinne_o, stk.hw_gerinne_o, :epsg)  AS geom
+FROM t_strakatkanal AS stk
+JOIN knotenart AS k2t       ON stk.schachtart = k2t.id
+WHERE stk.zuflussnummer1 = 0 AND stk.abflussnummer1 = 0                 /* Symbol */ ;"
+
+strakat_25: "
+INSERT INTO symbolkatalog (bezeichnung, gruppe, kommentar)
+    SELECT
+        text                AS bezeichnung,
+        'strakat'           AS gruppe,
+        'STRAKAT-Import'    AS kommentar
+    FROM t_reflists
+    WHERE tabtyp = 'schachtart' ;"
+
+strakat_haltungen: "
+WITH profilarten AS (
+    SELECT n1 AS id, kurz, text
+    FROM t_reflists
+    WHERE tabtyp = 'profilart'
+),
+rohrmaterialien AS (
+    SELECT n1 AS id, kurz, text
+    FROM t_reflists
+    WHERE tabtyp = 'rohrmaterial'
+),
+strassen AS (
+    SELECT n1 AS id, kurz, trim(text) AS name
+    FROM t_reflists
+    WHERE tabtyp = 'strasse'
+),
+entwart AS (
+    SELECT n1 AS id, kurz, text
+    FROM t_reflists
+    WHERE tabtyp = 'kanalart' 
+),
+knotenart AS (
+    SELECT n1 AS id, n4, kurz, text
+    FROM t_reflists
+    WHERE tabtyp = 'schachtart' 
+),
+gebiet AS (
+    SELECT n1 AS id, text, kurz
+    FROM t_reflists
+    WHERE tabtyp = 'entwaesserungsgebiet'
+),
+eigentum AS (
+    SELECT n1 AS id, text, kurz
+    FROM t_reflists
+    WHERE tabtyp = 'eigentum'
+)
+INSERT INTO haltungen (haltnam, schoben, schunten, laenge, 
+    xschob, yschob, xschun, yschun, 
+    breite, hoehe, 
+    sohleoben, sohleunten, 
+    profilnam, entwart, druckdicht, material, strasse, eigentum, teilgebiet,  
+    haltungstyp, baujahr, simstatus, kommentar, geom)
+SELECT
+    stk.haltungsname                                            AS haltnam,
+    stk.schacht_oben                                            AS schoben,
+    stk.schacht_unten                                           AS schunten,
+    stk.laenge                                                  AS laenge,
+    iif(:coordsFromRohr, stk.rw_rohranfang, stk.rw_gerinne_o)   AS xschob,
+    iif(:coordsFromRohr, stk.hw_rohranfang, stk.hw_gerinne_o)   AS yschob,
+    iif(:coordsFromRohr, stk.rw_rohrende, stk.rw_gerinne_u)     AS xschun,
+    iif(:coordsFromRohr, stk.hw_rohrende, stk.hw_gerinne_u)     AS yschun,
+    stk.rohrbreite_v                                            AS breite,
+    stk.rohrhoehe___v                                           AS hoehe,
+    stk.sohle_oben___v                                          AS sohleoben,
+    stk.sohle_unten__v                                          AS sohleunten,
+    profilarten.text                                            AS profilnam,
+    k2e.text                                                    AS entwart,
+    CASE WHEN instr(lower(k2e.text),'druck') > 0
+        THEN 1 ELSE 0 END                                       AS druckdicht,
+    rohrmaterialien.text                                        AS material,
+    strassen.name                                               AS strasse,
+    eg.text                                                     AS eigentum,
+    k2g.text                                                    AS teilgebiet,
+    'Haltung'                                                   AS haltungstyp,
+    stk.baujahr                                                 AS baujahr,
+    'in Betrieb'                                                AS simstatus,
+    'QKan-STRAKAT-Import'                                       AS kommentar,
+    MakeLine(MakePoint(iif(:coordsFromRohr, stk.rw_rohranfang, stk.rw_gerinne_o),
+                       iif(:coordsFromRohr, stk.hw_rohranfang, stk.hw_gerinne_o), :epsg),
+             MakePoint(iif(:coordsFromRohr, stk.rw_rohrende, stk.rw_gerinne_u),
+                       iif(:coordsFromRohr, stk.hw_rohrende, stk.hw_gerinne_u), :epsg))
+                                                                AS geom
+FROM
+    t_strakatkanal      AS stk
+    LEFT JOIN profilarten       ON stk.profilart_v = profilarten.id
+    LEFT JOIN rohrmaterialien   ON stk.Material_v = rohrmaterialien.ID
+    LEFT JOIN strassen          ON stk.strassennummer = strassen.ID
+    JOIN entwart        AS k2e  ON stk.kanalart = k2e.id
+    JOIN knotenart      AS k2t  ON stk.schachtart = k2t.id
+    JOIN gebiet         AS k2g  ON stk.e_gebiet = k2g.id
+    LEFT JOIN haltungen         ON haltungen.haltnam = stk.haltungsname
+    LEFT JOIN eigentum  AS eg   ON eg.id = stk.eigentum 
+WHERE stk.laenge > 0.045
+  AND stk.schachtnummer <> 0 AND stk.strangnr <= 1                  /* nicht gelöscht und nur Stranganfänge */
+  AND (stk.zuflussnummer1 > 0 OR stk.abflussnummer1 > 0)            /* kein Symbol */ 
+  AND haltungen.pk IS NULL                                          /* nur neue Haltungen hinzufügen */ ;"
+
+strakat_straenge: "
+    SELECT
+        stk.haltungsname    AS haltungsname,
+        stk.schacht_oben    AS schacht_oben,
+        stk.schacht_unten   AS schacht_unten,
+        stk.strangnr        AS strangnr,
+        iif(:coordsFromRohr, stk.rw_rohranfang, stk.rw_gerinne_o) as xob, 
+        iif(:coordsFromRohr, stk.hw_rohranfang, stk.hw_gerinne_o) as yob,
+        iif(:coordsFromRohr, stk.rw_rohrende, stk.rw_gerinne_u) as xun,
+        iif(:coordsFromRohr, stk.hw_rohrende, stk.hw_gerinne_u) as yun
+    FROM
+        t_strakatkanal AS stk
+        WHERE strangnr <> 0 AND schachtnummer <> 0
+;"
+
+strakat_28: "
+UPDATE haltungen SET geom = GeomFromWKB(:geom, :epsg)
+WHERE haltnam = :haltnam;"
+
+strakat_29: "
+WITH ha AS (
+SELECT
+    pk,
+    nummer                          AS nummer, 
+    anschlusshalname                AS leitnam,
+    Trim(anschlussschob)            AS schoben,
+    Trim(anschlussschun)            AS schunten,
+    rohrbreite                      AS hoehe,
+    rohrbreite                      AS breite,
+    strakatid                       AS strakatid,
+    urstation                       AS urstation,
+    strassennummer                  AS strassennummer,
+    hausnummer                      AS hausnummer,
+    geom                            AS geom
+FROM t_strakathausanschluesse
+WHERE geloescht = 0
+),
+strassen AS (
+    SELECT n1 AS id, kurz, trim(text) AS name
+    FROM t_reflists
+    WHERE tabtyp = 'strasse'
+)
+INSERT INTO anschlussleitungen (leitnam, schoben, schunten,
+    hoehe, breite, laenge, haltnam,
+    urstation, ursprung,
+    simstatus, kommentar, geom)
+SELECT
+    ha.leitnam,
+    ha.schoben,
+    ha.schunten,
+    ha.hoehe,
+    ha.breite,
+    GLength(ha.geom)                    AS laenge,
+    stk.haltungsname                    AS haltnam,
+    ha.urstation,
+    stn.name || ' ' || ha.hausnummer    AS ursprung,
+    'in Betrieb'                        AS simstatus,
+    'QKan-STRAKAT-Import'               AS kommentar,
+    ha.geom                             AS geom
+FROM
+    ha
+    LEFT JOIN anschlussleitungen    USING (leitnam, schoben, schunten)
+    LEFT JOIN t_strakatkanal AS stk ON stk.strakatid = ha.strakatid
+    LEFT JOIN strassen AS stn ON ha.strassennummer = stn.id
+WHERE anschlussleitungen.pk IS NULL                         /* nur neue Anschlussleitungen hinzufügen */ ;"
+
+strakat_30: "
+WITH strassen AS (
+    SELECT n1 AS id, kurz, trim(text) AS name
+    FROM t_reflists
+    WHERE tabtyp = 'strasse'
+),
+sku AS (
+SELECT                                              /* Schacht oben */ 
+    stk.schacht_oben                            AS schnam,
+    1.0                                         AS durchm,
+    stk.baujahr                                 AS baujahr,
+    stb.datum                                   AS untersuchtag,
+    stb.untersucher                             AS untersucher,
+    CASE WHEN instr(lower(stb.wetter), 'trock') + 
+               instr(lower(stb.wetter), 'kein Nied') > 0 THEN 1
+          WHEN instr(lower(stb.wetter), 'reg')       > 0 THEN 2
+          WHEN instr(lower(stb.wetter), 'fros') +
+               instr(lower(stb.wetter), 'chnee')     > 0 THEN 3
+          ELSE NULL END             AS wetter,
+    CASE WHEN INSTR(trim(strassen.name),' ') > 0
+        THEN substr(trim(strassen.name), INSTR(trim(strassen.name),' ')+1)
+        ELSE trim(strassen.name)
+    END                                         AS strasse,
+    stb.bewertungsart                           AS bewertungsart,
+    NULL                                        AS bewertungstag,
+    NULL                                        AS auftragsbezeichnung,
+    'DWA'                                       AS datenart,
+    stb.skdichtheit                             AS max_ZD,
+    stb.skbetriebssicherheit                    AS max_ZB,
+    stb.skstandsicherheit                       AS max_ZS,
+    'QKan-STRAKAT-Import'                       AS kommentar,
+    Makepoint(stk.rw_gerinne_o, stk.hw_gerinne_o, :epsg)  AS geop
+FROM
+    t_strakatkanal AS stk
+    LEFT JOIN strassen              ON stk.strassennummer = strassen.id
+    JOIN t_strakatberichte  AS stb  ON stb.strakatid = stk.strakatid
+WHERE
+        stk.schachtnummer <> 0
+    AND stb.geloescht = 0
+    AND stk.schachtart <> 0                                         /* keine Knickpunkte */ 
+    AND schnam Is Not Null
+    AND stk.rw_gerinne_o Is Not Null
+    AND stk.hw_gerinne_o Is Not Null
+    AND (stk.zuflussnummer1 > 0 OR stk.abflussnummer1 > 0)          /* kein Symbol */ 
+    AND substr(stb.atv_kuerzel, 1, 1) in ('C', 'D') AND substr(stb.atv_kuerzel, 2, 1) <> '-' 
+    AND (   (stb.untersuchungsrichtung = 1 AND stb.station_untersucher < 0.01) 
+         OR (stb.untersuchungsrichtung = 0 AND stb.station_untersucher > stk.laenge * 0.9)
+        ) 
+UNION
+SELECT                                              /* Schacht unten  */ 
+    stk.schacht_unten                           AS schnam,
+    1.0                                         AS durchm,
+    stk.baujahr                                 AS baujahr,
+    stb.datum                                   AS untersuchtag,
+    stb.untersucher                             AS untersucher,
+    CASE WHEN instr(lower(stb.wetter), 'trock') + 
+               instr(lower(stb.wetter), 'kein Nied') > 0 THEN 1
+          WHEN instr(lower(stb.wetter), 'reg')       > 0 THEN 2
+          WHEN instr(lower(stb.wetter), 'fros') +
+               instr(lower(stb.wetter), 'chnee')     > 0 THEN 3
+          ELSE NULL END             AS wetter,
+    CASE WHEN INSTR(trim(strassen.name),' ') > 0
+        THEN substr(trim(strassen.name), INSTR(trim(strassen.name),' ')+1)
+        ELSE trim(strassen.name)
+    END                                         AS strasse,
+    stb.bewertungsart                           AS bewertungsart,
+    NULL                                        AS bewertungstag,
+    NULL                                        AS auftragsbezeichnung,
+    'DWA'                                       AS datenart,
+    stb.skdichtheit                             AS max_ZD,
+    stb.skbetriebssicherheit                    AS max_ZB,
+    stb.skstandsicherheit                       AS max_ZS,
+    'QKan-STRAKAT-Import'                       AS kommentar,
+    Makepoint(stk.rw_gerinne_o, stk.hw_gerinne_o, :epsg)  AS geop
+FROM
+    t_strakatkanal                  AS stk
+    LEFT JOIN strassen                      ON stk.strassennummer = strassen.id
+    JOIN t_strakatberichte          AS stb  ON stb.strakatid = stk.strakatid
+WHERE
+        stk.schachtnummer <> 0
+    AND stb.geloescht = 0
+    AND stk.schachtart <> 0                                         /* keine Knickpunkte */ 
+    AND schnam Is Not Null
+    AND stk.rw_gerinne_o Is Not Null
+    AND stk.hw_gerinne_o Is Not Null
+    AND (stk.zuflussnummer1 > 0 OR stk.abflussnummer1 > 0)          /* kein Symbol */ 
+    AND substr(stb.atv_kuerzel, 1, 1) in ('C', 'D') AND substr(stb.atv_kuerzel, 2, 1) <> '-' 
+    AND (   (stb.untersuchungsrichtung = 0 AND stb.station_untersucher < 0.01) 
+         OR (stb.untersuchungsrichtung = 1 AND stb.station_untersucher > stk.laenge * 0.9)
+        ) 
+)
+INSERT INTO schaechte_untersucht (
+    schnam, durchm, baujahr, 
+    untersuchtag, untersucher,
+    wetter, strasse,
+    bewertungsart, bewertungstag, auftragsbezeichnung, datenart,
+    max_ZD, max_ZB, max_ZS,
+    kommentar, geop)
+SELECT 
+    sku.schnam, sku.durchm, sku.baujahr, 
+    sku.untersuchtag, sku.untersucher,
+    sku.wetter, sku.strasse,
+    sku.bewertungsart, sku.bewertungstag, sku.auftragsbezeichnung, sku.datenart, 
+    min(sku.max_ZD) AS max_ZD, min(sku.max_ZB) AS max_ZB, min(sku.max_ZS) AS max_ZS, 
+    sku.kommentar, sku.geop
+FROM sku
+LEFT JOIN schaechte_untersucht AS schunt USING (schnam, untersuchtag)
+WHERE schunt.pk IS NULL                             /* nur neue Schächte untersucht hinzufügen  */ 
+GROUP BY schnam, untersuchtag;"
+
+strakat_31: "
+WITH strassen AS (
+    SELECT n1 AS id, kurz, trim(text) AS name
+    FROM t_reflists
+    WHERE tabtyp = 'strasse'
+),
+uts AS (
+    SELECT                                              /* Schacht oben */ 
+        stk.schacht_oben                AS untersuchsch,
+        NULL                            AS id, 
+        stb.datum                       AS untersuchtag,
+        stb.bandnr                      AS bandnr,
+        stb.videozaehler                AS videozaehler,
+        NULL                            AS timecode,
+        stb.atv_langtext                AS langtext,
+        stb.atv_kuerzel                 AS kuerzel,
+        stb.charakt1                    AS charakt1,
+        stb.charakt2                    AS charakt2,                
+        stb.quantnr1                    AS quantnr1,
+        stb.quantnr2                    AS quantnr2,                
+        stb.streckenschaden             AS streckenschaden,
+        stb.fortsetzung                 AS streckenschaden_lfdnr,
+        stb.pos_von                     AS pos_von, 
+        stb.pos_bis                     AS pos_bis,
+        :ordner_bild  || replace(printf('\\band%d\\', 1000000 + stb.bandnr), 'band10', 'band')
+                      || stb.foto_dateiname || '.jpg'
+                                        AS foto_dateiname,
+        :ordner_video || '\\'  || stb.foto_dateiname
+                      || ' von '  || stk.schacht_oben
+                      || ' nach ' || stk.schacht_unten
+                      || ' - '    || strassen.name  || '.mpg' 
+                                        AS film_dateiname,
+        NULL                            AS filmtyp,
+        NULL                            AS video_start,
+        NULL                            AS video_ende,
+        stb.skdichtheit                 AS ZD,
+        stb.skbetriebssicherheit        AS ZB,
+        stb.skstandsicherheit           AS ZS,
+        stb.kommentar                   AS kommentar
+    FROM
+        t_strakatberichte  AS stb
+        JOIN t_strakatkanal AS stk      ON stk.strakatid = stb.strakatid
+        LEFT JOIN strassen              ON stk.strassennummer = strassen.id
+    WHERE stk.laenge > 0.045
+      AND stk.schachtnummer <> 0
+      AND stb.geloescht = 0
+      AND stb.hausanschlid = '00000000-0000-0000-0000-000000000000'
+      AND (stk.zuflussnummer1 > 0 OR stk.abflussnummer1 > 0)                /* kein Symbol */ 
+      AND substr(stb.atv_kuerzel, 1, 1) in ('C', 'D') AND substr(stb.atv_kuerzel, 2, 1) <> '-' 
+      AND (   (stb.untersuchungsrichtung = 1 AND stb.station_untersucher < 0.01) 
+           OR (stb.untersuchungsrichtung = 0 AND stb.station_untersucher > stk.laenge * 0.9)
+          ) 
+    UNION
+    SELECT                                              /* Schacht unten */ 
+        stk.schacht_unten               AS untersuchsch,
+        NULL                            AS id, 
+        stb.datum                       AS untersuchtag,
+        stb.bandnr                      AS bandnr,
+        stb.videozaehler                AS videozaehler,
+        NULL                            AS timecode,
+        stb.atv_langtext                AS langtext,
+        stb.atv_kuerzel                 AS kuerzel,
+        stb.charakt1                    AS charakt1,
+        stb.charakt2                    AS charakt2,                
+        stb.quantnr1                    AS quantnr1,
+        stb.quantnr2                    AS quantnr2,                
+        stb.streckenschaden             AS streckenschaden,
+        stb.fortsetzung                 AS streckenschaden_lfdnr,
+        stb.pos_von                     AS pos_von, 
+        stb.pos_bis                     AS pos_bis,
+        :ordner_bild  || replace(printf('\\band%d\\', 1000000 + stb.bandnr), 'band10', 'band')
+                      || stb.foto_dateiname || '.jpg'
+                                        AS foto_dateiname,
+        :ordner_video || '\\'  || stb.foto_dateiname
+                      || ' von '  || stk.schacht_oben
+                      || ' nach ' || stk.schacht_unten
+                      || ' - '    || strassen.name  || '.mpg' 
+                                        AS film_dateiname,
+        NULL                            AS filmtyp,
+        NULL                            AS video_start,
+        NULL                            AS video_ende,
+        stb.skdichtheit                 AS ZD,
+        stb.skbetriebssicherheit        AS ZB,
+        stb.skstandsicherheit           AS ZS,
+        stb.kommentar                   AS kommentar
+    FROM
+        t_strakatberichte  AS stb
+        JOIN t_strakatkanal AS stk      ON stk.strakatid = stb.strakatid
+        LEFT JOIN strassen              ON stk.strassennummer = strassen.id
+    WHERE stk.laenge > 0.045
+      AND stk.schachtnummer <> 0
+      AND stb.geloescht = 0
+      AND stb.hausanschlid = '00000000-0000-0000-0000-000000000000'
+      AND (stk.zuflussnummer1 > 0 OR stk.abflussnummer1 > 0)                /* kein Symbol */ 
+      AND substr(stb.atv_kuerzel, 1, 1) in ('C', 'D') AND substr(stb.atv_kuerzel, 2, 1) <> '-' 
+      AND (   (stb.untersuchungsrichtung = 0 AND stb.station_untersucher < 0.01) 
+           OR (stb.untersuchungsrichtung = 1 AND stb.station_untersucher > stk.laenge * 0.9)
+          ) 
+)
+INSERT INTO untersuchdat_schacht (
+    untersuchsch,
+    id, untersuchtag,
+    bandnr, videozaehler, timecode, langtext, 
+    kuerzel, charakt1, charakt2, quantnr1, quantnr2,
+    streckenschaden, streckenschaden_lfdnr,
+    pos_von, pos_bis,
+    foto_dateiname, film_dateiname,
+    filmtyp, video_start, video_ende,
+    ZD, ZB, ZS, kommentar
+)
+SELECT
+    uts.untersuchsch,
+    uts.id, uts.untersuchtag,
+    uts.bandnr, uts.videozaehler, uts.timecode, uts.langtext, 
+    uts.kuerzel, uts.charakt1, uts.charakt2, uts.quantnr1, uts.quantnr2,
+    uts.streckenschaden, uts.streckenschaden_lfdnr,
+    uts.pos_von, uts.pos_bis,
+    uts.foto_dateiname, uts.film_dateiname,
+    uts.filmtyp, uts.video_start, uts.video_ende,
+    uts.ZD, uts.ZB, uts.ZS, uts.kommentar
+FROM uts
+LEFT JOIN untersuchdat_schacht AS usd 
+USING(untersuchsch, untersuchtag, kuerzel, bandnr, videozaehler, streckenschaden_lfdnr, langtext)
+WHERE usd.pk IS NULL                                        /* nur neue Schächte untersucht hinzufügen; */ "
+
+strakat_32: "
+WITH strassen AS (
+    SELECT n1 AS id, kurz, trim(text) AS name
+    FROM t_reflists
+    WHERE tabtyp = 'strasse'
+)
+INSERT INTO haltungen_untersucht (haltnam, schoben, schunten, laenge, 
+    xschob, yschob, xschun, yschun, 
+    breite, hoehe, 
+    strasse, 
+    baujahr, untersuchtag, untersucher, untersuchrichtung, 
+    wetter,
+    bewertungsart, bewertungstag, datenart, 
+    max_ZD, max_ZB, max_ZS, 
+    kommentar, geom)
+SELECT
+    stk.haltungsname                AS haltnam,
+    stk.schacht_oben                AS schoben,
+    stk.schacht_unten               AS schunten,
+    stk.laenge                      AS laenge,
+    iif(:coordsFromRohr, stk.rw_rohranfang, stk.rw_gerinne_o)   AS xschob,
+    iif(:coordsFromRohr, stk.hw_rohranfang, stk.hw_gerinne_o)   AS yschob,
+    iif(:coordsFromRohr, stk.rw_rohrende, stk.rw_gerinne_u)     AS xschun,
+    iif(:coordsFromRohr, stk.hw_rohrende, stk.hw_gerinne_u)     AS yschun,
+    stk.rohrbreite_v                AS breite,
+    stk.rohrhoehe___v               AS hoehe,
+    CASE WHEN INSTR(trim(strassen.name),' ') > 0
+        THEN substr(trim(strassen.name), INSTR(trim(strassen.name),' ')+1)
+        ELSE trim(strassen.name)
+    END                             AS strasse,
+    stk.baujahr                     AS baujahr,
+    stb.datum                       AS untersuchtag,
+    stb.untersucher                 AS untersucher,
+    stb.untersuchungsrichtung       AS untersuchrichtung,
+    CASE WHEN instr(lower(stb.wetter), 'trock') + 
+               instr(lower(stb.wetter), 'kein Nied') > 0 THEN 1
+          WHEN instr(lower(stb.wetter), 'reg')       > 0 THEN 2
+          WHEN instr(lower(stb.wetter), 'fros') +
+               instr(lower(stb.wetter), 'chnee')     > 0 THEN 3
+          ELSE NULL END             AS wetter,
+    stb.bewertungsart               AS bewertungsart,
+    NULL                            AS bewertungstag,
+    'DWA'                           AS datenart,
+    stb.skdichtheit                 AS max_ZD,
+    stb.skbetriebssicherheit        AS max_ZB,
+    stb.skstandsicherheit           AS max_ZS,
+    'QKan-STRAKAT-Import'                   AS kommentar,
+    MakeLine(MakePoint(iif(:coordsFromRohr, stk.rw_rohranfang, stk.rw_gerinne_o),
+                       iif(:coordsFromRohr, stk.hw_rohranfang, stk.hw_gerinne_o), :epsg),
+             MakePoint(iif(:coordsFromRohr, stk.rw_rohrende, stk.rw_gerinne_u),
+                       iif(:coordsFromRohr, stk.hw_rohrende, stk.hw_gerinne_u), :epsg))
+                                                                AS geom
+FROM
+    t_strakatkanal          AS stk
+    LEFT JOIN strassen              ON stk.strassennummer = strassen.id
+    JOIN t_strakatberichte  AS stb  ON stb.strakatid = stk.strakatid
+    LEFT JOIN haltungen_untersucht AS hu
+    ON hu.haltnam = stk.haltungsname AND
+       hu.schoben = stk.schacht_oben AND
+       hu.schunten = stk.schacht_unten AND
+       hu.untersuchtag = stb.datum AND
+       hu.untersuchrichtung = stb.untersuchungsrichtung
+WHERE  stk.laenge > 0.045 AND
+       stk.schachtnummer <> 0 AND
+       stb.geloescht = 0 AND
+       hu.pk IS NULL AND
+       stb.hausanschlid = '00000000-0000-0000-0000-000000000000' AND
+       (stk.zuflussnummer1 > 0 OR stk.abflussnummer1 > 0) AND               /* kein Symbol */ 
+       (substr(stb.atv_kuerzel, 1, 1) not in ('C', 'D') OR substr(stb.atv_kuerzel, 2, 1) = '-') 
+GROUP BY stk.strakatid, stb.datum;"
+
+strakat_33: "
+WITH strassen AS (
+    SELECT n1 AS id, kurz, trim(text) AS name
+    FROM t_reflists
+    WHERE tabtyp = 'strasse'
+)
+INSERT INTO untersuchdat_haltung (
+    untersuchhal, schoben, schunten,
+    id, untersuchtag,
+    inspektionslaenge, bandnr, videozaehler, station, timecode,
+    langtext, kuerzel, charakt1, charakt2, quantnr1, quantnr2,
+    streckenschaden, streckenschaden_lfdnr,
+    pos_von, pos_bis,
+    foto_dateiname, film_dateiname,
+    kommentar, ZD, ZB, ZS
+)
+SELECT
+    stk.haltungsname                AS untersuchhal,
+    stk.schacht_oben                AS schoben,
+    stk.schacht_unten               AS schunten,
+    NULL                            AS id, 
+    stb.datum                       AS untersuchtag,
+    stk.laenge                      AS inspektionslaenge,
+    stb.bandnr                      AS bandnr,
+    stb.videozaehler                AS videozaehler,
+    stb.station_untersucher         AS station,
+    NULL                            AS timecode,
+    stb.atv_langtext                AS langtext,
+    stb.atv_kuerzel                 AS kuerzel,
+    stb.charakt1                    AS charakt1,
+    stb.charakt2                    AS charakt2,                
+    stb.quantnr1                    AS quantnr1,
+    stb.quantnr2                    AS quantnr2,                
+    stb.streckenschaden             AS streckenschaden,
+    stb.fortsetzung                 AS streckenschaden_lfdnr,
+    stb.pos_von                     AS pos_von, 
+    stb.pos_bis                     AS pos_bis,
+        :ordner_bild  || replace(printf('\\band%d\\', 1000000 + stb.bandnr), 'band10', 'band')
+                      || stb.foto_dateiname || '.jpg'
+                                    AS foto_dateiname,
+        :ordner_video || '\\'  || stb.foto_dateiname
+                      || ' von '  || stk.schacht_oben
+                      || ' nach ' || stk.schacht_unten
+                      || ' - '    || strassen.name  || '.mpg' 
+                                    AS film_dateiname,
+    stb.kommentar                   AS kommentar,
+    stb.skdichtheit                 AS ZD,
+    stb.skbetriebssicherheit        AS ZB,
+    stb.skstandsicherheit           AS ZS
+FROM
+    t_strakatkanal          AS stk
+    JOIN t_strakatberichte  AS stb  ON stb.strakatid = stk.strakatid
+    LEFT JOIN strassen              ON stk.strassennummer = strassen.id
+    LEFT JOIN untersuchdat_haltung AS usd
+    ON usd.untersuchhal =           stk.haltungsname AND
+       usd.schoben =                stk.schacht_oben AND
+       usd.schunten =               stk.schacht_unten AND
+       usd.untersuchtag =           stb.datum AND
+       usd.bandnr =                 stb.bandnr AND
+       usd.kuerzel =                stb.atv_kuerzel AND
+       usd.streckenschaden_lfdnr =   stb.fortsetzung AND
+       usd.langtext =               stb.atv_langtext  
+WHERE stk.laenge > 0.045 AND
+      stk.schachtnummer <> 0 AND
+      stb.geloescht = 0 AND
+      usd.pk IS NULL AND
+      stb.hausanschlid = '00000000-0000-0000-0000-000000000000' AND
+      (stk.zuflussnummer1 > 0 OR stk.abflussnummer1 > 0) AND                /* kein Symbol */ 
+      (substr(stb.atv_kuerzel, 1, 1) not in ('C', 'D') OR substr(stb.atv_kuerzel, 2, 1) = '-');"
+
+strakat_34: "
+WITH stb AS (
+    SELECT *
+    FROM t_strakatberichte
+    WHERE hausanschlid <> '00000000-0000-0000-0000-000000000000'
+),
+lu AS (
+SELECT
+    anschlusshalname                    AS leitnam,
+    Trim(sha.anschlussschob)            AS schoben,
+    Trim(sha.anschlussschun)            AS schunten,
+    sha.rohrbreite                      AS hoehe,
+    sha.rohrbreite                      AS breite,
+    GLength(sha.geom)                   AS laenge,
+    NULL                                AS id,
+    stb.datum                           AS untersuchtag,
+    stb.untersucher                     AS untersucher,
+    stb.untersuchungsrichtung           AS untersuchrichtung,
+    CASE WHEN instr(lower(stb.wetter), 'trock') + 
+               instr(lower(stb.wetter), 'kein Nied') > 0 THEN 1
+          WHEN instr(lower(stb.wetter), 'reg')       > 0 THEN 2
+          WHEN instr(lower(stb.wetter), 'fros') +
+               instr(lower(stb.wetter), 'chnee')     > 0 THEN 3
+          ELSE NULL END                 AS wetter,
+    NULL                                AS bewertungstag,
+    'DWA'                               AS datenart,
+    stb.skdichtheit                     AS max_ZD,
+    stb.skbetriebssicherheit            AS max_ZB,
+    stb.skstandsicherheit               AS max_ZS,
+    'QKan-STRAKAT-Import'               AS kommentar,
+    sha.geom                             AS geom
+FROM
+    t_strakathausanschluesse   AS sha
+    JOIN stb ON stb.nummer = sha.berichtnr
+WHERE stb.geloescht = 0 AND
+      sha.geloescht = 0
+)
+INSERT INTO anschlussleitungen_untersucht (
+leitnam, schoben, schunten, hoehe, breite, laenge, 
+id, untersuchtag, untersucher, untersuchrichtung, wetter,
+bewertungstag, datenart, max_ZD, max_ZB, max_ZS,
+kommentar, geom
+)
+SELECT
+    lu.leitnam,
+    lu.schoben,
+    lu.schunten,
+    lu.hoehe,
+    lu.breite,
+    lu.laenge,
+    lu.id,
+    lu.untersuchtag,
+    lu.untersucher,
+    lu.untersuchrichtung,
+    lu.wetter,
+    lu.bewertungstag,
+    lu.datenart,
+    lu.max_ZD,
+    lu.max_ZB,
+    lu.max_ZS,
+    lu.kommentar,
+    lu.geom
+FROM
+    lu
+    LEFT JOIN anschlussleitungen_untersucht AS la 
+    USING (leitnam, schoben, schunten, untersuchtag, untersuchrichtung) 
+WHERE la.pk IS NULL;"
+
+strakat_35: "
+WITH strassen AS (
+    SELECT n1 AS id, kurz, trim(text) AS name
+    FROM t_reflists
+    WHERE tabtyp = 'strasse'
+),
+stb AS (
+    SELECT *
+    FROM t_strakatberichte
+    WHERE hausanschlid <> '00000000-0000-0000-0000-000000000000'
+),
+ua AS (
+    SELECT
+        sha.anschlusshalname                    AS untersuchleit,
+        sha.anschlussschob                      AS schoben,
+        sha.anschlussschun                      AS schunten,
+        NULL                                    AS id, 
+        stb.datum                               AS untersuchtag,
+        NULL                                    AS inspektionslaenge,
+        stb.bandnr                              AS bandnr,
+        stb.videozaehler                        AS videozaehler,
+        stb.station_untersucher                 AS station,
+        NULL                                    AS timecode,
+        stb.atv_langtext                        AS langtext,
+        stb.atv_kuerzel                         AS kuerzel,
+        stb.charakt1                            AS charakt1,
+        stb.charakt2                            AS charakt2,                
+        stb.quantnr1                            AS quantnr1,
+        stb.quantnr2                            AS quantnr2,                
+        stb.streckenschaden                     AS streckenschaden,
+        stb.fortsetzung                         AS streckenschaden_lfdnr,
+        stb.pos_von                             AS pos_von, 
+        stb.pos_bis                             AS pos_bis,
+        :ordner_bild  || replace(printf('\\band%d\\', 1000000 + stb.bandnr), 'band10', 'band')
+                      || stb.foto_dateiname || '.jpg'
+                                                AS foto_dateiname,
+        :ordner_video || '\\'  || stb.foto_dateiname
+                      || ' von '  || stk.schacht_oben
+                      || ' nach ' || stk.schacht_unten
+                      || ' - '    || strassen.name  || '.mpg' 
+                                                AS film_dateiname,
+        stb.skdichtheit                         AS ZD,
+        stb.skbetriebssicherheit                AS ZB,
+        stb.skstandsicherheit                   AS ZS,
+        stb.kommentar                           AS kommentar
+    FROM
+        t_strakathausanschluesse    AS sha
+        JOIN                           stb  ON stb.hausanschlid = sha.hausanschlid
+        JOIN t_strakatkanal         AS stk  ON stk.nummer = sha.anschlusshalnr
+        LEFT JOIN strassen                  ON stk.strassennummer = strassen.id
+    WHERE stb.geloescht = 0
+      AND (stk.zuflussnummer1 > 0 OR stk.abflussnummer1 > 0)                  /* kein Symbol */ 
+)
+INSERT INTO untersuchdat_anschlussleitung (
+    untersuchleit, schoben, schunten,
+    id, untersuchtag,
+    inspektionslaenge, bandnr, videozaehler, station, timecode,
+    langtext, kuerzel, charakt1, charakt2, quantnr1, quantnr2,
+    streckenschaden, streckenschaden_lfdnr,
+    pos_von, pos_bis,
+    foto_dateiname, film_dateiname,
+    ZD, ZB, ZS, kommentar
+)
+SELECT 
+    ua.untersuchleit, ua.schoben, ua.schunten,
+    ua.id, ua.untersuchtag,
+    ua.inspektionslaenge, ua.bandnr, ua.videozaehler, ua.station, ua.timecode,
+    ua.langtext, ua.kuerzel, ua.charakt1, ua.charakt2, ua.quantnr1, ua.quantnr2,
+    ua.streckenschaden, ua.streckenschaden_lfdnr,
+    ua.pos_von, ua.pos_bis,
+    ua.foto_dateiname, ua.film_dateiname,
+    ua.ZD, ua.ZB, ua.ZS, ua.kommentar
+FROM ua
+LEFT JOIN untersuchdat_anschlussleitung AS ud
+    USING (
+        untersuchleit, schoben, schunten, untersuchtag, bandnr, streckenschaden_lfdnr, kuerzel, 
+        langtext
+    )
+WHERE ud.pk IS NULL;"
+
+strakat_addgeom_t_strakathausanschluesse: "
+SELECT AddGeometryColumn('t_strakathausanschluesse', 'geom', :epsg, 'LINESTRING');"
+
+strakat_index_t_strakathausanschluesse: "
+SELECT CreateSpatialIndex('t_strakathausanschluesse', 'geom');"

@@ -47,10 +47,10 @@ Im dritten Reiter Automatische Datenübernahme werden die Trigger verwaltet die 
 .. image:: ./QKan_Bilder/Formulare/optionen3.png
 
 
-QKan-Projekt aktualisieren
+QKan-Projekt anpassen
 --------------------------
 
-Mit der Funktion |Tool_projekt_aktualisieren| :guilabel:`QKan-Projekt aktualisieren` können Projekte, die noch auf einer älteren QKan-Version basieren, auf den aktuellsten Stand gebracht werden. 
+Mit der Funktion |Tool_projekt_aktualisieren| :guilabel:`QKan-Projekt anpassen` können Projekte, die noch auf einer älteren QKan-Version basieren, auf den aktuellsten Stand gebracht werden.
 Dabei werden die vorhandenen QKan-Layer in Ihrer Darstellung auf den aktuellen Standart gebracht. Layer die außerhalb von QKan in dem QGIS Projekt enthalten sind, werden nciht verändert.
 
 Unter der Überschrift „Layer anpassen“ kann die QKan-Datenbank gewählt werden. Des Weiteren kann das Projektionssystem der Layer anhand der Datenbank aktualisiert werden. 
@@ -98,13 +98,13 @@ Auswertung Knotentypen
 Mit diesem Punkt werden in der Tabelle Schächte Informationen zum Knotentyp ergänzt und in dem Layer Knotentyp dargestellt.
     
     
-.. index:: Projektdatei übertragen
+.. index:: Projektdatei übernehmen
 
 Projektdatei auf andere Datenbank übertragen
 --------------------------------------------
 
 Oft entstehen nach einiger Zeit komplexe Projektdateien, die besondere Layerdarstellungen enthalten und quasi „Firmenstandards“ darstellen. 
-Solch eine Projektdatei kann mit der Funktion |Tool_projektdatei_uebertragen| :guilabel:`QKan-Projektdatei übertragen` folgendermaßen auf 
+Solch eine Projektdatei kann mit der Funktion |Tool_projektdatei_uebertragen| :guilabel:`QKan-Projektdatei übernehmen` folgendermaßen auf
 ein anderes Projekt übertragen werden:
 
 .. _image_qkan_qgsAdapt:

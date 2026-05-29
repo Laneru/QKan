@@ -1,5 +1,5 @@
-Formulare
-=========
+Dialogfenster
+=============
 
 ..  toctree::
     :maxdepth: 2
@@ -18,7 +18,7 @@ Formulare
     QKan_Zustandsbewertung
     QKan_Substanzbewertung
     QKan_Ueberflutung
-   
+
    
    
 Allgemeine Funktionselemente in Formularen

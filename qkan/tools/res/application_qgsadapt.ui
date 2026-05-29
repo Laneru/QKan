@@ -28,7 +28,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>QKan-Projektdatei übertragen</string>
+   <string>QKan-Projektdatei übernehmen</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">

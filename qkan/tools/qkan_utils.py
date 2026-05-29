@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Dict, List, Optional, Set, Tuple, Union
 from xml.etree.ElementTree import ElementTree
 import yaml
 from fnmatch import fnmatch
+import re
 
 from qgis.PyQt.QtCore import QStandardPaths
 from qgis.PyQt.QtWidgets import QListWidget
@@ -808,6 +809,16 @@ def zoomAll():
     canvas.setExtent(layer.extent())
     canvas.refresh()
 
+def cleanquot(text: str = ''):
+    """Bereinigt einen String von mehr als 2 Hochkommata in Folge zur Vermeidung von SQL-Injection"""
+
+    return re.sub('''"""+''', '"', text)
+
+def cleanname(text: str = ''):
+    """Bereinigt einen String von Nicht-Unicode-Zeichen zur Vermeidung von SQL-Injection"""
+
+    return re.sub(r"[^\w]", "_", text)
+
 
 class Patterns():
     """Management of pattern lists in yaml-Files
@@ -819,7 +830,7 @@ class Patterns():
 
     def __init__(self, filepath):
         with open(filepath) as fr:
-            self.patterns = yaml.load(fr.read(), Loader=yaml.BaseLoader)
+            self.patterns = yaml.safe_load(fr.read())
 
     def find(self, theme: str, key):
         """Zugeorndeten QKan-Wert finden"""

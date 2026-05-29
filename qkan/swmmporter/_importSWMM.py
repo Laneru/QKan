@@ -68,9 +68,9 @@ class ImportTask:
         #self.xoffset, self.yoffset = offset
         self.xoffset, self.yoffset = [0.0,0.0]
         self.check_cb = check_cb
-
-    def __del__(self) -> None:
-        self.db_qkan.sql("SELECT RecoverSpatialIndex()")
+    #
+    # def __del__(self) -> None:
+    #     self.db_qkan.sql("SELECT RecoverSpatialIndex()")
 
     def read(self) -> None:
         with self.inpobject.open("r", encoding='utf-8', errors='replace') as inp:
@@ -282,7 +282,7 @@ class ImportTask:
 
     def _subcatchments(self) -> bool:
         """Liest einen Teil der Daten zu tezg-Flächen ein"""
-        if self.check_cb['cb1']:
+        if self.check_cb['tezg']:
             data = self.data.get("subcatchments", [])
             for line in data:
                 # Attribute bitte aus qkan.database.qkan_database.py entnehmen
@@ -307,7 +307,7 @@ class ImportTask:
 
             self.db_qkan.commit()
 
-        if self.check_cb['cb2']:
+        if self.check_cb['flaechen']:
             data = self.data.get("subcatchments", [])
             for line in data:
                 # Attribute bitte aus qkan.database.qkan_database.py entnehmen
@@ -334,7 +334,7 @@ class ImportTask:
 
     def _polygons(self) -> bool:
         """Liest die Polygone zu den bereits angelegten tezg-Flächen ein"""
-        if self.check_cb['cb1']:
+        if self.check_cb['tezg']:
             data = self.data.get("polygons", [])
             data.append("ende")  # Trick, damit am Ende das letzte Polygon geschrieben wird
 
@@ -384,7 +384,7 @@ class ImportTask:
 
             self.db_qkan.commit()
 
-        elif self.check_cb['cb2']:
+        elif self.check_cb['flaechen']:
             data = self.data.get("polygons", [])
             data.append("ende")  # Trick, damit am Ende das letzte Polygon geschrieben wird
 

@@ -60,6 +60,8 @@ class TestQKanM150(QgisTest):
         QKan.config.database.qkan = str(BASE_WORK / "nette.sqlite")
         QKan.config.xml.export_file = str(BASE_WORK / "nette.xml")
 
+        QKan.config.selections.selectedObjects = False
+
         with DBConnection(
                 dbname=QKan.config.database.qkan,
                 qkan_db_update=True,

@@ -1,36 +1,171 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis hasScaleBasedVisibilityFlag="0" readOnly="0" maxScale="0" minScale="1e+08" version="3.28.13-Firenze" styleCategories="LayerConfiguration|Symbology|Labeling|Fields|Forms|Actions|MapTips|AttributeTable|Rendering|CustomProperties|GeometryOptions|Temporal|Legend|Notes">
+<qgis styleCategories="AllStyleCategories" maxScale="0" minScale="1e+08" readOnly="0" version="3.28.13-Firenze" hasScaleBasedVisibilityFlag="0">
   <flags>
     <Identifiable>1</Identifiable>
     <Removable>1</Removable>
     <Searchable>1</Searchable>
     <Private>0</Private>
   </flags>
-  <temporal durationField="" accumulate="0" enabled="0" durationUnit="min" startExpression="" fixedDuration="0" mode="0" limitMode="0" endExpression="" startField="" endField="">
+  <temporal durationUnit="min" accumulate="0" mode="0" limitMode="0" startExpression="" endExpression="" enabled="0" durationField="" fixedDuration="0" startField="" endField="">
     <fixedRange>
       <start></start>
       <end></end>
     </fixedRange>
   </temporal>
+  <elevation binding="Centroid" extrusionEnabled="0" clamping="Terrain" zoffset="0" showMarkerSymbolInSurfacePlots="0" extrusion="0" symbology="Line" zscale="1" type="IndividualFeatures" respectLayerSymbol="1">
+    <data-defined-properties>
+      <Option type="Map">
+        <Option value="" name="name" type="QString"/>
+        <Option name="properties"/>
+        <Option value="collection" name="type" type="QString"/>
+      </Option>
+    </data-defined-properties>
+    <profileLineSymbol>
+      <symbol alpha="1" is_animated="0" name="" clip_to_extent="1" force_rhr="0" type="line" frame_rate="10">
+        <data_defined_properties>
+          <Option type="Map">
+            <Option value="" name="name" type="QString"/>
+            <Option name="properties"/>
+            <Option value="collection" name="type" type="QString"/>
+          </Option>
+        </data_defined_properties>
+        <layer locked="0" enabled="1" class="SimpleLine" pass="0">
+          <Option type="Map">
+            <Option value="0" name="align_dash_pattern" type="QString"/>
+            <Option value="square" name="capstyle" type="QString"/>
+            <Option value="5;2" name="customdash" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="customdash_map_unit_scale" type="QString"/>
+            <Option value="MM" name="customdash_unit" type="QString"/>
+            <Option value="0" name="dash_pattern_offset" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="dash_pattern_offset_map_unit_scale" type="QString"/>
+            <Option value="MM" name="dash_pattern_offset_unit" type="QString"/>
+            <Option value="0" name="draw_inside_polygon" type="QString"/>
+            <Option value="bevel" name="joinstyle" type="QString"/>
+            <Option value="152,125,183,255" name="line_color" type="QString"/>
+            <Option value="solid" name="line_style" type="QString"/>
+            <Option value="0.6" name="line_width" type="QString"/>
+            <Option value="MM" name="line_width_unit" type="QString"/>
+            <Option value="0" name="offset" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="offset_map_unit_scale" type="QString"/>
+            <Option value="MM" name="offset_unit" type="QString"/>
+            <Option value="0" name="ring_filter" type="QString"/>
+            <Option value="0" name="trim_distance_end" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="trim_distance_end_map_unit_scale" type="QString"/>
+            <Option value="MM" name="trim_distance_end_unit" type="QString"/>
+            <Option value="0" name="trim_distance_start" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="trim_distance_start_map_unit_scale" type="QString"/>
+            <Option value="MM" name="trim_distance_start_unit" type="QString"/>
+            <Option value="0" name="tweak_dash_pattern_on_corners" type="QString"/>
+            <Option value="0" name="use_custom_dash" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="width_map_unit_scale" type="QString"/>
+          </Option>
+          <data_defined_properties>
+            <Option type="Map">
+              <Option value="" name="name" type="QString"/>
+              <Option name="properties"/>
+              <Option value="collection" name="type" type="QString"/>
+            </Option>
+          </data_defined_properties>
+        </layer>
+      </symbol>
+    </profileLineSymbol>
+    <profileFillSymbol>
+      <symbol alpha="1" is_animated="0" name="" clip_to_extent="1" force_rhr="0" type="fill" frame_rate="10">
+        <data_defined_properties>
+          <Option type="Map">
+            <Option value="" name="name" type="QString"/>
+            <Option name="properties"/>
+            <Option value="collection" name="type" type="QString"/>
+          </Option>
+        </data_defined_properties>
+        <layer locked="0" enabled="1" class="SimpleFill" pass="0">
+          <Option type="Map">
+            <Option value="3x:0,0,0,0,0,0" name="border_width_map_unit_scale" type="QString"/>
+            <Option value="152,125,183,255" name="color" type="QString"/>
+            <Option value="bevel" name="joinstyle" type="QString"/>
+            <Option value="0,0" name="offset" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="offset_map_unit_scale" type="QString"/>
+            <Option value="MM" name="offset_unit" type="QString"/>
+            <Option value="109,89,131,255" name="outline_color" type="QString"/>
+            <Option value="solid" name="outline_style" type="QString"/>
+            <Option value="0.2" name="outline_width" type="QString"/>
+            <Option value="MM" name="outline_width_unit" type="QString"/>
+            <Option value="solid" name="style" type="QString"/>
+          </Option>
+          <data_defined_properties>
+            <Option type="Map">
+              <Option value="" name="name" type="QString"/>
+              <Option name="properties"/>
+              <Option value="collection" name="type" type="QString"/>
+            </Option>
+          </data_defined_properties>
+        </layer>
+      </symbol>
+    </profileFillSymbol>
+    <profileMarkerSymbol>
+      <symbol alpha="1" is_animated="0" name="" clip_to_extent="1" force_rhr="0" type="marker" frame_rate="10">
+        <data_defined_properties>
+          <Option type="Map">
+            <Option value="" name="name" type="QString"/>
+            <Option name="properties"/>
+            <Option value="collection" name="type" type="QString"/>
+          </Option>
+        </data_defined_properties>
+        <layer locked="0" enabled="1" class="SimpleMarker" pass="0">
+          <Option type="Map">
+            <Option value="0" name="angle" type="QString"/>
+            <Option value="square" name="cap_style" type="QString"/>
+            <Option value="152,125,183,255" name="color" type="QString"/>
+            <Option value="1" name="horizontal_anchor_point" type="QString"/>
+            <Option value="bevel" name="joinstyle" type="QString"/>
+            <Option value="diamond" name="name" type="QString"/>
+            <Option value="0,0" name="offset" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="offset_map_unit_scale" type="QString"/>
+            <Option value="MM" name="offset_unit" type="QString"/>
+            <Option value="109,89,131,255" name="outline_color" type="QString"/>
+            <Option value="solid" name="outline_style" type="QString"/>
+            <Option value="0.2" name="outline_width" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="outline_width_map_unit_scale" type="QString"/>
+            <Option value="MM" name="outline_width_unit" type="QString"/>
+            <Option value="diameter" name="scale_method" type="QString"/>
+            <Option value="3" name="size" type="QString"/>
+            <Option value="3x:0,0,0,0,0,0" name="size_map_unit_scale" type="QString"/>
+            <Option value="MM" name="size_unit" type="QString"/>
+            <Option value="1" name="vertical_anchor_point" type="QString"/>
+          </Option>
+          <data_defined_properties>
+            <Option type="Map">
+              <Option value="" name="name" type="QString"/>
+              <Option name="properties"/>
+              <Option value="collection" name="type" type="QString"/>
+            </Option>
+          </data_defined_properties>
+        </layer>
+      </symbol>
+    </profileMarkerSymbol>
+  </elevation>
   <customproperties>
     <Option type="Map">
-      <Option type="QString" name="QFieldSync/action" value="copy"/>
-      <Option type="QString" name="QFieldSync/attachment_naming" value="{}"/>
-      <Option type="QString" name="QFieldSync/cloud_action" value="offline"/>
-      <Option type="QString" name="QFieldSync/geometry_locked_expression" value=""/>
-      <Option type="QString" name="QFieldSync/photo_naming" value="{}"/>
-      <Option type="QString" name="QFieldSync/relationship_maximum_visible" value="{}"/>
-      <Option type="int" name="QFieldSync/tracking_distance_requirement_minimum_meters" value="30"/>
-      <Option type="int" name="QFieldSync/tracking_erroneous_distance_safeguard_maximum_meters" value="1"/>
-      <Option type="int" name="QFieldSync/tracking_measurement_type" value="0"/>
-      <Option type="int" name="QFieldSync/tracking_time_requirement_interval_seconds" value="30"/>
-      <Option type="int" name="QFieldSync/value_map_button_interface_threshold" value="0"/>
-      <Option type="List" name="dualview/previewExpressions">
-        <Option type="QString" value="&quot;warntext&quot;"/>
-        <Option type="QString" value="&quot;name&quot;"/>
-        <Option type="QString" value="&quot;warntext&quot;"/>
+      <Option value="copy" name="QFieldSync/action" type="QString"/>
+      <Option value="{}" name="QFieldSync/attachment_naming" type="QString"/>
+      <Option value="" name="QFieldSync/attribute_editing_locked_expression" type="QString"/>
+      <Option value="offline" name="QFieldSync/cloud_action" type="QString"/>
+      <Option value="" name="QFieldSync/feature_addition_locked_expression" type="QString"/>
+      <Option value="" name="QFieldSync/feature_deletion_locked_expression" type="QString"/>
+      <Option value="" name="QFieldSync/geometry_editing_locked_expression" type="QString"/>
+      <Option value="{}" name="QFieldSync/photo_naming" type="QString"/>
+      <Option value="{}" name="QFieldSync/relationship_maximum_visible" type="QString"/>
+      <Option value="30" name="QFieldSync/tracking_distance_requirement_minimum_meters" type="int"/>
+      <Option value="1" name="QFieldSync/tracking_erroneous_distance_safeguard_maximum_meters" type="int"/>
+      <Option value="0" name="QFieldSync/tracking_measurement_type" type="int"/>
+      <Option value="30" name="QFieldSync/tracking_time_requirement_interval_seconds" type="int"/>
+      <Option value="0" name="QFieldSync/value_map_button_interface_threshold" type="int"/>
+      <Option name="dualview/previewExpressions" type="List">
+        <Option value="&quot;warntext&quot;" type="QString"/>
+        <Option value="&quot;name&quot;" type="QString"/>
+        <Option value="&quot;warntext&quot;" type="QString"/>
       </Option>
-      <Option type="int" name="embeddedWidgets/count" value="0"/>
+      <Option value="0" name="embeddedWidgets/count" type="int"/>
       <Option name="variableNames"/>
       <Option name="variableValues"/>
     </Option>
@@ -39,7 +174,8 @@
     <activeChecks/>
     <checkConfiguration/>
   </geometryOptions>
-  <legend type="default-vector" showLabelLegend="0"/>
+  <legend showLabelLegend="0" type="default-vector"/>
+  <referencedLayers/>
   <fieldConfiguration>
     <field name="pk" configurationFlags="None">
       <editWidget type="TextEdit">
@@ -106,65 +242,65 @@
     </field>
   </fieldConfiguration>
   <aliases>
-    <alias name="" index="0" field="pk"/>
-    <alias name="Gruppe" index="1" field="gruppe"/>
-    <alias name="Warntext" index="2" field="warntext"/>
-    <alias name="Warntyp" index="3" field="warntyp"/>
-    <alias name="Warnlevel" index="4" field="warnlevel"/>
-    <alias name="" index="5" field="sql"/>
-    <alias name="Layername" index="6" field="layername"/>
-    <alias name="Attributname" index="7" field="attrname"/>
-    <alias name="" index="8" field="createdat"/>
+    <alias field="pk" index="0" name=""/>
+    <alias field="gruppe" index="1" name="Gruppe"/>
+    <alias field="warntext" index="2" name="Warntext"/>
+    <alias field="warntyp" index="3" name="Warntyp"/>
+    <alias field="warnlevel" index="4" name="Warnlevel"/>
+    <alias field="sql" index="5" name=""/>
+    <alias field="layername" index="6" name="Layername"/>
+    <alias field="attrname" index="7" name="Attributname"/>
+    <alias field="createdat" index="8" name=""/>
   </aliases>
   <defaults>
-    <default applyOnUpdate="0" expression="" field="pk"/>
-    <default applyOnUpdate="0" expression="" field="gruppe"/>
-    <default applyOnUpdate="0" expression="" field="warntext"/>
-    <default applyOnUpdate="0" expression="" field="warntyp"/>
-    <default applyOnUpdate="0" expression="" field="warnlevel"/>
-    <default applyOnUpdate="0" expression="" field="sql"/>
-    <default applyOnUpdate="0" expression="" field="layername"/>
-    <default applyOnUpdate="0" expression="" field="attrname"/>
-    <default applyOnUpdate="0" expression=" format_date( now(), 'yyyy-MM-dd HH:mm:ss')" field="createdat"/>
+    <default field="pk" applyOnUpdate="0" expression=""/>
+    <default field="gruppe" applyOnUpdate="0" expression=""/>
+    <default field="warntext" applyOnUpdate="0" expression=""/>
+    <default field="warntyp" applyOnUpdate="0" expression=""/>
+    <default field="warnlevel" applyOnUpdate="0" expression=""/>
+    <default field="sql" applyOnUpdate="0" expression=""/>
+    <default field="layername" applyOnUpdate="0" expression=""/>
+    <default field="attrname" applyOnUpdate="0" expression=""/>
+    <default field="createdat" applyOnUpdate="0" expression=" format_date( now(), 'yyyy-MM-dd HH:mm:ss')"/>
   </defaults>
   <constraints>
-    <constraint exp_strength="0" unique_strength="2" constraints="3" notnull_strength="2" field="pk"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="gruppe"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="warntext"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="warntyp"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="warnlevel"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="sql"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="layername"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="attrname"/>
-    <constraint exp_strength="0" unique_strength="0" constraints="0" notnull_strength="0" field="createdat"/>
+    <constraint field="pk" exp_strength="0" unique_strength="2" notnull_strength="2" constraints="3"/>
+    <constraint field="gruppe" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="warntext" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="warntyp" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="warnlevel" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="sql" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="layername" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="attrname" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
+    <constraint field="createdat" exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0"/>
   </constraints>
   <constraintExpressions>
-    <constraint exp="" desc="" field="pk"/>
-    <constraint exp="" desc="" field="gruppe"/>
-    <constraint exp="" desc="" field="warntext"/>
-    <constraint exp="" desc="" field="warntyp"/>
-    <constraint exp="" desc="" field="warnlevel"/>
-    <constraint exp="" desc="" field="sql"/>
-    <constraint exp="" desc="" field="layername"/>
-    <constraint exp="" desc="" field="attrname"/>
-    <constraint exp="" desc="" field="createdat"/>
+    <constraint field="pk" exp="" desc=""/>
+    <constraint field="gruppe" exp="" desc=""/>
+    <constraint field="warntext" exp="" desc=""/>
+    <constraint field="warntyp" exp="" desc=""/>
+    <constraint field="warnlevel" exp="" desc=""/>
+    <constraint field="sql" exp="" desc=""/>
+    <constraint field="layername" exp="" desc=""/>
+    <constraint field="attrname" exp="" desc=""/>
+    <constraint field="createdat" exp="" desc=""/>
   </constraintExpressions>
   <expressionfields/>
   <attributeactions>
-    <defaultAction key="Canvas" value="{00000000-0000-0000-0000-000000000000}"/>
+    <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
   </attributeactions>
   <attributetableconfig sortOrder="0" actionWidgetStyle="dropDown" sortExpression="">
     <columns>
-      <column width="-1" type="field" name="pk" hidden="0"/>
-      <column width="-1" type="field" name="gruppe" hidden="0"/>
-      <column width="-1" type="field" name="warntext" hidden="0"/>
-      <column width="-1" type="field" name="warnlevel" hidden="0"/>
-      <column width="159" type="field" name="sql" hidden="0"/>
-      <column width="-1" type="field" name="layername" hidden="0"/>
-      <column width="-1" type="actions" hidden="1"/>
-      <column width="-1" type="field" name="warntyp" hidden="0"/>
-      <column width="-1" type="field" name="createdat" hidden="0"/>
-      <column width="-1" type="field" name="attrname" hidden="0"/>
+      <column name="pk" hidden="0" width="-1" type="field"/>
+      <column name="gruppe" hidden="0" width="-1" type="field"/>
+      <column name="warntext" hidden="0" width="-1" type="field"/>
+      <column name="warnlevel" hidden="0" width="-1" type="field"/>
+      <column name="sql" hidden="0" width="159" type="field"/>
+      <column name="layername" hidden="0" width="-1" type="field"/>
+      <column hidden="1" width="-1" type="actions"/>
+      <column name="warntyp" hidden="0" width="-1" type="field"/>
+      <column name="createdat" hidden="0" width="-1" type="field"/>
+      <column name="attrname" hidden="0" width="-1" type="field"/>
     </columns>
   </attributetableconfig>
   <conditionalstyles>
@@ -195,30 +331,30 @@ def my_form_open(dialog, layer, feature):
   <featformsuppress>0</featformsuppress>
   <editorlayout>uifilelayout</editorlayout>
   <editable>
-    <field editable="1" name="attrname"/>
-    <field editable="1" name="createdat"/>
-    <field editable="1" name="gruppe"/>
-    <field editable="1" name="idname"/>
-    <field editable="1" name="layername"/>
-    <field editable="1" name="name"/>
-    <field editable="1" name="pk"/>
-    <field editable="1" name="sql"/>
-    <field editable="1" name="warnlevel"/>
-    <field editable="1" name="warntext"/>
-    <field editable="1" name="warntyp"/>
+    <field name="attrname" editable="1"/>
+    <field name="createdat" editable="1"/>
+    <field name="gruppe" editable="1"/>
+    <field name="idname" editable="1"/>
+    <field name="layername" editable="1"/>
+    <field name="name" editable="1"/>
+    <field name="pk" editable="1"/>
+    <field name="sql" editable="1"/>
+    <field name="warnlevel" editable="1"/>
+    <field name="warntext" editable="1"/>
+    <field name="warntyp" editable="1"/>
   </editable>
   <labelOnTop>
-    <field labelOnTop="0" name="attrname"/>
-    <field labelOnTop="0" name="createdat"/>
-    <field labelOnTop="0" name="gruppe"/>
-    <field labelOnTop="0" name="idname"/>
-    <field labelOnTop="0" name="layername"/>
-    <field labelOnTop="0" name="name"/>
-    <field labelOnTop="0" name="pk"/>
-    <field labelOnTop="0" name="sql"/>
-    <field labelOnTop="0" name="warnlevel"/>
-    <field labelOnTop="0" name="warntext"/>
-    <field labelOnTop="0" name="warntyp"/>
+    <field name="attrname" labelOnTop="0"/>
+    <field name="createdat" labelOnTop="0"/>
+    <field name="gruppe" labelOnTop="0"/>
+    <field name="idname" labelOnTop="0"/>
+    <field name="layername" labelOnTop="0"/>
+    <field name="name" labelOnTop="0"/>
+    <field name="pk" labelOnTop="0"/>
+    <field name="sql" labelOnTop="0"/>
+    <field name="warnlevel" labelOnTop="0"/>
+    <field name="warntext" labelOnTop="0"/>
+    <field name="warntyp" labelOnTop="0"/>
   </labelOnTop>
   <reuseLastValue>
     <field name="attrname" reuseLastValue="0"/>

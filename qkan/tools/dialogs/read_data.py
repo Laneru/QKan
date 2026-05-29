@@ -9,11 +9,8 @@ from qgis.core import QgsApplication, QgsProject, QgsMessageLog, QgsGeometry
 
 from qkan import QKan, enums
 from qkan.database.dbfunc import DBConnection
-from qkan.tools.qkan_utils import (
-    fehlermeldung,
-    get_qkanlayer_attributes,
-    Patterns,
-)
+from qkan.tools.qkan_utils import get_qkanlayer_attributes, Patterns
+
 from datetime import datetime
 from qkan.utils import get_logger
 
@@ -419,9 +416,9 @@ class ReadData:  # type: ignore
                 parsed_dataset = {}
                 values = line.split(clip_sep)
                 if len(values) != len(head_match):
-                    fehlermeldung(
+                    logger.error_code(
                         f"Fehler in den einzufügenden Daten: Spaltenzahl {len(values)}"
-                        f" stimmt nicht mit Kopfzeile {len(head_match)} überein",
+                        f" stimmt nicht mit Kopfzeile {len(head_match)} überein\n"
                         f"Datenzeile: {line}",
                     )
                     continue
@@ -439,12 +436,12 @@ class ReadData:  # type: ignore
                     try:
                         _value = values[qkan_cols.get(column, None)]
                     except BaseException as err:
-                        fehlermeldung(
-                            "Programmfehler",
+                        logger.error_code(
+                            "Programmfehler\n"
                             f"schtyp_added: {schtyp_added}\n"
                             f"haltyp_added: {haltyp_added}\n"
                             f"_value:       {_value}\n"
-                            f"column:       {column}\n",
+                            f"column:       {column}\n"
                         )
                         return
 
@@ -479,11 +476,11 @@ class ReadData:  # type: ignore
                                      )
                         # field = f"GeomFromText('{_value}',{self.epsg})"
                     else:
-                        fehlermeldung(
-                            "Fehler in Clipboard-Daten",
-                            "Datentyp konnte nicht erkannt werden. "
-                            f"Spalte: {column}, Wert: {_value}"
-                            f"Typ: {type(_value)}",
+                        logger.error_code(
+                            "Fehler in Clipboard-Daten: "
+                            "Datentyp konnte nicht erkannt werden.\n"
+                            f"Spalte: {column}, Wert: {_value}\n"
+                            f"Typ: {type(_value)}"
                         )
                         continue
 

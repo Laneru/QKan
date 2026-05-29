@@ -1,28 +1,22 @@
-Beispielprojekte
-================
-
-Einführung - Best Practice Beispiel "Workflow"
+Einführung zum Beispiel 1 "Workflow"
 ----------------------------------------------
 
 Anhand des Projekts "Workflow" sollen exemplarisch die Arbeitsschritte von der Datenerfassung über die Datenaufbereitung bis 
 hin zum Export in das Simulationsprogramm HYSTEM-EXTRAN 8 erläutert werden. Es handelt sich dabei um ein Teilnetz im Norden 
 des Bochumer Stadtteils Hiltrop. 
-
-
-Vorbereitung
-^^^^^^^^^^^^
 Die Daten, die in diesem Workflow benutzt werden, stehen in dieser Excel-Datei :download:`kanaldaten.xlsx <_static/kanaldaten.xlsx>` zum download bereit. 
-Eine Videoanleitung zur Vorbereitung des Projektes ist |video_vorbereitung| zu finden.
+
+Falls QKan noch nicht auf dem Rechner installiert ist, ist :ref:`hier<QKan_plugins_fuer_QGIS>` eine Anleitung zur Installation des QKan Plugins zu finden. 
+
+
+QKan-Datenbank mit Kanalnetzdaten erstellen
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Eine Videoanleitung zur Vorbereitung einer Datenbank mit Kanalnetzdaten ist hier |video_vorbereitung| zu finden.
 
 .. |video_vorbereitung| raw:: html
 
    <a href="https://fh-aachen.sciebo.de/s/gCEqM9ZDOgmyf6s" target="_blank">hier</a>
 
-Falls QKan noch nicht auf dem Rechner installiert ist, ist :ref:`hier<QKan_plugins_fuer_QGIS>` eine Anleitung zur Installation des QKan Plugins zu finden. 
-
-
-Anlegen einer neuen QKan-Datenbank
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Zu Beginn eines jeden Projektes muss eine neue QKan-Datenbank erzeugt werden.
 Mit |Tool_datenbank_erstellen| :guilabel:`Neue QKan-Datenbank erstellen` öffnet sich ein Fenster für die automatische Erzeugung einer neuen Datenbank. 
 Als erstes muss der Pfad und der Name der Datenbank gewählt und das gewünschte Projektionssystem festgelegt werden. 
@@ -556,7 +550,7 @@ verzichtet.
 
 Übertragen einer anderen Projektdatei auf eine QKan-Datenbank
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. index:: Video: Projektdatei übertragen
+.. index:: Video: Projektdatei übernehmen
 
 Eine Videoanleitung, wie für eine bestehende QKan-Kanaldatenbank eine Vorlage-Projektdatei geladen werden kann:
 - `Video: QKan Projekt laden <https://fh-aachen.sciebo.de/s/JOjxXdF72eLrJsw>`_
@@ -589,10 +583,10 @@ Eine Videoanleitung, wie ein Kanal++ Projekt nach QKan übertragen werden kann, 
 - `Video: Export auf Kanal++ nach QKan <https://fh-aachen.sciebo.de/s/1VwlghfBHcHZWRi>`_
 
 
-Beispielprojekt Adorf
----------------------
+Beispiel 2: Datenvorbereitung für Simulationsrechnung (HYSTEM-EXTRAN)
+---------------------------------------------------------------------
 
-Das Beispielprojektes Adorf zeigt, wie aus Kanaldaten und Flurstücksdaten ein Berechnungssatz für HYSTEM-EXTRAN 
+Das Beispielprojekt Adorf zeigt, wie aus Kanaldaten und Flurstücksdaten ein Berechnungssatz für HYSTEM-EXTRAN 
 erstellt werden kann. Dazu finden Sie hier neben einer Kurzanleitung und dem Kanalnetz mehrere Zwischenschritte 
 für den Fall, dass eine Funktion nicht erfolgreich nachvollzogen werden kann. 
 

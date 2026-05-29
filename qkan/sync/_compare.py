@@ -11,13 +11,7 @@ logger = get_logger("QKan.sync._compare")
 
 
 class CompareTask:
-    def __init__(
-            self,
-            tgbs_selected,
-    ):
-        self.tgbs_selected = tgbs_selected
-
-    def run(self) -> bool:
+    def run(self, test: bool = False) -> bool:
 
         iface = QKan.instance.iface
 
@@ -312,7 +306,8 @@ class CompareTask:
 
             # 1. Sync-Tabellen löschen
             for tabnam, userchoice, _, _ in tables:
-                tableexist = db_qkan.attrlist(tabnam)
+                # tableexist = db_qkan.attrlist(tabnam)
+                tableexist = db_qkan.sqls.get(f'sync_create_{tabnam}')
 
                 if userchoice and tableexist:
                     sqlnam = f'sync_drop_{tabnam}'
@@ -331,7 +326,8 @@ class CompareTask:
             db_qkan.commit()
 
             for tabnam, userchoice, _, _ in tables:
-                tableexist = db_qkan.attrlist(tabnam)
+                # tableexist = db_qkan.attrlist(tabnam)
+                tableexist = db_qkan.sqls.get(f'sync_create_{tabnam}')
 
                 if userchoice and tableexist:
             # 2. Sync-Tabellen (neu) erstellen und Vergleich ausführen
@@ -380,6 +376,9 @@ class CompareTask:
                             logger.error_code(f'SQL-Fehler: {sqlnam=}, {tabnam=}')
 
             db_qkan.commit()
+
+        if test:
+            return True
 
         project = QgsProject.instance()
         for tabnam, userchoice, layers, group in tables:

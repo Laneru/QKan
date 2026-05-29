@@ -85,6 +85,8 @@ class TestQKan2SWMM(QgisTest):
         QKan.config.check_export.update = False
         QKan.config.check_export.synch = False
 
+        QKan.config.selections.selectedObjects = False
+
         imp = SWMMPorter(iface())
         with DBConnection(dbname=QKan.config.database.qkan, epsg=QKan.config.epsg) as db_qkan:
             erg = imp._doexport(db_qkan)

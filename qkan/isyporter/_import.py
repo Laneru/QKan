@@ -1,5 +1,6 @@
 import sys, os
-import xml.etree.ElementTree as ElementTree
+#import xml.etree.ElementTree as ElementTree
+import lxml.etree as ElementTree
 from typing import Dict, Iterator, Tuple, Union
 
 from qgis.PyQt.QtCore import QByteArray

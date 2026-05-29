@@ -765,19 +765,23 @@
   <expressionfields/>
   <attributeactions>
     <defaultAction value="{7f802d16-fd1e-45ac-9683-a33a61fc674b}" key="Canvas"/>
-    <actionsetting name="Aktuelle Zustandsdaten für alle Hausanschlussleitungen anzeigen" action="from qkan.tools.zeige_untersuchungsdaten import ShowHausanschlussschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHausanschlussschaeden(id = 1)&#xd;&#xa;form.show_selected()&#xd;&#xa;del form&#xd;&#xa;" shortTitle="Aktuelle Zustandsdaten für alle Hausanschlussleitungen" notificationMessage="" isEnabledOnlyWhenEditable="0" type="1" icon="" capture="1" id="{7f802d16-fd1e-45ac-9683-a33a61fc674b}">
-      <actionScope id="Feature"/>
+    <actionsetting id="{7f802d16-fd1e-45ac-9683-a33a61fc674b}" capture="1" isEnabledOnlyWhenEditable="0" name="Aktuelle Zustandsdaten für alle Hausanschlussleitungen anzeigen" icon="" shortTitle="Aktuelle Zustandsdaten" notificationMessage="" action="from qkan.tools.zeige_untersuchungsdaten import ShowHausanschlussschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHausanschlussschaeden(id = 1)&#xd;&#xa;del form&#xd;&#xa;" type="1">
+      <actionScope id="Canvas"/>
       <actionScope id="Layer"/>
-      <actionScope id="Canvas"/>
-    </actionsetting>
-    <actionsetting name="Alle Zustandsdaten für alle Hausanschlussleitungen anzeigen" action="from qkan.tools.zeige_untersuchungsdaten import ShowHausanschlussschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHausanschlussschaeden()&#xd;&#xa;form.show_selected()&#xd;&#xa;del form&#xd;&#xa;" shortTitle="Alle Zustandsdaten für alle Hausanschlussleitungen" notificationMessage="" isEnabledOnlyWhenEditable="0" type="1" icon="" capture="1" id="{f0ac47bb-207a-48d1-8d1d-b983bc11a172}">
       <actionScope id="Feature"/>
+    </actionsetting>
+    <actionsetting id="{33764888-a85a-479d-961f-e1e8dc370402}" capture="0" isEnabledOnlyWhenEditable="0" name="Aktuelle Zustandsdaten zu Hausanschlussleitung anzeigen" icon="" shortTitle="Aktuelle Zustandsdaten zu Hausanschlussleitung" notificationMessage="" action="from qkan.tools.zeige_untersuchungsdaten import ShowHaltungsschaeden&#xd;&#xa;form = ShowHausanschlussschaeden(untersuchleit = '[%leitnam%]', id = 1)&#xd;&#xa;del form&#xd;&#xa;" type="1">
+      <actionScope id="Canvas"/>
+      <actionScope id="Feature"/>
+    </actionsetting>
+    <actionsetting id="{f0ac47bb-207a-48d1-8d1d-b983bc11a172}" capture="1" isEnabledOnlyWhenEditable="0" name="Alle Zustandsdaten für alle Hausanschlussleitungen anzeigen" icon="" shortTitle="Alle Zustandsdaten" notificationMessage="" action="from qkan.tools.zeige_untersuchungsdaten import ShowHausanschlussschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHausanschlussschaeden()&#xd;&#xa;del form&#xd;&#xa;" type="1">
+      <actionScope id="Canvas"/>
       <actionScope id="Layer"/>
-      <actionScope id="Canvas"/>
-    </actionsetting>
-    <actionsetting name="Zustandsdaten zu Hausanschlussleitung und Untersuchungsdatum anzeigen" action="from qkan.tools.zeige_untersuchungsdaten import ShowHausanschlussschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHausanschlussschaeden(untersuchleit = '[%leitnam%]', untersuchtag = '[%untersuchtag%]')&#xd;&#xa;form.show_selected()&#xd;&#xa;del form&#xd;&#xa;&#xd;&#xa;" shortTitle="Zustandsdaten zu Hausanschlussleitung und Untersuchungsdatum" notificationMessage="" isEnabledOnlyWhenEditable="0" type="1" icon="" capture="1" id="{df45edbe-ca08-43ef-85cf-7e9ae15140b0}">
       <actionScope id="Feature"/>
+    </actionsetting>
+    <actionsetting id="{df45edbe-ca08-43ef-85cf-7e9ae15140b0}" capture="1" isEnabledOnlyWhenEditable="0" name="Zustandsdaten zu Hausanschlussleitung und Untersuchungsdatum anzeigen" icon="" shortTitle="Zustandsdaten zu Hausanschlussleitung und Untersuchungsdatum" notificationMessage="" action="from qkan.tools.zeige_untersuchungsdaten import ShowHausanschlussschaeden&#xd;&#xa;&#xd;&#xa;form = ShowHausanschlussschaeden(untersuchleit = '[%leitnam%]', untersuchtag = '[%untersuchtag%]')&#xd;&#xa;del form&#xd;&#xa;&#xd;&#xa;" type="1">
       <actionScope id="Canvas"/>
+      <actionScope id="Feature"/>
     </actionsetting>
   </attributeactions>
   <attributetableconfig sortOrder="1" actionWidgetStyle="dropDown" sortExpression="&quot;haltnam&quot;">

@@ -89,6 +89,8 @@ class TestQKanISY(QgisTest):
         QKan.config.check_export.update = False
         QKan.config.check_export.synch = False
 
+        QKan.config.selections.selectedObjects = False
+
         exp = IsyPorter(iface())
         erg = exp._doexport()
 

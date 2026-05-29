@@ -12,7 +12,6 @@ from qkan.datacheck.application import Plausi
 
 logger = get_logger("QKan.he8.export")
 
-
 # noinspection SqlNoDataSourceInspection, SqlResolve
 class ExportTask:
     def __init__(self, db_qkan: DBConnection):
@@ -1063,6 +1062,7 @@ class ExportTask:
         sql = """SELECT count() FROM pruefliste"""
         self.db_qkan.sql(sql, f'{self.__class__.__name__}._reftables()')
         data = self.db_qkan.fetchone()
-        complete = (data == [])
+        logger.debug(f'_check_complete: {data=}')
+        complete = (data[0] == 0)
 
         return complete

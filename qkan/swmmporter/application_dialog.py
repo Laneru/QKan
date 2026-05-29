@@ -327,8 +327,8 @@ class ImportDialog(_Dialog, IMPORT_CLASS):  # type: ignore
     tf_database: QLineEdit
     tf_import: QLineEdit
     tf_project: QLineEdit
-    radioButton: QRadioButton
-    radioButton_2: QRadioButton
+    rb_choiceTezg: QRadioButton
+    rb_choiceFlaechen: QRadioButton
 
     pb_import: QPushButton
     pb_project: QPushButton

@@ -14,10 +14,10 @@ from qgis.PyQt.QtWidgets import (
 
 from qkan import QKan
 from qkan.database.dbfunc import DBConnection
-from qkan.tools.qkan_utils import fehlermeldung, get_database_QKan
+from qkan.tools.qkan_utils import get_database_QKan
 from qkan.tools.dialogs import QKanDialog
 from .k_unbef import create_unpaved_areas
-from ..utils import get_logger
+from ..utils import get_logger, QkanAbortError
 
 if TYPE_CHECKING:
     from .application import CreateUnbefFl
@@ -104,8 +104,8 @@ class CreateUnbefFlDialog(QKanDialog, FORM_CLASS):  # type: ignore
         """
 
         if not self.db_name:
-            logger.error("db_name is not initialized.")
-            return
+            logger.error("Programmfehler: db_name is not initialized.")
+            raise QkanAbortError
 
         selected_abflparam = list_selected_tab_items(self.tw_selAbflparamTeilgeb)
 
@@ -122,36 +122,16 @@ class CreateUnbefFlDialog(QKanDialog, FORM_CLASS):  # type: ignore
         # Vorbereitung des Auswahlkriteriums für die SQL-Abfrage: Kombination aus abflussparameter und teilgebiet
         # Dieser Block ist identisch in k_unbef und in application enthalten
 
-        if len(selected_abflparam) == 0:
-            auswahl = ""
-        elif len(selected_abflparam) == 1:
-            auswahl = " AND"
-        elif len(selected_abflparam) >= 2:
-            auswahl = " AND ("
+        if len(selected_abflparam) > 0:
+            auswahl = ' AND ( (' + \
+              ') OR\n ('.join(
+                  [
+                      f"tezg.abflussparameter = '{attr[0]}' AND tezg.teilgebiet = '{attr[1]}'"
+                      for attr in selected_abflparam if attr[1] is not None
+                  ]
+              ) + '))'
         else:
-            fehlermeldung("Interner Fehler", "Fehler in Fallunterscheidung!")
-            return
-
-        # Anfang SQL-Krierien zur Auswahl der tezg-Flächen
-        first = True
-        for attr in selected_abflparam:
-            if attr[4] == "None" or attr[1] == "None":
-                fehlermeldung(
-                    "Datenfehler: ",
-                    'In den ausgewählten Daten sind noch Datenfelder nicht definiert ("NULL").',
-                )
-                return
-            if first:
-                first = False
-                auswahl += f""" (tezg.abflussparameter = '{attr[0]}' AND
-                                tezg.teilgebiet = '{attr[1]}')"""
-            else:
-                auswahl += f""" OR\n      (tezg.abflussparameter = '{attr[0]}' AND
-                                tezg.teilgebiet = '{attr[1]}')"""
-
-        if len(selected_abflparam) >= 2:
-            auswahl += ")"
-        # Ende SQL-Krierien zur Auswahl der tezg-Flächen
+            auswahl = ''
 
         # Trick: Der Zusatz "WHERE 1" dient nur dazu, dass der Block zur Zusammenstellung
         # von 'auswahl' identisch mit dem Block in 'k_unbef.py' bleiben kann...
@@ -159,6 +139,9 @@ class CreateUnbefFlDialog(QKanDialog, FORM_CLASS):  # type: ignore
         with DBConnection(dbname=self.db_name) as db_qkan:
             if not db_qkan.connected:
                 return
+
+            # db_qkan.loadmodule('createunbeffl')
+
             if not db_qkan.sql(
                 f"SELECT count(*) AS anz FROM tezg WHERE 1{auswahl}",
                 "QKan.CreateUnbefFlaechen (5)",
@@ -190,9 +173,9 @@ class CreateUnbefFlDialog(QKanDialog, FORM_CLASS):  # type: ignore
         # Abfragen der Tabelle tezg nach verwendeten Abflussparametern
         with DBConnection(dbname=database_qkan) as db_qkan:
             if not db_qkan.connected:
-                fehlermeldung(
-                    "Fehler in createunbeffl.application:\n",
-                    f"QKan-Datenbank {database_qkan} wurde nicht gefunden oder war nicht aktuell!\nAbbruch!",
+                logger.error_user(
+                    "Fehler in createunbeffl.application:\n"
+                    f"QKan-Datenbank {database_qkan} wurde nicht gefunden oder war nicht aktuell!\nAbbruch!"
                 )
                 return
 
@@ -222,15 +205,18 @@ class CreateUnbefFlDialog(QKanDialog, FORM_CLASS):  # type: ignore
                     if not db_qkan.sql(sql, "createunbeffl.run (2)"):
                         return
                 else:
-                    fehlermeldung(
-                        "Datenfehler: ",
-                        'Bitte ergänzen Sie in der Tabelle "abflussparameter" einen Datensatz '
+                    logger.error_user(
+                        "Datenfehler: "
+                        'Bitte ergänzen Sie in der Tabelle "abflussparameter" einen Datensatz \n'
                         'für unbefestigte Flächen ("bodenklasse" darf nicht leer oder NULL sein)',
                     )
+                    return
 
             sql = """SELECT te.abflussparameter, te.teilgebiet, bk.bknam, count(*) AS anz, 
-                    CASE WHEN te.abflussparameter ISNULL THEN 'Fehler: Kein Abflussparameter angegeben' ELSE
-                        CASE WHEN bk.infiltrationsrateanfang ISNULL THEN 'Fehler: Keine Bodenklasse angegeben' 
+                    CASE WHEN te.abflussparameter IS NULL THEN 'Fehler: Kein Abflussparameter angegeben' 
+					     WHEN te.teilgebiet IS NULL THEN 'Fehler: Teilgebiet nicht definiert'
+					ELSE
+                        CASE WHEN bk.infiltrationsrateanfang IS NULL THEN 'Fehler: Keine Bodenklasse angegeben' 
                              WHEN bk.infiltrationsrateanfang < 0.00001 THEN 'Fehler: undurchlässige Bodenart'
                              ELSE ''
                         END

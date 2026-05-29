@@ -382,11 +382,12 @@ def _create_yml_spatialite(db_qkan: DBConnection):
 
     # Nur zur Kontrolle
     # with open(
-    #     'C:/FHAC/hoettges/Kanalprogramme/QKan/test/work/b260107_lokal/sqlite_check.yml',
+    #     'C:/FHAC/hoettges/Kanalprogramme/QKan/test/work/sqlite_check.yml',
     #     'w',
     #     encoding = 'utf-8'
     # ) as fw:
-    #     fw.write(f'Aktuelles Verzeichnis: {os.getcwd()}')
+    #     fw.write(f'Aktuelles Verzeichnis: {os.getcwd()}\n')
+    #     fw.write(f'{tables=}\n')
     #     for key in db_qkan.sqls.keys():
     #         fw.write(f"{key}:\n{db_qkan.sqls[key]}\n\n")
     # del fw
@@ -395,45 +396,3 @@ def _create_yml_spatialite(db_qkan: DBConnection):
     # logger.debug(f"Anzahl SQLs in 'sync': {anz}")
     # for key in db_qkan.sqls['sync'].keys():
     #     logger.debug(f"{key}:\n{db_qkan.sqls['sync'][key]}\n")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

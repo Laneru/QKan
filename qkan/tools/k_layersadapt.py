@@ -21,7 +21,7 @@
 """
 
 import os
-from typing import cast
+from typing import cast, Optional
 from xml.etree import ElementTree
 
 from qgis.core import (
@@ -84,7 +84,7 @@ def load_plausiaction(layer):
 
 
 def layersadapt(
-    database_QKan: [str, None],
+    database_QKan: Optional[str],
     projectTemplate: str,
     anpassen_ProjektMakros: bool,
     anpassen_svgPaths: bool,

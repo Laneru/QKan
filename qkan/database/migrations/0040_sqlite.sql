@@ -34,6 +34,15 @@ CREATE TABLE IF NOT EXISTS anschlussschaechte (
     kommentar TEXT,
     createdat TEXT DEFAULT CURRENT_TIMESTAMP);
 
+CREATE TABLE IF NOT EXISTS videos (
+    pk INTEGER PRIMARY KEY,
+    name TEXT,
+    untersuchtag TEXT,
+    untersuchrichtung TEXT,
+    objekt TEXT,
+    datei TEXT,
+    createdat TEXT DEFAULT CURRENT_TIMESTAMP);
+
 -- Ergänzen eines Triggers für die Referenztabelle abflussparameter
 CREATE TRIGGER IF NOT EXISTS trig_ref_abflussparameter AFTER UPDATE OF apnam ON abflussparameter
     BEGIN
