@@ -88,6 +88,8 @@ class AnimationDialog(_Dialog, ANIMATION_CLASS):  # type: ignore
 
         self.cb_velo.setChecked(QKan.config.flood.velo)
         self.cb_wlevel.setChecked(QKan.config.flood.wlevel)
+        self.cb_veloMax.setChecked(QKan.config.flood.veloMax)
+        self.cb_wlevelMax.setChecked(QKan.config.flood.wlevelMax)
         self.cb_gdb_remove.setChecked(QKan.config.flood.gdblayer)
 
         self.tf_faktor_v.setText(str(QKan.config.flood.faktor_v))

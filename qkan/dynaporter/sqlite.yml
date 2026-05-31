@@ -1,0 +1,100 @@
+dyna_reset_strang: "
+UPDATE dynahal
+SET kanalnummer = NULL,
+haltungsnummer = NULL;"
+
+dyna_reset_num1: "
+WITH halnumob AS (
+    SELECT schunten, count(*) AS anzahl
+    FROM haltungen
+    GROUP BY schunten
+), halnumun AS (
+    SELECT schoben, count(*) AS anzahl
+    FROM haltungen
+    GROUP BY schoben
+)
+INSERT INTO dynahal
+(pk, haltnam, schoben, schunten, teilgebiet, anzobob, anzobun, anzunun, anzunob)
+SELECT
+    haltungen.pk, haltungen.haltnam, haltungen.schoben, haltungen.schunten, haltungen.teilgebiet,
+    coalesce(haltobob.anzahl, 0) AS anzobob, coalesce(haltobun.anzahl, 0) AS anzobun,
+    coalesce(haltunun.anzahl, 0) AS anzunun, coalesce(haltunob.anzahl, 0) AS anzunob
+FROM haltungen
+LEFT JOIN halnumob AS haltobob
+ON haltungen.schoben = haltobob.schunten
+LEFT JOIN halnumun AS haltobun
+ON haltungen.schoben = haltobun.schoben
+LEFT JOIN halnumun AS haltunun
+ON haltungen.schunten = haltunun.schoben
+LEFT JOIN halnumob AS haltunob
+ON haltungen.schunten = haltunob.schunten
+WHERE haltnam NOT IN (
+    SELECT haltnam FROM dynahal);"
+
+dyna_set_num: "
+UPDATE dynahal
+SET kanalnummer = ROWID, haltungsnummer = 1
+WHERE anzobob <> 1 OR anzobun <> 1;"
+
+dyna_proceed_num: "
+UPDATE dynahal
+SET 
+    kanalnummer = 
+    (   SELECT kanalnummer
+        FROM dynahal AS dh
+        WHERE dh.schunten = dynahal.schoben),
+    haltungsnummer = 
+    (   SELECT haltungsnummer + 1
+        FROM dynahal AS dh
+        WHERE dh.schunten = dynahal.schoben)
+WHERE
+    dynahal.anzobob = 1 AND
+    dynahal.anzobun = 1 AND
+    dynahal.kanalnummer IS NULL;"
+
+dyna_changes: "
+SELECT changes();"
+
+dyna_dynahal_del: "
+DELETE FROM dynahal;"
+
+dyna_dynahal_init_all: "
+INSERT INTO dynahal
+(pk, haltnam, kanalnummer, haltungsnummer, schoben, schunten, teilgebiet)
+SELECT
+    h.pk, h.haltnam,
+    substr(h.haltnam, 1, instr(h.haltnam, '-')-1) AS kn,
+    substr(h.haltnam, instr(h.haltnam, '-') - length(h.haltnam)) AS hn,
+    h.schoben, h.schunten, h.teilgebiet
+FROM haltungen AS h
+WHERE haltnam NOT IN (
+    SELECT haltnam FROM dynahal)
+    {ausw_and}{auswahl};"
+
+dyna_dynahal_init_sel: "
+INSERT INTO dynahal
+(pk, haltnam, kanalnummer, haltungsnummer, schoben, schunten, teilgebiet)
+SELECT
+    h.pk, h.haltnam,
+    substr(h.haltnam, 1, instr(h.haltnam, '-')-1) AS kn,
+    substr(h.haltnam, instr(h.haltnam, '-') - length(h.haltnam)) AS hn,
+    h.schoben, h.schunten, h.teilgebiet
+FROM haltungen AS h
+JOIN sel_haltungen AS s ON h.pk = s.pk
+WHERE haltnam NOT IN (
+    SELECT haltnam FROM dynahal);"
+
+dyna_dynahal_ks: "
+SELECT printf('%10.6f',ks) AS ks
+FROM haltungen
+GROUP BY ks;"
+
+dyna_profile_all: "
+SELECT profilnam
+FROM haltungen {ausw_where}{auswahl}
+GROUP BY profilnam;"
+
+dyna_profile_sel: "
+SELECT profilnam
+FROM haltungen {ausw_where}{auswahl}
+GROUP BY profilnam;"

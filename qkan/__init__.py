@@ -47,8 +47,8 @@ PLUGIN_LIST = [
     "uploadPostgis.application.UploadPostgis",
     "sync.application.Synchronisation",
     "info.application.Infos",
-    "createelements.application.CreateElements",
-    "netzuebersicht.application.NetzuebersichtPlugin",
+    # "createelements.application.CreateElements",
+    # "netzuebersicht.application.NetzuebersichtPlugin",
     "datenbankviewer.application.DatenbankviewerPlugin",
     "untersuchungsverwaltung.application.UntersuchungsverwaltungApplication",
 ]
@@ -166,7 +166,7 @@ class QKan:
     forms: list[str]
 
     dbVersion = "3.4.10"  # Version der QKan-Datenbank
-    qgsVersion = "3.4.12"  # Version des Projektes und der Projektdatei. Kann höher als die der QKan-Datenbank sein
+    qgsVersion = "3.4.13"  # Version des Projektes und der Projektdatei. Kann höher als die der QKan-Datenbank sein
     build = "0000"
 
     # SQL-Statements werden abhängig vom Datenbanktyp und Modul geladen.

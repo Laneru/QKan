@@ -50,6 +50,8 @@ class FloodTools(QKanPlugin):
 
             QKan.config.flood.velo = self.animation_dlg.cb_velo.isChecked()
             QKan.config.flood.wlevel = self.animation_dlg.cb_wlevel.isChecked()
+            QKan.config.flood.veloMax = self.animation_dlg.cb_veloMax.isChecked()
+            QKan.config.flood.wlevelMax = self.animation_dlg.cb_wlevelMax.isChecked()
             QKan.config.flood.gdblayer = self.animation_dlg.cb_gdb_remove.isChecked()
 
             QKan.config.flood.faktor_v = float(self.animation_dlg.tf_faktor_v.text())

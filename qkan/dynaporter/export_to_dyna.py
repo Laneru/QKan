@@ -736,19 +736,6 @@ def export_kanaldaten(
     progress_bar.setValue(1)
 
     # --------------------------------------------------------------------------------------------------
-    # Zur Abschaetzung der voraussichtlichen Laufzeit
-
-    db_qkan.sql("SELECT count(*) AS n FROM schaechte")
-    anzdata = float(db_qkan.fetchone()[0])
-    fortschritt("Anzahl Schächte: {}".format(anzdata))
-
-    db_qkan.sql("SELECT count(*) AS n FROM haltungen")
-    anzdata += float(db_qkan.fetchone()[0])
-    fortschritt("Anzahl Haltungen: {}".format(anzdata))
-
-    db_qkan.sql("SELECT count(*) AS n FROM flaechen")
-    anzdata += float(db_qkan.fetchone()[0]) * 2
-    fortschritt("Anzahl Flächen: {}".format(anzdata))
 
     # Nur Daten fuer ausgewaehlte Teilgebiete
     if len(liste_teilgebiete) != 0:
@@ -764,60 +751,29 @@ def export_kanaldaten(
     # Haltungsnummerierung, falls aktiviert
     # Diese ist nur für das gesamte Entwässerungsnetz möglich, damit keine Redundanzen entstehen.
 
+    # todo: logger zu allen sqlyml-Aufrufen
+
     if autonum_dyna:
 
         # Zurücksetzen von "kanalnummer" und "haltungsnummer"
-        sql = f"""
-            UPDATE dynahal
-            SET kanalnummer = NULL,
-                haltungsnummer = NULL {ausw_where}{auswahl}"""
 
-        if not db_qkan.sql(sql, "db_qkan: export_to_dyna.init_dynahal (1)"):
-            return False
+        sqlnam = "dyna_reset_strang"
+        if not db_qkan.sqlyml(sqlnam, "db_qkan: export_to_dyna.init_dynahal (1)"):
+            logger.error_data('reset dynahal fehlgeschlagen')
+            raise QkanAbortError
 
         db_qkan.commit()
 
         # Einfügen der Haltungsdaten in die Zusatztabelle "dynahal"
 
-        sql = f"""
-            WITH halnumob AS (
-                SELECT schunten, count(*) AS anzahl
-                FROM haltungen
-                GROUP BY schunten
-            ), halnumun AS (
-                SELECT schoben, count(*) AS anzahl
-                FROM haltungen
-                GROUP BY schoben
-            )
-            INSERT INTO dynahal
-            (pk, haltnam, schoben, schunten, teilgebiet, anzobob, anzobun, anzunun, anzunob)
-            SELECT
-                haltungen.pk, haltungen.haltnam, haltungen.schoben, haltungen.schunten, haltungen.teilgebiet,
-                coalesce(haltobob.anzahl, 0) AS anzobob, coalesce(haltobun.anzahl, 0) AS anzobun,
-                coalesce(haltunun.anzahl, 0) AS anzunun, coalesce(haltunob.anzahl, 0) AS anzunob
-            FROM haltungen
-            LEFT JOIN halnumob AS haltobob
-            ON haltungen.schoben = haltobob.schunten
-            LEFT JOIN halnumun AS haltobun
-            ON haltungen.schoben = haltobun.schoben
-            LEFT JOIN halnumun AS haltunun
-            ON haltungen.schunten = haltunun.schoben
-            LEFT JOIN halnumob AS haltunob
-            ON haltungen.schunten = haltunob.schunten
-            WHERE haltnam NOT IN (
-                SELECT haltnam FROM dynahal)
-                {ausw_and}{auswahl}"""
+        sql = f"dyna_reset_num"
 
-        if not db_qkan.sql(sql, "db_qkan: export_to_dyna.init_dynahal (2)"):
+        if not db_qkan.sqlyml(sql, "db_qkan: export_to_dyna.init_dynahal (2)"):
             return False
 
         # Zurücksetzen von "kanalnummer" und "haltungsnummer"
 
-        sql = f"""
-            UPDATE dynahal
-            SET kanalnummer = NULL,
-                haltungsnummer = NULL
-                {ausw_where}{auswahl}"""
+        sql = "dyna_reset_strang"
 
         if not db_qkan.sql(sql, "db_qkan: export_to_dyna.init_dynahal (3)"):
             return False
@@ -825,11 +781,7 @@ def export_kanaldaten(
         # Nummerierung der Anfangshaltungen
 
         if len(liste_teilgebiete) == 0:
-            sql = f"""
-                UPDATE dynahal
-                SET kanalnummer = ROWID, haltungsnummer = 1
-                WHERE anzobob <> 1 OR anzobun <> 1
-                    {ausw_and}{auswahl}"""
+            sql = "dyna_set_num"
 
         if not db_qkan.sql(sql, "db_qkan: export_to_dyna.init_dynahal (4)"):
             return False
@@ -845,29 +797,14 @@ def export_kanaldaten(
 
         while (nchange > 0) and (max_loops > nlimit):
             nlimit += 1
-            sql = f"""
-                UPDATE dynahal
-                SET 
-                    kanalnummer = 
-                    (   SELECT kanalnummer
-                        FROM dynahal AS dh
-                        WHERE dh.schunten = dynahal.schoben),
-                    haltungsnummer = 
-                    (   SELECT haltungsnummer + 1
-                        FROM dynahal AS dh
-                        WHERE dh.schunten = dynahal.schoben)
-                WHERE
-                    dynahal.anzobob = 1 AND
-                    dynahal.anzobun = 1 AND
-                    dynahal.kanalnummer IS NULL
-                    {ausw_and}{auswahl};
-                """
+            sql = "dyna_proceed_num"
 
             if not db_qkan.sql(sql, "db_qkan: export_to_dyna.init_dynahal (5)"):
                 return False
 
+            sql = "dyna_changes"
             if not db_qkan.sql(
-                "SELECT changes();", "db_qkan: export_to_dyna.init_dynahal (6)"
+                "dyna_changes", "db_qkan: export_to_dyna.init_dynahal (6)"
             ):
                 return False
 
@@ -896,24 +833,17 @@ def export_kanaldaten(
         # nummer daraus wieder herstellen lassen (8 Zeichen für Kanal + "-" + 3 Zeichen für Haltungsnummer).
 
         # noinspection SqlWithoutWhere
+        sql = "dyna_dynahal_del"
         if not db_qkan.sql(
-            "DELETE FROM dynahal;",
+            "dyna_dynahal_del",
             "db_qkan: export_to_dyna.init_dynahal (7): Daten in Tabelle dynahal konnten nicht gelöscht werden",
         ):
             return False
 
-        sql = f"""
-            INSERT INTO dynahal
-            (pk, haltnam, kanalnummer, haltungsnummer, schoben, schunten, teilgebiet)
-            SELECT
-                h.pk, h.haltnam,
-                substr(h.haltnam, 1, instr(h.haltnam, '-')-1) AS kn,
-                substr(h.haltnam, instr(h.haltnam, '-') - length(h.haltnam)) AS hn,
-                h.schoben, h.schunten, h.teilgebiet
-            FROM haltungen AS h
-            WHERE haltnam NOT IN (
-                SELECT haltnam FROM dynahal)
-                {ausw_and}{auswahl}"""
+        if QKan.config.selections.selectedObjects:
+            sql = f"dyna_dynahal_init_sel"
+        else:
+            sql = f"dyna_dynahal_init_all"
 
         if not db_qkan.sql(sql, "db_qkan: export_to_dyna.init_dynahal (8)"):
             return False
@@ -959,11 +889,7 @@ def export_kanaldaten(
 
     # Prüfung, ob alle Werte, die in der QKan-Datenbank vorkommen, bereits vorhanden sind.
 
-    sql = """
-        SELECT printf('%10.6f',ks) AS ks
-        FROM haltungen
-        GROUP BY ks
-    """
+    sql = "dyna_dynahal_ks"
     if not db_qkan.sql(sql, "QKan_ExportDYNA.export_to_dyna (1) "):
         return False
 
@@ -1071,9 +997,10 @@ def export_kanaldaten(
     if dynaprof_choice == enums.ProfChoice.PROFILNAME:
         # Die DYNA-Schlüssel werden entsprechend der DYNA-Vorlagedatei vergeben. Daher braucht
         # nur das Vorhandensein der Profilnamen geprüft zu werden.
-        sql = f"""SELECT profilnam
-                FROM haltungen {ausw_where}{auswahl}
-                GROUP BY profilnam"""
+        if QKan.config.selections.selectedObjects:
+            sql = "dyna_profile_sel"
+        else:
+            sql = "dyna_profile_all"
 
         if not db_qkan.sql(sql, "db_qkan: QKan_ExportDYNA.export_to_dyna.profile (1)"):
             return False

@@ -25,6 +25,8 @@ class TestHEFlood(QgisTest):
         QKan.config.flood.database = str(BASE_WORK / "flood.sqlite")
         QKan.config.flood.velo = True
         QKan.config.flood.wlevel = True
+        QKan.config.flood.veloMax = True
+        QKan.config.flood.wlevelMax = True
         QKan.config.flood.gdblayer = False
         QKan.config.flood.faktor_v = 2.
         QKan.config.flood.min_v = 0.05
