@@ -1192,7 +1192,9 @@ class ExportTask:
         fortschritt("Export startet...", 0.05)
 
         # region Create XML structure
-        self.root = Element("DATA", {"xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance", }
+        self.root = Element(
+            "DATA",
+            nsmap={"xsi": "http://www.w3.org/2001/XMLSchema-instance"}
         )
 
         # Export
