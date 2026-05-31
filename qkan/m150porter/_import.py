@@ -757,7 +757,7 @@ class ImportTask(Schadenstexte):
             bez = block.findtext("RT004", None)
             bemerkung = block.findtext(
                 "RT999",
-                ElementTree.Element('aus Referenztabelle in der M150-Datei')
+                'aus Referenztabelle in der M150-Datei'
             )
             # Falls einer der beiden Einträge fehlt:
             if bez is None:
@@ -767,7 +767,7 @@ class ImportTask(Schadenstexte):
                     'bezext': bez,
                     'kuerzel': kuerzel,
                     'bezqkan': bez,
-                    'kommentar': 'aus Referenztabelle in der M150-Datei',
+                    'kommentar': bemerkung,
                 }
             )
 
@@ -862,7 +862,7 @@ class ImportTask(Schadenstexte):
             bez = block.findtext("RT004", None)
             bemerkung = block.findtext(
                 "RT999",
-                ElementTree.Element('aus Referenztabelle in der M150-Datei')
+                'aus Referenztabelle in der M150-Datei'
             )
             # Falls einer der beiden Einträge fehlt:
             if bez is None:
@@ -872,7 +872,7 @@ class ImportTask(Schadenstexte):
                     'bezext': bez,
                     'kuerzel': kuerzel,
                     'bezqkan': bez,
-                    'kommentar': 'aus Referenztabelle in der M150-Datei',
+                    'kommentar': bemerkung,
                 }
             )
 
@@ -940,7 +940,7 @@ class ImportTask(Schadenstexte):
             bez = block.findtext("RT004", None)
             bemerkung = block.findtext(
                 "RT999",
-                ElementTree.Element('aus Referenztabelle in der M150-Datei')
+                'aus Referenztabelle in der M150-Datei'
             )
             # Falls einer der beiden Einträge fehlt:
             if bez is None:
@@ -950,7 +950,7 @@ class ImportTask(Schadenstexte):
                     'bezext': bez,
                     'kuerzel': kuerzel,
                     'bezqkan': bez,
-                    'kommentar': 'aus Referenztabelle in der M150-Datei',
+                    'kommentar': bemerkung,
                 }
             )
 

@@ -10,7 +10,7 @@
 name=QKan
 qgisMinimumVersion=3.28
 description=Gruppe der QKan-Erweiterung(en)
-version=3.4.11
+version=3.4.12
 author=Nora Blase, Jörg Höttges, Yannick Linke
 email=hoettges@fh-aachen.de
 
@@ -22,6 +22,8 @@ repository=https://github.com/hoettges/QKan
 
 changelog= 
 
+    3.4.12:
+        - Fehler in M150-Export provisorisch korrigiert, indem die Bibliothek lxml wieder durch die alte xml-Bibliothek ersetzt wurde
     3.4.11:
         - Fehler in Snchronisation (Löschen von Datensätzen) korrigiert
         - Fehler in Migration der Datenbank korrigiert

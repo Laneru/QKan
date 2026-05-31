@@ -3,8 +3,9 @@ from pathlib import Path
 # noinspection PyUnresolvedReferences
 from typing import Dict, List, Optional, Union
 from xml.dom import minidom
-from lxml.etree import Element, SubElement, tostring
-from lxml import etree
+from xml.etree.ElementTree import Element, SubElement, tostring
+# from lxml.etree import Element, SubElement        # Nora: bei Umstellung noch Funktionen, z. B. minidom.parseString(tostring) anpassen
+# from lxml import etree
 
 from qgis.PyQt.QtWidgets import QProgressBar
 from qgis.core import Qgis, QgsGeometry

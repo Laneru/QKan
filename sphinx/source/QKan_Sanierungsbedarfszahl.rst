@@ -1,9 +1,6 @@
 Sanierungsbedarfszahl
 =====================
 
-Sanierungsbedarfszahl
----------------------
-
 Vor der Nutzung dieses Plugins muss zunächst eine Zustandsklassifizierung mit dem Plugin Zustandsklassen durchgeführt werden.
 Zusätzlich müssen in QGIS weitere Angaben wie Baujahr, hydraulische Leistungsfähigkeit und Bodenart ergänzt werden.
 Anschließend kann das Plugin über die Menüleiste unter „Erweiterungen“ gestartet werden.

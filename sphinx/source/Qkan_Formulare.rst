@@ -18,7 +18,7 @@ Dialogfenster
     QKan_Zustandsbewertung
     QKan_Substanzbewertung
     QKan_Ueberflutung
-   
+
    
    
 Allgemeine Funktionselemente in Formularen

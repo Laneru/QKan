@@ -1,6 +1,3 @@
-QKan am Beispiel
-================
-
 Einführung zum Beispiel 1 "Workflow"
 ----------------------------------------------
 

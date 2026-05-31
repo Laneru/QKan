@@ -1,8 +1,5 @@
-SubKanS
-=======
-
 Substanzklassifizierung - SubKanS
----------------------------------
+=================================
 
 Das Plugin SubKans beruht auf dem Projekt „ Entwicklung eines Standards zur Bewertung und Klassifizierung der baulichen Substanz von Abwasserkanälen und Schächten (SubKanS)“, 
 welches 2021 in Zusammenarbeit der FH Aachen, der HS Magdeburg Stendal, dem Kompetenzzentrum Wasser Berlin gGmbh, dem Franz Fischer Ingenieurbüro GmbH, dem Ingenieurbüro Dr.-Ing. 
