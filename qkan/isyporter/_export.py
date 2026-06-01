@@ -3,9 +3,7 @@ from pathlib import Path
 
 # noinspection PyUnresolvedReferences
 from typing import Dict, List, Optional, Union
-from xml.dom import minidom
-from xml.etree.ElementTree import Element, SubElement, tostring
-import xml.etree.ElementTree as ET
+from lxml.etree import Element, SubElement
 from lxml import etree
 
 from qgis.PyQt.QtWidgets import QProgressBar
@@ -313,7 +311,7 @@ class ExportTask:
 
         if self.vorlage != "":
             # Daten äbandern oder zu bestehender datei hinzufügen
-            tree = ET.parse(self.vorlage)
+            tree = etree.parse(self.vorlage)
             root = tree.getroot()
 
             sql = f"""
@@ -365,7 +363,7 @@ class ExportTask:
 
                 if blocks is None:
                     #Daten ergänzen
-                    new_item = ET.Element('AbwassertechnischeAnlage')
+                    new_item = etree.Element('AbwassertechnischeAnlage')
 
                     stammdaten = root.find('Stammdatenkollektiv')
                     stammdaten.append(new_item)
@@ -549,7 +547,7 @@ class ExportTask:
 
         if self.vorlage != "":
             # Daten äbandern oder zu bestehender datei hinzufügen
-            tree = ET.parse(self.vorlage)
+            tree = etree.parse(self.vorlage)
             root = tree.getroot()
 
             sql = f"""
@@ -601,7 +599,7 @@ class ExportTask:
 
                 if blocks is None:
                     # Daten ergänzen
-                    new_item = ET.Element('AbwassertechnischeAnlage')
+                    new_item = etree.Element('AbwassertechnischeAnlage')
 
                     stammdaten = root.find('Stammdatenkollektiv')
                     stammdaten.append(new_item)
@@ -777,7 +775,7 @@ class ExportTask:
 
         if self.vorlage != "":
             # Daten äbandern oder zu bestehender datei hinzufügen
-            tree = ET.parse(self.vorlage)
+            tree = etree.parse(self.vorlage)
             root = tree.getroot()
 
             sql = f"""
@@ -828,7 +826,7 @@ class ExportTask:
 
                 if blocks is None:
                     # Daten ergänzen
-                    new_item = ET.Element('AbwassertechnischeAnlage')
+                    new_item = etree.Element('AbwassertechnischeAnlage')
 
                     stammdaten = root.find('Stammdatenkollektiv')
                     stammdaten.append(new_item)
@@ -2342,8 +2340,11 @@ class ExportTask:
 
         if self.vorlage == "":
 
+            # Path(self.export_file).write_text(
+            #     minidom.parseString(tostring(root)).toprettyxml(indent="  ")
+            # )
             Path(self.export_file).write_text(
-                minidom.parseString(tostring(root)).toprettyxml(indent="  ")
+                etree.tostring(root, pretty_print=True, encoding="unicode")
             )
 
         if QKan.config.selections.selectedObjects:

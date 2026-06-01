@@ -2,10 +2,10 @@ from pathlib import Path
 
 # noinspection PyUnresolvedReferences
 from typing import Dict, List, Optional, Union
-from xml.dom import minidom
-from xml.etree.ElementTree import Element, SubElement, tostring
-# from lxml.etree import Element, SubElement        # Nora: bei Umstellung noch Funktionen, z. B. minidom.parseString(tostring) anpassen
-# from lxml import etree
+#from xml.dom import minidom
+#from xml.etree.ElementTree import Element, SubElement, tostring
+from lxml.etree import Element, SubElement
+from lxml import etree
 
 from qgis.PyQt.QtWidgets import QProgressBar
 from qgis.core import Qgis, QgsGeometry
@@ -1221,12 +1221,9 @@ class ExportTask:
         # self._export_schaechte_inspektion() ; fortschritt("Schächte geschrieben", 0.4)
         self._export_refdata()              ; fortschritt("Referenzdaten geschrieben", 0.95)
 
-        Path(self.export_file).write_bytes(
-            minidom.parseString(tostring(self.root)).toprettyxml(
-                indent="  ",
-                standalone = False,
-                encoding = 'iso-8859-1'
-            )
+
+        Path(self.export_file).write_text(
+            etree.tostring(self.root, pretty_print=True, encoding="unicode")
         )
 
         # Close connection
