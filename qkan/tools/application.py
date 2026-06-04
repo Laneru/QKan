@@ -219,7 +219,6 @@ class QKanTools(QKanPlugin):
                               f'Layer {list(lis)[0]} umschalten'
             )
             return
-        currentProject = project.fileName()
 
         # Formularfelder setzen -------------------------------------------------------------------------
 

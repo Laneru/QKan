@@ -23,7 +23,7 @@
       <range upper="2.600000000000000" render="true" symbol="12" label="2,4 - 2,6" lower="2.400000000000000"/>
       <range upper="2.800000000000000" render="true" symbol="13" label="2,6 - 2,8" lower="2.600000000000000"/>
       <range upper="3.000000000000000" render="true" symbol="14" label="2,8 - 3" lower="2.800000000000000"/>
-      <range upper="3.199435710910000" render="true" symbol="15" label="3 - 3,2" lower="3.000000000000000"/>
+      <range upper="1000.000000000000" render="true" symbol="15" label=" > 3" lower="3.000000000000000"/>
     </ranges>
     <symbols>
       <symbol type="fill" clip_to_extent="1" force_rhr="0" alpha="0.2" is_animated="0" frame_rate="10" name="0">

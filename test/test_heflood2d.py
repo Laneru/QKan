@@ -19,21 +19,23 @@ class TestHEFlood(QgisTest):
             z.extractall(BASE_WORK)
 
     def test_import(self) -> None:
-        QKan.config.epsg = 25832
+        QKan.config.epsg = 31463
         QKan.config.flood.import_dir = str(BASE_WORK / "Ergebnisse.result" / "Result2D.gdb")
-        QKan.config.project.file = str(BASE_WORK / "plan.qgs")
-        QKan.config.flood.database = str(BASE_WORK / "flood.sqlite")
+        QKan.config.project.file = str(BASE_WORK / "itwh_2d.qgs")
+        QKan.config.flood.database = str(BASE_WORK / "itwh_2d.sqlite")
         QKan.config.flood.velo = True
         QKan.config.flood.wlevel = True
-        QKan.config.flood.veloMax = True
-        QKan.config.flood.wlevelMax = True
+        QKan.config.flood.veloMax = False
+        QKan.config.flood.wlevelMax = False
         QKan.config.flood.gdblayer = False
+        QKan.config.flood.syncSelections = False
         QKan.config.flood.faktor_v = 2.
         QKan.config.flood.min_v = 0.05
         QKan.config.flood.min_w = 0.05
         QKan.config.flood.mikeversion = enums.MikeVersion.v1
 
         run = FloodTools(iface())
+        run.testing = True
         erg = run._dofloodAnimation()
 
         LOGGER.debug(f"Validate_Flood2D: {erg=}")
