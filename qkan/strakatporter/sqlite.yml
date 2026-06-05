@@ -857,7 +857,7 @@ strakat_28: "
 UPDATE haltungen SET geom = GeomFromWKB(:geom, :epsg)
 WHERE haltnam = :haltnam;"
 
-strakat_29: "
+strakat_anschlussleitungen: "
 WITH ha AS (
 SELECT
     pk,

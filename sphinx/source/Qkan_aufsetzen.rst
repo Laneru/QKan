@@ -46,17 +46,17 @@ QKan-Plugin Installation
 
 Nachdem QGIS erfolgreich auf Ihrem System installiert wurde, kann nun das QKan-Plugin installiert werden. 
 
-.. note:: Aktuell muss QKan hier |qkan_download| (Passwort: qkan-2026) heruntergeladen werden.
+.. note:: Aktuell muss QKan hier |qkan_download| (Passwort: *qkan*) heruntergeladen werden.
 
 Seit kurzem werden QGIS-Plugins, die über das Menü :guilabel:`Erweiterungen verwalten und installieren...` installiert 
 werden können, einem Sicherheitscheck unterzogen, die sicherstellen sollen, dass keine 
 Hacker-Angriffe über manipulierte Daten ausgeführt werden können. QKan muss, um diese neuen Anforderungen zu erfüllen, an 
 einigen Stellen angepasst werden, was einige Wochen (Stand Mitte Mai 2026) erfordern wird. Bis dahin stehen die neueste und 
-die letzten Versionen zum Download hier |qkan_download| (Passwort: qkan-2026) zur Verfügung.
+die letzten Versionen zum Download hier |qkan_download| (Passwort: *qkan*) zur Verfügung.
 
 .. |qkan_download| raw:: html
 
-   <a href="https://fh-aachen.sciebo.de/s/QfaTY49TBpLsGgy" target="_blank">hier</a>
+   <a href="https://fh-aachen.sciebo.de/s/T8BAZyYkrQq5ip3" target="_blank">hier</a>
 
 Das heruntergeladene ZIP-Archiv kann unter Erweiterungen -> Erweiterungen verwalten und installieren... auf dem 
 Reiter "Aus ZIP installieren" auf dem Rechner installiert werden. 

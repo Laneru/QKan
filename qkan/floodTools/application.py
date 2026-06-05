@@ -74,7 +74,7 @@ class FloodTools(QKanPlugin):
             QKan.config.flood.gdblayer = self.animation_dlg.cb_gdb_remove.isChecked()
             QKan.config.flood.syncSelections = self.animation_dlg.cb_syncSelections.isChecked()
 
-            QKan.config.flood.faktor_v = float(self.animation_dlg.tf_faktor_v.text())
+            # QKan.config.flood.faktor_v = float(self.animation_dlg.tf_faktor_v.text())
             QKan.config.flood.min_v = float(self.animation_dlg.tf_min_v.text())
             QKan.config.flood.min_w = float(self.animation_dlg.tf_min_w.text())
             # if self.animation_dlg.rb_v1.isChecked():

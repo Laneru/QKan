@@ -65,7 +65,7 @@ class AnimationDialog(_Dialog, ANIMATION_CLASS):  # type: ignore
     cb_selected: QCheckBox
     cb_syncSelections: QCheckBox
 
-    tf_faktor_v: QLineEdit
+    # tf_faktor_v: QLineEdit
     tf_min_w: QLineEdit
     tg_min_v: QLineEdit
     tf_selected: QLineEdit
@@ -103,7 +103,7 @@ class AnimationDialog(_Dialog, ANIMATION_CLASS):  # type: ignore
         self.cb_gdb_remove.setChecked(QKan.config.flood.gdblayer)
         self.cb_syncSelections.setChecked(QKan.config.flood.syncSelections)
 
-        self.tf_faktor_v.setText(str(QKan.config.flood.faktor_v))
+        # self.tf_faktor_v.setText(str(QKan.config.flood.faktor_v))
         self.tf_min_v.setText(str(QKan.config.flood.min_v))
         self.tf_min_w.setText(str(QKan.config.flood.min_w))
 
