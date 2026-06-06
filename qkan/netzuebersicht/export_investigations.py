@@ -343,3 +343,5 @@ def export_latest_investigations(self):
         QMessageBox.critical(self, "Fehler", str(e))
 
 
+
+
