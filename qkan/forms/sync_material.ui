@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
-    <height>440</height>
+    <width>521</width>
+    <height>525</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -29,392 +29,315 @@
    <enum>Qt::LeftToRight</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>120</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Bezeichnung</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="bezeichnung">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>10</y>
-      <width>151</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Eindeutige Bezeichnung&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="statusTip">
-     <string>Eindeutige Bezeichnung</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_3">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>40</y>
-      <width>271</width>
-      <height>161</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="title">
-     <string>Daten</string>
-    </property>
-    <widget class="QLabel" name="label_8">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>121</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Kürzel</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="kuerzel">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>30</y>
-       <width>171</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>optional: Kürzel</string>
-     </property>
-     <property name="statusTip">
-      <string>optional: Kürzel</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="m150">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>90</y>
-       <width>81</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nr. des Funktionsstatus gem. DWA-M 150 (Referenzliste 109)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Nr. des Funktionsstatus gem. DWA-M 150 (Referenzliste 109)</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_9">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>120</y>
-       <width>131</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ISYBAU-Bez.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_10">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>60</y>
-       <width>131</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;DWA-M 145 - Nr.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_11">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>90</y>
-       <width>131</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;DWA-M 150 - Nr.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="isybau">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>120</y>
-       <width>81</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nr. des Funktionsstatus gem. ISYBAU (Referenzliste G105)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Nr. des Funktionsstatus gem. ISYBAU (Referenzliste G105)</string>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="frame">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="m145">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>60</y>
-       <width>81</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nr. des Funktionsstatus gem. DWA-M 145 (Referenzliste 1010)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Nr. des Funktionsstatus gem. DWA-M 145 (Referenzliste 1010)</string>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="frame">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QTextEdit" name="kommentar">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>240</y>
-      <width>271</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>0</width>
-      <height>0</height>
-     </size>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Platz für zusätzliche Kommentare.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="statusTip">
-     <string>Platz für zusätzliche Kommentare.</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_15">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>220</y>
-      <width>81</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Kommentar</string>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_sync">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>330</y>
-      <width>311</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>10</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="title">
-     <string>Synchronisation</string>
-    </property>
-    <widget class="QCheckBox" name="status">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>60</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Synchronisation aktivieren</string>
-     </property>
-     <property name="statusTip">
-      <string>Synchronisation aktivieren</string>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="text">
-      <string>ausführen</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_19">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>51</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Aktion</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="aktion">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>30</y>
-       <width>231</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maßnahme zur Synchronisation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Maßnahme zur Synchronisation</string>
-     </property>
-    </widget>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>497</width>
+         <height>475</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="font">
+           <font>
+            <family>Tahoma</family>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Bezeichnung</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="bezeichnung">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Eindeutige Bezeichnung&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="statusTip">
+           <string>Eindeutige Bezeichnung</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="font">
+           <font>
+            <family>Tahoma</family>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="title">
+           <string>Daten</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Kürzel</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" colspan="2">
+            <widget class="QLineEdit" name="kuerzel">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>optional: Kürzel</string>
+             </property>
+             <property name="statusTip">
+              <string>optional: Kürzel</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QLabel" name="label_10">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;DWA-M 145 - Nr.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QLineEdit" name="m145">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nr. des Funktionsstatus gem. DWA-M 145 (Referenzliste 1010)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="statusTip">
+              <string>Nr. des Funktionsstatus gem. DWA-M 145 (Referenzliste 1010)</string>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::RightToLeft</enum>
+             </property>
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="frame">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QLabel" name="label_11">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;DWA-M 150 - Nr.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QLineEdit" name="m150">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nr. des Funktionsstatus gem. DWA-M 150 (Referenzliste 109)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="statusTip">
+              <string>Nr. des Funktionsstatus gem. DWA-M 150 (Referenzliste 109)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="2">
+            <widget class="QLabel" name="label_9">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ISYBAU-Bez.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QLineEdit" name="isybau">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nr. des Funktionsstatus gem. ISYBAU (Referenzliste G105)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="statusTip">
+              <string>Nr. des Funktionsstatus gem. ISYBAU (Referenzliste G105)</string>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::RightToLeft</enum>
+             </property>
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="frame">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_15">
+          <property name="text">
+           <string>Kommentar</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QTextEdit" name="kommentar">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Platz für zusätzliche Kommentare.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="statusTip">
+           <string>Platz für zusätzliche Kommentare.</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupBox_sync">
+          <property name="font">
+           <font>
+            <family>Tahoma</family>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="title">
+           <string>Synchronisation</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_19">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Aktion</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="aktion">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maßnahme zur Synchronisation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="statusTip">
+              <string>Maßnahme zur Synchronisation</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QCheckBox" name="status">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Synchronisation aktivieren</string>
+             </property>
+             <property name="statusTip">
+              <string>Synchronisation aktivieren</string>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::RightToLeft</enum>
+             </property>
+             <property name="text">
+              <string>ausführen</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

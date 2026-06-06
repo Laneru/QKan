@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>540</height>
+    <width>625</width>
+    <height>599</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -29,435 +29,334 @@
    <enum>Qt::LeftToRight</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="groupBox_3">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>441</width>
-      <height>411</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="title">
-     <string>Abwassersymbole</string>
-    </property>
-    <widget class="QgsDateTimeEdit" name="createdat">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>220</y>
-       <width>121</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="currentSection">
-      <enum>QDateTimeEdit::DaySection</enum>
-     </property>
-     <property name="displayFormat">
-      <string>dd.MM.yyyy HH:mm</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_71">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>220</y>
-       <width>101</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Erstelldatum</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_21">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>101</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Warnungstext</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_4">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>60</y>
-       <width>101</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Gruppe</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_72">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>90</y>
-       <width>101</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Warntyp</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="gruppe">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>60</y>
-       <width>211</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>11</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zuordnung zu einem Prüfungsthema&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Zuordnung zu einem Prüfungsthema</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="warntyp">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>90</y>
-       <width>101</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>11</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klassifizierung&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Klassifizierung</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="warntext">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>30</y>
-       <width>211</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>11</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bezeichnung der Prüfung&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Bezeichnung der Prüfung</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_15">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>250</y>
-       <width>101</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>SQL-Abfrage</string>
-     </property>
-    </widget>
-    <widget class="QPlainTextEdit" name="sql">
-     <property name="geometry">
-      <rect>
-       <x>13</x>
-       <y>270</y>
-       <width>421</width>
-       <height>131</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SQL-Abfrage zur Auswahl der fehlerhaften Datensätze&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>SQL-Abfrage zur Auswahl der fehlerhaften Datensätze</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="layername">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>150</y>
-       <width>211</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>11</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name des untersuchten Layers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Name des untersuchten Layers</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_73">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>150</y>
-       <width>101</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Layername</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="attrname">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>180</y>
-       <width>211</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>11</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Attribut zur Identifikation des Datensatzes (empfohlen: pk)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Attribut zur Identifikation des Datensatzes (empfohlen: pk)</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_74">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>180</y>
-       <width>141</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Verknüpftes Attribut</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="warnlevel">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>120</y>
-       <width>51</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>11</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Prioritätsgrad (1: gering - 9: sehr wichtig)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Prioritätsgrad (1: gering - 9: sehr wichtig)</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_75">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>120</y>
-       <width>101</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Prioritätsgrad</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_sync">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>430</y>
-      <width>311</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>10</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="title">
-     <string>Synchronisation</string>
-    </property>
-    <widget class="QCheckBox" name="status">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>60</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Synchronisation aktivieren</string>
-     </property>
-     <property name="statusTip">
-      <string>Synchronisation aktivieren</string>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="text">
-      <string>ausführen</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_19">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>51</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Aktion</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="aktion">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>30</y>
-       <width>231</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maßnahme zur Synchronisation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Maßnahme zur Synchronisation</string>
-     </property>
-    </widget>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>601</width>
+         <height>549</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="font">
+           <font>
+            <family>Tahoma</family>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="title">
+           <string>Abwassersymbole</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_21">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Warnungstext</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLineEdit" name="warntext">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bezeichnung der Prüfung&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="statusTip">
+              <string>Bezeichnung der Prüfung</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Gruppe</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QLineEdit" name="gruppe">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zuordnung zu einem Prüfungsthema&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="statusTip">
+              <string>Zuordnung zu einem Prüfungsthema</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_72">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Warntyp</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QLineEdit" name="warntyp">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klassifizierung&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="statusTip">
+              <string>Klassifizierung</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_75">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Prioritätsgrad</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QLineEdit" name="warnlevel">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Prioritätsgrad (1: gering - 9: sehr wichtig)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="statusTip">
+              <string>Prioritätsgrad (1: gering - 9: sehr wichtig)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_73">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Layername</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="QLineEdit" name="layername">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name des untersuchten Layers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="statusTip">
+              <string>Name des untersuchten Layers</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0" colspan="2">
+            <widget class="QLabel" name="label_74">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Verknüpftes Attribut</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2">
+            <widget class="QLineEdit" name="attrname">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Attribut zur Identifikation des Datensatzes (empfohlen: pk)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="statusTip">
+              <string>Attribut zur Identifikation des Datensatzes (empfohlen: pk)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_71">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Erstelldatum</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1" colspan="2">
+            <widget class="QgsDateTimeEdit" name="createdat">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="currentSection">
+              <enum>QDateTimeEdit::DaySection</enum>
+             </property>
+             <property name="displayFormat">
+              <string>dd.MM.yyyy HH:mm</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0">
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>SQL-Abfrage</string>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="0" colspan="3">
+            <widget class="QPlainTextEdit" name="sql">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SQL-Abfrage zur Auswahl der fehlerhaften Datensätze&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="statusTip">
+              <string>SQL-Abfrage zur Auswahl der fehlerhaften Datensätze</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QGroupBox" name="groupBox_sync">
+          <property name="font">
+           <font>
+            <family>Tahoma</family>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="title">
+           <string>Synchronisation</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_19">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Aktion</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="aktion">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maßnahme zur Synchronisation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="statusTip">
+              <string>Maßnahme zur Synchronisation</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QCheckBox" name="status">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Synchronisation aktivieren</string>
+             </property>
+             <property name="statusTip">
+              <string>Synchronisation aktivieren</string>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::RightToLeft</enum>
+             </property>
+             <property name="text">
+              <string>ausführen</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

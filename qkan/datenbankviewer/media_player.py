@@ -58,7 +58,7 @@ except ImportError:
 # =========================================================
 
 FORM_CLASS_MediaPlayer, _ = uic.loadUiType(
-    os.path.join(os.path.dirname(__file__), "..", "tools", "videoplayer_test.ui")
+    os.path.join(os.path.dirname(__file__), "res", "videoplayer_database_viewer.ui")
 )
 
 

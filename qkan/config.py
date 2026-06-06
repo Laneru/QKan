@@ -340,9 +340,11 @@ class STRAKATConfig(ClassObject):
 class FLOODConfig(ClassObject):
     import_dir: str = ""                        # Importverzeichnis mit den Geodatabase-Ergebnisdaten
     database: str = ""                          # Ergebnisdatenbank
-    velo: bool = True                           # Creation of volocity arrows checked
+    velo: bool = True                           # Creation of velocity arrows checked
     wlevel: bool = True                         # Creation of water level triangles checked
     gdblayer: bool = False                      # Keeps GDB-Layer in layer list
+    syncSelections: bool = True                 # Auswahl von einem der beiden Layer waterlevels und
+                                                # velocities auf beide übertragen
     faktor_v: float = 5.                        # Factor for arrow length in relation to velocity
     min_w: float = 0.1                          # Minimal water level to display
     min_v: float = 0.1                          # Minimal velocitiy to display

@@ -9,7 +9,7 @@ from qgis.core import Qgis, QgsGeometry, QgsPoint
 from qkan import QKan
 from qkan.config import ClassObject
 from qkan.database.dbfunc import DBConnection
-from qkan.utils import get_logger, QkanDbError
+from qkan.utils import get_logger, QkanDbError, QkanUserError
 from qkan.tools.k_schadenstexte import Schadenstexte
 
 logger = get_logger("QKan.strakat.import")
@@ -1326,7 +1326,7 @@ class ImportTask(Schadenstexte):
                     logger.debug('\nInhalt von idxschob:\nschacht_unten: haltungsname, schacht_oben, schacht_unten, '
                                  'xob, yob, xun, yun')
                     errormsg = '\n'.join([f'{anf}: {idxschob.get(anf, "Error: anf nicht gefunden")}' for anf in idxschob])
-                    logger.error(errormsg + '\n')
+                    logger.debug(errormsg + '\n')
                     errormsg = f'Fehler: Konnte (mindestens) ein Haltungsteilstück ' + \
                                     f'nicht verarbeiten: Schacht oben = {anf}'
                     # with open('c:/temp/strakat_polygons/net.csv', 'w') as fw:
@@ -1338,7 +1338,7 @@ class ImportTask(Schadenstexte):
                     #     fw.write(errormsg + '\n')
                     #     errormsg = f'Fehler: Konnte (mindestens) ein Haltungsteilstück ' + \
                     #                f'nicht verarbeiten: Schacht oben = {anf}'
-                    raise Exception(errormsg)
+                    QkanUserError(errormsg)
                 # Kanal verfolgen und jedes Teilstück entnehmen
                 haltnam = idxschob[anf][0]
                 node = anf  # Anfang übernehmen
@@ -1385,7 +1385,7 @@ class ImportTask(Schadenstexte):
         if not QKan.config.check_import.hausanschluesse:
             return True
 
-        sqlnam = "strakat_29"
+        sqlnam = "strakat_anschlussleitungen"
 
         if not self.db_qkan.sqlyml(
             sqlnam=sqlnam,

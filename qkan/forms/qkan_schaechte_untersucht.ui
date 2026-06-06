@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>620</width>
+    <width>819</width>
     <height>420</height>
    </rect>
   </property>
@@ -29,676 +29,688 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>121</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>11</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Schachtname</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_14">
-    <property name="geometry">
-     <rect>
-      <x>29</x>
-      <y>275</y>
-      <width>81</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Kommentar</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_70">
-    <property name="geometry">
-     <rect>
-      <x>479</x>
-      <y>280</y>
-      <width>111</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Erstelldatum</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="untersuchsch">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>20</y>
-      <width>161</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="kommentar">
-    <property name="geometry">
-     <rect>
-      <x>19</x>
-      <y>300</y>
-      <width>431</width>
-      <height>61</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QgsDateTimeEdit" name="createdat">
-    <property name="geometry">
-     <rect>
-      <x>470</x>
-      <y>302</y>
-      <width>131</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="currentSection">
-     <enum>QDateTimeEdit::DaySection</enum>
-    </property>
-    <property name="displayFormat">
-     <string>dd.MM.yyyy HH:mm</string>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>291</width>
-      <height>131</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="title">
-     <string/>
-    </property>
-    <widget class="QLabel" name="label_60">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>100</y>
-       <width>151</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Baujahr</string>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="baujahr_2">
-     <property name="geometry">
-      <rect>
-       <x>141</x>
-       <y>100</y>
-       <width>111</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Baujahr der Haltung&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Baujahr der Haltung</string>
-     </property>
-     <property name="maximum">
-      <number>9999</number>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="x">
-     <property name="geometry">
-      <rect>
-       <x>140</x>
-       <y>9</y>
-       <width>101</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_9">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>40</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Y-Koordinate</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="y">
-     <property name="geometry">
-      <rect>
-       <x>140</x>
-       <y>39</y>
-       <width>101</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_11">
-     <property name="geometry">
-      <rect>
-       <x>251</x>
-       <y>10</y>
-       <width>41</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>m</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_39">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>70</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Durchmesser</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_27">
-     <property name="geometry">
-      <rect>
-       <x>251</x>
-       <y>70</y>
-       <width>41</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>mm</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_6">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>91</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>X-Koordinate</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="durchm">
-     <property name="geometry">
-      <rect>
-       <x>140</x>
-       <y>69</y>
-       <width>101</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_12">
-     <property name="geometry">
-      <rect>
-       <x>251</x>
-       <y>40</y>
-       <width>41</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>m</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_4">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>40</y>
-      <width>291</width>
-      <height>231</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Tahoma</family>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="title">
-     <string>Inspektionsdaten</string>
-    </property>
-    <widget class="QLabel" name="label_61">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>151</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Untersuchungstag</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="untersuchtag">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>30</y>
-       <width>121</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Datum&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Datum</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_62">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>60</y>
-       <width>151</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Untersucher</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="untersucher">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>60</y>
-       <width>121</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name bzw. Kürzel des Untersuchers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Name bzw. Kürzel des Untersuchers</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_63">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>90</y>
-       <width>151</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Wetter</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="wetter">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>90</y>
-       <width>121</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wetter am Untersuchungstag&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Wetter am Untersuchungstag</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_64">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>120</y>
-       <width>151</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Bewertungsart</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="bewertungsart">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>120</y>
-       <width>121</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bezeichnung des verwendeten Bewertungsmodells (z.B. DWA-M 149-3)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Bezeichnung des verwendeten Bewertungsmodells (z.B. DWA-M 149-3)</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_65">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>150</y>
-       <width>151</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Bewertungstag</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="bewertungstag">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>150</y>
-       <width>121</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Datum des Tages, an dem die Bewertung durchgeführt wurde&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Datum des Tages, an dem die Bewertung durchgeführt wurde</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_38">
-     <property name="geometry">
-      <rect>
-       <x>230</x>
-       <y>180</y>
-       <width>51</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Stands.</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="max_ZS">
-     <property name="geometry">
-      <rect>
-       <x>230</x>
-       <y>200</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zustandsklasse Betriebssicherheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Zustandsklasse Betriebssicherheit</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_37">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>180</y>
-       <width>41</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Betr.</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_36">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>200</y>
-       <width>121</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Zustandsklassen</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_40">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>180</y>
-       <width>41</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Tahoma</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Dicht.</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="max_ZD">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>200</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zustandsklasse Dichtheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Zustandsklasse Dichtheit</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="max_ZB">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>200</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zustandsklasse Betriebssicherheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="statusTip">
-      <string>Zustandsklasse Betriebssicherheit</string>
-     </property>
-    </widget>
-   </widget>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <family>Tahoma</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Schachtname</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="untersuchsch"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>795</width>
+         <height>307</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="1" column="1">
+         <widget class="QLabel" name="label_70">
+          <property name="text">
+           <string>Erstelldatum</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="3">
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="minimumSize">
+           <size>
+            <width>380</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>380</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Tahoma</family>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="title">
+           <string>Inspektionsdaten</string>
+          </property>
+          <widget class="QLabel" name="label_61">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>30</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Untersuchungstag</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="untersuchtag">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>30</y>
+             <width>121</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Datum&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="statusTip">
+            <string>Datum</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_62">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>60</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Untersucher</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="untersucher">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>60</y>
+             <width>121</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name bzw. Kürzel des Untersuchers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="statusTip">
+            <string>Name bzw. Kürzel des Untersuchers</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_63">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>90</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Wetter</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="wetter">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>90</y>
+             <width>121</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wetter am Untersuchungstag&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="statusTip">
+            <string>Wetter am Untersuchungstag</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_64">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>120</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Bewertungsart</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="bewertungsart">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>120</y>
+             <width>121</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bezeichnung des verwendeten Bewertungsmodells (z.B. DWA-M 149-3)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="statusTip">
+            <string>Bezeichnung des verwendeten Bewertungsmodells (z.B. DWA-M 149-3)</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_65">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>150</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Bewertungstag</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="bewertungstag">
+           <property name="geometry">
+            <rect>
+             <x>150</x>
+             <y>150</y>
+             <width>121</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Datum des Tages, an dem die Bewertung durchgeführt wurde&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="statusTip">
+            <string>Datum des Tages, an dem die Bewertung durchgeführt wurde</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_38">
+           <property name="geometry">
+            <rect>
+             <x>230</x>
+             <y>180</y>
+             <width>51</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Stands.</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="max_ZS">
+           <property name="geometry">
+            <rect>
+             <x>230</x>
+             <y>200</y>
+             <width>31</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zustandsklasse Betriebssicherheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="statusTip">
+            <string>Zustandsklasse Betriebssicherheit</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_37">
+           <property name="geometry">
+            <rect>
+             <x>190</x>
+             <y>180</y>
+             <width>41</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Betr.</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_36">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>200</y>
+             <width>121</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Zustandsklassen</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_40">
+           <property name="geometry">
+            <rect>
+             <x>150</x>
+             <y>180</y>
+             <width>41</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Dicht.</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="max_ZD">
+           <property name="geometry">
+            <rect>
+             <x>150</x>
+             <y>200</y>
+             <width>31</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zustandsklasse Dichtheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="statusTip">
+            <string>Zustandsklasse Dichtheit</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="max_ZB">
+           <property name="geometry">
+            <rect>
+             <x>190</x>
+             <y>200</y>
+             <width>31</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zustandsklasse Betriebssicherheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="statusTip">
+            <string>Zustandsklasse Betriebssicherheit</string>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="minimumSize">
+           <size>
+            <width>380</width>
+            <height>150</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>380</width>
+            <height>150</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Tahoma</family>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <widget class="QLabel" name="label_60">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>100</y>
+             <width>151</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Baujahr</string>
+           </property>
+          </widget>
+          <widget class="QSpinBox" name="baujahr_2">
+           <property name="geometry">
+            <rect>
+             <x>141</x>
+             <y>100</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Baujahr der Haltung&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="statusTip">
+            <string>Baujahr der Haltung</string>
+           </property>
+           <property name="maximum">
+            <number>9999</number>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="x">
+           <property name="geometry">
+            <rect>
+             <x>140</x>
+             <y>9</y>
+             <width>101</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_9">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>40</y>
+             <width>81</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Y-Koordinate</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="y">
+           <property name="geometry">
+            <rect>
+             <x>140</x>
+             <y>39</y>
+             <width>101</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_11">
+           <property name="geometry">
+            <rect>
+             <x>251</x>
+             <y>10</y>
+             <width>41</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>m</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_39">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>70</y>
+             <width>81</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Durchmesser</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_27">
+           <property name="geometry">
+            <rect>
+             <x>251</x>
+             <y>70</y>
+             <width>41</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>mm</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_6">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>10</y>
+             <width>91</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>X-Koordinate</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="durchm">
+           <property name="geometry">
+            <rect>
+             <x>140</x>
+             <y>69</y>
+             <width>101</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_12">
+           <property name="geometry">
+            <rect>
+             <x>251</x>
+             <y>40</y>
+             <width>41</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tahoma</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>m</string>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QTextEdit" name="kommentar">
+          <property name="minimumSize">
+           <size>
+            <width>380</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>380</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Kommentar</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2" colspan="2">
+         <widget class="QgsDateTimeEdit" name="createdat">
+          <property name="currentSection">
+           <enum>QDateTimeEdit::DaySection</enum>
+          </property>
+          <property name="displayFormat">
+           <string>dd.MM.yyyy HH:mm</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>620</width>
-     <height>22</height>
+     <width>819</width>
+     <height>27</height>
     </rect>
    </property>
   </widget>
@@ -714,7 +726,6 @@
  <tabstops>
   <tabstop>untersuchsch</tabstop>
   <tabstop>durchm</tabstop>
-  <tabstop>createdat</tabstop>
   <tabstop>kommentar</tabstop>
  </tabstops>
  <resources/>

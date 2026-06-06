@@ -1,0 +1,840 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ExportToKPDialogBase</class>
+ <widget class="QDialog" name="ExportToKPDialogBase">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>708</width>
+    <height>471</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>280</width>
+    <height>150</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Tahoma</family>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Export in eine DYNA-Datei</string>
+  </property>
+  <property name="toolTip">
+   <string>Export der aktuell geladenen Kanaldaten in eine DYNA-Datei</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_5">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>703</width>
+        <height>434</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="font">
+          <font>
+           <family>Tahoma</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string comment="Pfad der Zieldatenbank"/>
+         </property>
+         <property name="title">
+          <string>QKan-Projekt-Datenbank</string>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="font">
+             <font>
+              <family>Tahoma</family>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Datenquelle: SpatiaLite-Datenbank:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="tf_qkanDB">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Tahoma</family>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Quelldatenbank mit Kanaldaten. Hier wird automatisch das aktuelle geladene Projekt eingetragen. Zum Ändern neue SpatiaLite-Datenbank auswählen...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="statusTip">
+             <string>Quelldatenbank mit Kanaldaten. Hier wird automatisch das aktuelle geladene Projekt eingetragen. Zum Ändern neue SpatiaLite-Datenbank auswählen...</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="font">
+          <font>
+           <family>Tahoma</family>
+           <pointsize>8</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string comment="Pfad der Zieldatenbank"/>
+         </property>
+         <property name="title">
+          <string>Ziel: DYNA-Datei</string>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="font">
+             <font>
+              <family>Tahoma</family>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Vorlage: DYNA-Datei (*.ein):</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLineEdit" name="tf_KP_template">
+              <property name="font">
+               <font>
+                <family>Tahoma</family>
+                <pointsize>10</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vorlagedatei für DYNA-Export, kann schon Daten enthalten&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="statusTip">
+               <string>Vorlagedatei für DYNA-Export, kann schon Daten enthalten</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pb_select_KP_template">
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;DYNA-Datei mit vorbereiteten Daten als Vorlage auswählen ...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="statusTip">
+               <string>DYNA-Datei mit vorbereiteten Daten als Vorlage auswählen ...</string>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="font">
+             <font>
+              <family>Tahoma</family>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Datenziel: DYNA-Datei (*.ein):</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLineEdit" name="tf_KP_dest">
+              <property name="font">
+               <font>
+                <family>Tahoma</family>
+                <pointsize>10</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zieldatei mit Kanaldaten für DYNA&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="statusTip">
+               <string>Zieldatei mit Kanaldaten für DYNA</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pb_select_KP_dest">
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;DYNA-Zieldatei angeben ...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="statusTip">
+               <string>DYNA-Zieldatei angeben ...</string>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <property name="leftMargin">
+            <number>9</number>
+           </property>
+           <property name="topMargin">
+            <number>9</number>
+           </property>
+           <property name="rightMargin">
+            <number>9</number>
+           </property>
+           <property name="bottomMargin">
+            <number>9</number>
+           </property>
+           <item>
+            <widget class="QCheckBox" name="cb_selectedTgbs">
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>10</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Nur ausgewählte Teilgebiete
+berücksichtigen:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLabel" name="label_32">
+               <property name="minimumSize">
+                <size>
+                 <width>84</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Tahoma</family>
+                 <pointsize>10</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Schächte:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_11">
+               <property name="minimumSize">
+                <size>
+                 <width>84</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Tahoma</family>
+                 <pointsize>10</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Haltungen:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_10">
+               <property name="minimumSize">
+                <size>
+                 <width>84</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Tahoma</family>
+                 <pointsize>10</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Flächen:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLabel" name="lf_anzahl_schaechte">
+               <property name="minimumSize">
+                <size>
+                 <width>84</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Tahoma</family>
+                 <pointsize>8</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <property name="text">
+                <string>0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="lf_anzahl_haltungen">
+               <property name="minimumSize">
+                <size>
+                 <width>84</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Tahoma</family>
+                 <pointsize>8</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <property name="text">
+                <string>0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="lf_anzahl_flaechen">
+               <property name="minimumSize">
+                <size>
+                 <width>84</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Tahoma</family>
+                 <pointsize>8</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <property name="text">
+                <string>0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_6">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>70</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>70</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>8</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="title">
+              <string>Zuordnung der Profile anhand...</string>
+             </property>
+             <widget class="QRadioButton" name="rb_profnam">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>20</y>
+                <width>281</width>
+                <height>21</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Tahoma</family>
+                <pointsize>10</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Das Querprofil aus der QKan-Tabelle &amp;quot;haltungen&amp;quot; wird anhand des Profilnamens zu den in der DYNA-Vorlagedatei definierten Profilen zugeordnet&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="statusTip">
+               <string>Das Querprofil aus der QKan-Tabelle &quot;haltungen&quot; wird anhand des Profilnamens zu den in der DYNA-Vorlagedatei definierten Profilen zugeordnet</string>
+              </property>
+              <property name="text">
+               <string>... Profilname (Langbezeichnung)</string>
+              </property>
+             </widget>
+             <widget class="QRadioButton" name="rb_profkey">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>40</y>
+                <width>281</width>
+                <height>21</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Tahoma</family>
+                <pointsize>10</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Das Querprofil aus der QKan-Tabelle &amp;quot;haltungen&amp;quot; wird anhand der Profilnummer zu den in der DYNA-Vorlagedatei definierten Profilen zugeordnet&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="statusTip">
+               <string>Das Querprofil aus der QKan-Tabelle &quot;haltungen&quot; wird anhand der Profilnummer zu den in der DYNA-Vorlagedatei definierten Profilen zugeordnet</string>
+              </property>
+              <property name="text">
+               <string>... Profilschlüssel</string>
+              </property>
+             </widget>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QGroupBox" name="groupBox_5">
+             <property name="minimumSize">
+              <size>
+               <width>385</width>
+               <height>70</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>70</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>8</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="title">
+              <string>Allgemeine Optionen</string>
+             </property>
+             <widget class="QCheckBox" name="cb_profile_ergaenzen">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>40</y>
+                <width>291</width>
+                <height>21</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Tahoma</family>
+                <pointsize>10</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1. Falls in den Tabellen &amp;quot;flaechen&amp;quot; und &amp;quot;einleitsw&amp;quot; leere oder doppelte Namen (flnam bzw. elnam) vorkommen, werden diese mit &amp;quot;f_nnnn&amp;quot; bzw. &amp;quot;e_nnnn&amp;quot; überschrieben. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="statusTip">
+               <string>Automatische Korrektur von Namensfehlern in den Tabellen &quot;flaechen&quot; und &quot;einleitsw&quot;</string>
+              </property>
+              <property name="text">
+               <string>Fehlende Profile in Tabelle &quot;profile&quot; ergänzen</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="cb_autonummerierung_dyna">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>20</y>
+                <width>351</width>
+                <height>21</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Tahoma</family>
+                <pointsize>10</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatische Festlegung der DYNA-spezifischen Kanal- und Haltungsnummern. Bereits vorhandene Nummern werden überschrieben. Diese Option verändert nicht die Haltungsnamen. &lt;/p&gt;&lt;p&gt;Ist die Option nicht aktiviert, wird versucht, Kanal- und Haltungsnummer aus dem Haltungsnamen zu ermitteln (KN(8) - HN(3)).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="statusTip">
+               <string>Automatische Festlegung der DYNA-spezifischen Kanal- und Haltungsnummern. Bereits vorhandene Nummern werden überschrieben. Diese Option verändert nicht die Haltungsnamen.</string>
+              </property>
+              <property name="text">
+               <string>Automatische Vergabe der Kanal- und Haltungsnummern</string>
+              </property>
+             </widget>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_7">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>70</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Tahoma</family>
+               <pointsize>8</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="title">
+              <string>Berechnung des Befestigungsgrades aus ...</string>
+             </property>
+             <widget class="QRadioButton" name="rb_tezg">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>40</y>
+                <width>321</width>
+                <height>21</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Tahoma</family>
+                <pointsize>10</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Befestigungsgrad ist Quotient aus Summe der befestigten Flächen und der Haltungsfläche (tezg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="statusTip">
+               <string>Befestigungsgrad ist Quotient aus Summe der befestigten Flächen und der Haltungsfläche (tezg)</string>
+              </property>
+              <property name="text">
+               <string>... Haltungsflächen (tezg) und befestigten Flächen</string>
+              </property>
+             </widget>
+             <widget class="QRadioButton" name="rb_flaechen">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>20</y>
+                <width>321</width>
+                <height>21</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Tahoma</family>
+                <pointsize>10</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Befestigungsgrade werden aus den Quotienten der Summen der befestigten und der Summen der unbefestigten Flächen ermittelt. Es werden also nur die Daten aus Tabelle &amp;quot;flaechen&amp;quot; verwendet. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="statusTip">
+               <string>Befestigungsgrad aus befestigten und unbefestigten Flächen ermitteln</string>
+              </property>
+              <property name="text">
+               <string>... befestigten und unbefestigten Flächenobjekten</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="cb_regardTezg">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>70</y>
+                <width>281</width>
+                <height>30</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Tahoma</family>
+                <pointsize>10</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Flächenbilanzierung erfolgt nach Verschneidung der Flächen mit den Haltungsflächen (tezg).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="statusTip">
+               <string>Flächenbilanzierung erfolgt nach Verschneidung der Flächen mit den Haltungsflächen (tezg).</string>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="text">
+               <string>Mit Haltungsflächen verschneiden</string>
+              </property>
+             </widget>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="button_box">
+     <property name="font">
+      <font>
+       <family>Tahoma</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Datenexport starten ...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Help|QDialogButtonBox::Ok</set>
+     </property>
+     <property name="centerButtons">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>button_box</sender>
+   <signal>accepted()</signal>
+   <receiver>ExportToKPDialogBase</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_box</sender>
+   <signal>rejected()</signal>
+   <receiver>ExportToKPDialogBase</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

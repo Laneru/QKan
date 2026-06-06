@@ -9,7 +9,7 @@ import os
 import shutil
 import sqlite3
 import packaging.version
-from typing import Any, List, Optional, Union, cast, Dict, Tuple, Callable
+from typing import Any, List, Optional, Union, cast, Dict, Tuple
 from fnmatch import fnmatch
 
 from qgis.core import Qgis, QgsProject
@@ -564,7 +564,7 @@ class DBConnection:
             self,
             sqlnam: str,
             stmt_category: str = "allgemein",
-            parameters: Union[Tuple, List, dict[str, any]] = (),
+            parameters: Union[Tuple, List, dict[str, Any]] = (),
             many: bool = False,
             mute_logger: bool = False,
             ignore: bool = False,

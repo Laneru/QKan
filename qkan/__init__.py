@@ -9,7 +9,7 @@ import qgis
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator, QTimer
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QMenu, QMenuBar, QWidget
-from qgis.core import QgsProject, QgsSettings, QgsMapLayerType, QgsDataSourceUri
+from qgis.core import QgsProject, QgsSettings, QgsMapLayerType, QgsDataSourceUri, QgsMessageLog, Qgis
 from qgis.gui import QgisInterface
 from qgis.utils import pluginDirectory
 
@@ -47,7 +47,7 @@ PLUGIN_LIST = [
     "uploadPostgis.application.UploadPostgis",
     "sync.application.Synchronisation",
     "info.application.Infos",
-    "createelements.application.CreateElements",
+    # "createelements.application.CreateElements",
     "netzuebersicht.application.NetzuebersichtPlugin",
     "datenbankviewer.application.DatenbankviewerPlugin",
     "untersuchungsverwaltung.application.UntersuchungsverwaltungApplication",
@@ -166,7 +166,7 @@ class QKan:
     forms: list[str]
 
     dbVersion = "3.4.10"  # Version der QKan-Datenbank
-    qgsVersion = "3.4.12"  # Version des Projektes und der Projektdatei. Kann höher als die der QKan-Datenbank sein
+    qgsVersion = "3.4.13"  # Version des Projektes und der Projektdatei. Kann höher als die der QKan-Datenbank sein
     build = "0000"
 
     # SQL-Statements werden abhängig vom Datenbanktyp und Modul geladen.
@@ -286,10 +286,9 @@ class QKan:
 
         self.toolbar_4 = self.iface.addToolBar("QKan-Befahrungsdaten")
         self.toolbar_4.setObjectName("QKan-Befahrungsdaten")
-        
+
         self.toolbar_5 = self.iface.addToolBar("QKan-Elementerzeugung")
         self.toolbar_5.setObjectName("QKan-Elementerzeugung")
-
 
         # Add QKan SVG path
         qkanSvgPath = os.path.join(pluginDirectory("qkan"), "templates/svg")
@@ -319,6 +318,7 @@ class QKan:
 
     # noinspection PyPep8Naming
     def initGui(self) -> None:
+        QKan.instance = self
         # Create and insert QKan menu after the 3rd menu
         if self.menu is None:
             self.menu = QMenu("QKan", self.iface.mainWindow().menuBar())
@@ -331,10 +331,31 @@ class QKan:
             )
 
         # Calls initGui on all known QKan plugins
-        for plugin in self.plugins:
-            plugin.initGui()
+        if hasattr(self, 'plugins') and self.plugins:
+            self.toolbar = self.iface.addToolBar("QKan-Allgemein")
+            self.toolbar.setObjectName("QKan-Allgemein")
 
+            self.toolbar_2 = self.iface.addToolBar("QKan-Datenaustausch")
+            self.toolbar_2.setObjectName("QKan-Datenaustausch")
+
+            self.toolbar_3 = self.iface.addToolBar("QKan-Flächenbearbeitung")
+            self.toolbar_3.setObjectName("QKan-Flächenbearbeitung")
+
+            self.toolbar_4 = self.iface.addToolBar("QKan-Befahrungsdaten")
+            self.toolbar_4.setObjectName("QKan-Befahrungsdaten")
+
+            self.toolbar_5 = self.iface.addToolBar("QKan-Elementerzeugung")
+            self.toolbar_5.setObjectName("QKan-Elementerzeugung")
+
+
+
+
+        for plugin in self.plugins:
+            if hasattr(plugin, 'initGui'):
+                plugin.initGui()
         self.sort_actions()
+
+
 
     def sort_actions(self) -> None:
         # Finally sort all actions
@@ -440,49 +461,106 @@ class QKan:
     def unload(self) -> None:
         from qgis.utils import unloadPlugin
 
-        # Shutdown logger
-        for handler in self.logger.handlers[:]:
-            handler.close()
-            self.logger.removeHandler(handler)
+        try:
+            #Logger bereinigen
+            if hasattr(self, 'logger') and self.logger:
+                for handler in self.logger.handlers[:]:
+                    try:
+                        handler.close()
+                        self.logger.removeHandler(handler)
+                    except Exception as e:
+                        print(f"Fehler beim Bereinigen des Loggers: {e}")
 
-        # Unload all other instances
-        for instance in self.instances:
-            print("Unloading ", instance.name)
-            if not unloadPlugin(instance.name):
-                print("Failed to unload plugin!")
+            #Andere Plugin-Instanzen entladen
+            if hasattr(self, 'instances') and self.instances:
+                for instance in self.instances:
+                    try:
+                        print(f"Unloading {instance.name}")
+                        if not unloadPlugin(instance.name):
+                            print(f"Failed to unload plugin {instance.name}!")
+                    except Exception as e:
+                        print(f"Fehler beim Entladen von {instance.name}: {e}")
 
-        if self.menu:
-            # Remove entries from own menu
-            for action in self.menu.actions():
-                self.menu.removeAction(action)
+            #Plugin-Menü entfernen
+            if hasattr(self, 'menu') and self.menu:
+                try:
+                    menu_name = self.menu.title()
+                    self.iface.removePluginMenu(menu_name, None)
+                    self.menu.deleteLater()
+                    self.menu = None
+                except Exception as e:
+                    print(f"Fehler beim Entfernen des Menüs: {e}")
 
-        # Remove entries from Plugin menu and toolbar
-        for action in self.actions:
-            self.iface.removeToolBarIcon(action)
+            #Menu-Action entfernen
+            if hasattr(self, 'menu_action') and self.menu_action:
+                try:
+                    self.iface.mainWindow().menuBar().removeAction(self.menu_action)
+                    self.menu_action.deleteLater()
+                    self.menu_action = None
+                except Exception as e:
+                    print(f"Fehler beim Entfernen der Menu-Action: {e}")
 
-        # Remove the toolbar
-        if self.toolbar is not None:
-            del self.toolbar
+            #Actions aus Toolbars und Menü entfernen
+            if hasattr(self, 'actions') and self.actions:
+                for action in self.actions[:]:  # Kopie der Liste, um Modifikationen zu vermeiden
+                    if action:
+                        try:
+                            self.iface.removeToolBarIcon(action)
+                            if hasattr(self, 'menu') and self.menu:
+                                self.menu.removeAction(action)
+                            action.deleteLater()
+                        except Exception as e:
+                            print(f"Fehler beim Entfernen der Action: {e}")
+                self.actions = []
 
-        if self.toolbar_2 is not None:
-            del self.toolbar_2
+            #Alle Toolbars entfernen
+            toolbar_names = ['toolbar', 'toolbar_2', 'toolbar_3', 'toolbar_4', 'toolbar_5']
+            for toolbar_name in toolbar_names:
+                if hasattr(self, toolbar_name) and getattr(self, toolbar_name) is not None:
+                    toolbar = getattr(self, toolbar_name)
+                    try:
+                        # Alle Widgets in der Toolbar löschen (inkl. Dropdowns)
+                        for widget in toolbar.findChildren(QWidget):
+                            widget.deleteLater()
+                        # Toolbar aus der QGIS-Oberfläche entfernen
+                        self.iface.mainWindow().removeToolBar(toolbar)
+                        # Toolbar-Objekt löschen
+                        toolbar.deleteLater()
+                        # Referenz auf None setzen
+                        setattr(self, toolbar_name, None)
+                    except Exception as e:
+                        print(f"Fehler beim Entfernen der Toolbar {toolbar_name}: {e}")
 
-        if self.toolbar_3 is not None:
-            del self.toolbar_3
+            # Dropdown-Widget entfernen
+            if hasattr(self, 'dropdown') and self.dropdown:
+                try:
+                    self.dropdown.deleteLater()
+                    self.dropdown = None
+                except Exception as e:
+                    print(f"Fehler beim Entfernen des Dropdowns: {e}")
 
-        if self.toolbar_4 is not None:
-            del self.toolbar_4
+            #Übersetzer entfernen
+            if hasattr(self, 'translator') and self.translator:
+                try:
+                    QCoreApplication.removeTranslator(self.translator)
+                    self.translator = None
+                except Exception as e:
+                    print(f"Fehler beim Entfernen des Übersetzers: {e}")
 
-        # Remove menu
-        self.iface.mainWindow().menuBar().removeAction(self.menu_action)
+            #Geladene Plugins entladen
+            if hasattr(self, 'plugins') and self.plugins:
+                for plugin in self.plugins[:]:  # Kopie der Liste
+                    if hasattr(plugin, 'unload'):
+                        try:
+                            plugin.unload()
+                        except Exception as e:
+                            print(f"Fehler beim Entladen des Plugins: {e}")
+                self.plugins = []
+            QKan.instance = None
 
-        # Unload translator
-        # noinspection PyArgumentList
-        QCoreApplication.removeTranslator(self.translator)
+        except Exception as e:
+            print(f"Kritischer Fehler in unload(): {e}")
 
-        # Call unload on all loaded plugins
-        for plugin in self.plugins:
-            plugin.unload()
 
     def register(self, instance: "_ExternalQKanPlugin") -> None:
         self.instances.append(instance)
@@ -549,18 +627,58 @@ class QKan:
 
         if add_to_toolbar:
             if toolbar == 'QKan-Allgemein':
+                if self.toolbar is None:
+                    QgsMessageLog.logMessage(
+                        "toolbar ist None",
+                        "QKan",
+                        Qgis.Warning
+                    )
+                    return action
+
                 self.toolbar.addAction(action)
 
             elif toolbar == 'QKan-Datenaustausch':
+                if self.toolbar_2 is None:
+                    QgsMessageLog.logMessage(
+                        "toolbar_2 ist None",
+                        "QKan",
+                        Qgis.Warning
+                    )
+                    return action
+
                 self.toolbar_2.addAction(action)
 
             elif toolbar == 'QKan-Flächenbearbeitung':
+                if self.toolbar_3 is None:
+                    QgsMessageLog.logMessage(
+                        "toolbar_3 ist None",
+                        "QKan",
+                        Qgis.Warning
+                    )
+                    return action
+
                 self.toolbar_3.addAction(action)
 
             elif toolbar == 'QKan-Befahrungsdaten':
+                if self.toolbar_4 is None:
+                    QgsMessageLog.logMessage(
+                        "toolbar_4 ist None",
+                        "QKan",
+                        Qgis.Warning
+                    )
+                    return action
+
                 self.toolbar_4.addAction(action)
                 
             elif toolbar == 'QKan-Elementerzeugung':
+                if self.toolbar_5 is None:
+                    QgsMessageLog.logMessage(
+                        "toolbar_5 ist None",
+                        "QKan",
+                        Qgis.Warning
+                    )
+                    return action
+
                 self.toolbar_5.addAction(action)
 
         if add_to_menu and self.menu:
